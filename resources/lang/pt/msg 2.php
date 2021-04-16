@@ -1,0 +1,41 @@
+<?php
+    return [
+    //translate the word after => 
+
+    'Login' => 'Login',
+    'Your email' => 'Your email',
+    'Your password' => 'Your password',
+    'I am not registered' => 'I am not registered',
+    'I forgot my password' => 'I forgot my password',
+    'Log in' => 'Log in',
+    'Read the' => 'Read the',
+    'privacy policy of' => 'privacy policy of',
+    'this application and find out how your data will be treated.' => 'this application and find out how your data will be treated.',
+    'Remember password' => 'Remember password',
+    'Password' => 'Password',
+    'name :' => 'Name :',
+    'Life Plan' => 'Life Plan',
+    'build your life, transform your thinking' => 'build your life, transform your thinking',
+    'Differences' => 'Differences',
+    'learn to deal with differences' => 'learn to deal with differences',
+    'Educating Children' => 'Educating Children',
+    'your heritage, your gift' => 'your heritage, your gift',
+    'Business' => 'Business',
+    'build your financial life' => 'build your financial life',
+    "Join our platform now, it's free!" => "Join our platform now, it's free!",
+    'Your name' => 'Your name',
+    'Your email' => 'Your email',
+    'Choose a password' => 'Choose a password',
+    'Confirm password' => 'Confirm password',
+    'Register' => 'Register',
+    "I'm already registered" => "I'm already registered",
+    'main' => 'main',
+    'about Us' => 'about Us',
+    'actions' => 'actions',
+    'platform' => 'platform',
+    'store' => 'store',
+    'Your phone' => 'Your phone',
+    'Password Confirm' => 'Password Confirm',
+    ];
+
+?>

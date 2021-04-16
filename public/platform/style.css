@@ -1,0 +1,90 @@
+<style>
+
+  .fix {}
+
+  body {background-color: #ffffff; background: url(imagens/bg.jpg) no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;}
+
+  .workspace {width:100%; max-width:900px; min-height: 800px; margin:auto; background-color: #ffffff;}  
+
+  .cadastro {position:absolute; top:10vw; left:0px; right:0px; margin:auto; width:350px; height:390px; border: 1px solid #bbbbbb; background-color: rgba(0,0,0,0.7); -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; padding: 1.6vw; z-index: 99999; color: #ffffff;}
+  .cadastro input {-webkit-box-shadow: 0 0 0px 1000px #f9fbfd inset;}
+  .cadastro button {margin-top:20px; width:100px}
+  .cadastro .cadPrimeiroCampo {margin-top:10px;}
+
+  /* For mobile devices */
+  @media only screen and (max-width: 1100px) {
+    body {background-color: #ffffff; background-image:none;}
+    .cadastro {width:100%; position:static; margin-top:0px; height:390px; padding:15px; padding-left:30px; padding-right:30px; background-color:#222222; border:0px; -webkit-border-radius:0px; -moz-border-radius:0px; border-radius:0px;}
+    .cadastro .cadTitulo {margin-top: 0px !important;}  
+    .cadastro .form-group {margin-top: -10px;}
+    .cadastro .cadPrimeiroCampo {margin-top:5px;}
+    .cadastro button {margin-top:15px;}
+    }
+
+  .politica h2 {font-size:14px; margin:0px; margin-top:10px; color:#666666 !important;}
+  .politica p {font-size:12px; margin:0px; margin-top:5px; color:#666666 !important;}
+
+  .banner {position:relative; width:100%; height:250px; overflow:hidden;}
+  .banner img {cursor:auto; position:absolute; left:50%; top:50%; height:auto; width:100%; -webkit-transform:translate(-50%,-50%); -ms-transform:translate(-50%,-50%); transform:translate(-50%,-50%);}
+  @media only screen and (max-width: 767px) { .banner { height:125px; } }
+
+  .painelNivel table {width:100%; border-collapse: collapse; margin:0px;}
+  .painelNivel td {font-size:14px; background-color:#333333; color:#ffffff; padding:5px; cursor:pointer; text-align:center; border: 1px solid #ffffff; border-top: 0px; border-bottom: 0px;}
+  .painelNivel td:hover {color:#cccccc;}
+
+  .painel table {width:100%; border-collapse: collapse; border: 1px solid #ffffff; margin:0px;}
+  .painel td {height:100px !important; color:#ffffff; text-align:center; border: 1px solid #ffffff; background-color:#ffffff;}
+  .painel td img:hover {color:#000000; opacity: 0.8; filter: opacity(80%); filter: alpha(opacity=80); transition: all 0.5s;}
+  .painel td div {position: relative; }
+  .painel td p {font-size:37px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-shadow: 1px 1px #666666; }
+  .painel a {color:#ffffff; text-decoration:none; }
+
+  @media only screen and (max-width: 767px) { .painel td p { font-size:26px; } }
+
+  .lista table {width:100%;}
+  .lista tr:hover {cursor:pointer; background-color: #ededed; opacity: 0.8; filter: opacity(80%); filter: alpha(opacity=80); transition: all 0.5s;}
+
+  .listaGrupos table {width:100%;}
+  .listaGrupos tr:hover {cursor:pointer; opacity: 0.8; }
+
+  .menuLateral {width:200px; left:-280px; z-index:998; padding:0 50px 0 0; -moz-transition: all 0.5s ease; -webkit-transition: all 0.5s ease; -o-transition: all 0.5s ease; transition: all 0.5s ease; font-size:1.2em; background-color:#cccccc; height:100%; overflow:hidden; position:fixed; top:0;}
+  .menuLateral div {padding-left: 10px;}
+  .menuLateral a {text-decoration:none; color:#333333 }
+  .menuLateral hr {margin:8px 0px 8px 0px; border-color:#cccccc;}
+  .menuLateral .glyphicon {font-size: 12px;}
+  .menuLateral .fa {font-size: 12px;}
+  .menuLateralHover 
+    {
+    background-color: #ffffff;  overflow-y:none; 
+    -moz-transform: translate(280px, 0); -webkit-transform: translate(280px, 0); -o-transform: translate(280px, 0); transform: translate(280px, 0); padding-right:0;
+    -webkit-box-shadow: 3px 3px 9px -4px rgba(0,0,0,1); -moz-box-shadow: 3px 3px 9px -4px rgba(0,0,0,1); box-shadow: 3px 3px 9px -4px rgba(0,0,0,1);
+    } 
+  .menuLateralUser {width:100%; height:170px; background-color:#333333; color:#ffffff; margin-bottom:10px; text-align:center; }
+  .menuLateralUser table {width:100%; color:#eeeeee; font-size:13px;}
+  .menuLateralUser td {text-align:center;}
+
+  .menuLateralOption:hover {cursor:pointer; background-color: #cccccc; opacity: 0.8; filter: opacity(80%); filter: alpha(opacity=80); transition: all 0.5s;}
+
+  .balao {top:10px; right:10px; padding:4px; min-height:30px; min-width:40px; text-align:center; background-color:#f0ad4e; color:#ffffff; font-size:18px; border-radius:20px; -webkit-border-radius:20px; -moz-border-radius:20px; -o-border-radius:20px;}
+  .balaoMenor {top:5px; right:5px; padding:4px; min-height:20px; min-width:30px; text-align:center; background-color:#f0ad4e; color:#ffffff; font-size:15px; border-radius:20px; -webkit-border-radius:20px; -moz-border-radius:20px; -o-border-radius:20px;}
+
+  .appTitulo {color:#333333; font-size:18px; font-weight:bold; }
+  .appDescricao {color:#999999; font-size:14px; margin-top:2px; }
+
+  .sombra {border: 1px solid #bbbbbb; -webkit-box-shadow:3px 3px 9px -4px rgba(0,0,0,1); -moz-box-shadow:3px 3px 9px -4px rgba(0,0,0,1); box-shadow:3px 3px 9px -4px rgba(0,0,0,1);}
+  .quadroMenu {width:100%; height:30px; top:5px; background-color:#000000; opacity: 0.6; filter: opacity(60%); filter: alpha(opacity=60); transition: all 0.6s;}
+  .displayMenu {width:100%; top:7px; font-size:19px; z-index: 99999999}
+  .form-control{padding:5px; height:35px;}
+  .input-group {width: 100%;}
+  .checkbox label {color:#666666;}
+
+  .sombraImagem {-webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);}
+
+  .busca {margin-top:10px;}
+  .busca .container-fluid {background-color:#F8F8F8; padding:5px; padding-top:5px;}
+  .busca input[type="text"] {width:140px;}
+  .busca button {padding-top:4px; margin-left: 5px;}
+
+  .buscaGrid {background-color: #ffffff; border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px; -o-border-radius: 8px; border: 1px solid #dcdcdc;}
+
+ </style>

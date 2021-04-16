@@ -1,0 +1,470 @@
+<?php
+  header("Content-Type: text/html; charset=UTF-8",true);
+  session_start();
+
+  include "config.conf";
+  require_once("funcoes.php");
+  require_once("funcoes_db.php");
+
+  if(!Login()){header("Location: index.php");}
+
+  if(!isset($_GET["acao"])){$_GET["acao"] = "";}
+
+  $temSolicitacaoGrupo = 0;
+  $temAvisoAceiteGrupo = 0;
+
+  $nivelSecretaria = 0;
+  $nivelGestor = 0;
+  $nivelDistribuidor = 0;
+
+  $con = new PDO($dbString,$dbUser,$dbPwd);
+  $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  if($con)
+    {
+    $con->query("SET NAMES 'utf8'");
+    $con->query("SET character_set_connection=utf8");
+    $con->query("SET character_set_client=utf8");
+    $con->query("SET character_set_results=utf8");        
+    
+    $sql  = "SELECT * FROM usuarios WHERE email = '".$_SESSION["planoz_user"]."' LIMIT 1" ;
+    $tab = $con->query($sql);
+    if($tab)
+      {
+      while($reg = $tab->fetch())
+        {
+        $nivelSecretaria = $reg['nivelSecretaria'];
+        $nivelGestor = $reg['nivelGestor'];
+        $nivelDistribuidor = $reg['nivelDistribuidor'];
+        }
+      $tab = NULL;
+      }
+    
+    if($nivelSecretaria == 1)   
+      {
+      if(!isset($_SESSION["avisoSolicitacaoGrupo"])){$_SESSION["avisoSolicitacaoGrupo"] = "";}  
+      if($_SESSION["avisoSolicitacaoGrupo"] == "")  
+        {
+        $sql = "SELECT * FROM grupos_solicitacoes WHERE idGrupo = ".$_SESSION["planoz_grupo"]." AND aceiteAdmin = 0 LIMIT 1" ;
+        $tab = $con->query($sql);
+        if($tab){while($reg = $tab->fetch()){$temSolicitacaoGrupo = 1;} $tab = NULL;}
+        $_SESSION["avisoSolicitacaoGrupo"] = "OK";
+        }
+      }
+    
+    if(!isset($_SESSION["avisoAceiteGrupo"])){$_SESSION["avisoAceiteGrupo"] = 0;}  
+    $temAvisoAceiteGrupo = $_SESSION["avisoAceiteGrupo"];
+    $_SESSION["avisoAceiteGrupo"] = 0;
+
+    $con = NULL;
+    }
+
+  if($_GET["acao"]=="CARREGARPAINEL")
+    {
+    $nomeGrupo = ""; 
+    $descricaoGrupo = "";
+    $enderecoGrupo = "";
+    $horariosGrupo = "";
+    $foneGrupo = "";
+    $facebookGrupo = "";
+    $siteGrupo = "";
+    $mapaGrupo = "";
+    $exibir = 0;
+    $appMensagens = 0;
+    $appFinancas = 0;
+    $appAprovacoes = 0;
+    $appTarefas = 0;
+    $appEstatisticas = 0;
+    $appPesquisas = 0;
+    $appCapelania = 0;
+    $appDevocional = 0;
+    $appDica = 0;
+    $appBiblia = 0;
+    $appEad = 1;
+    $appElChurch = 1;
+    $appLoja = 1;
+
+    $totMensagens = 0;
+    $totTarefas = 0;
+    $totAprovacoes = 0;
+
+    $rotuloMidias = $defaultRotuloMidias;
+    $descricaoMidias = $defaultDescricaoMidias;
+    $rotuloCalendario = $defaultRotuloCalendario;
+    $descricaoCalendario = $defaultDescricaoCalendario;
+    $rotuloDownloads = $defaultRotuloDownloads;
+    $descricaoDownloads = $defaultDescricaoDownloads;
+
+    $rotuloAplicativos = $defaultRotuloAplicativos;
+    $rotuloSecretaria = $defaultRotuloSecretaria;
+    $rotuloComunicacao = $defaultRotuloComunicacao;
+    $rotuloContato = $defaultRotuloContato;
+
+    $con = new PDO($dbString,$dbUser,$dbPwd);
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if($con)
+      {
+      $con->query("SET NAMES 'utf8'");
+      $con->query("SET character_set_connection=utf8");
+      $con->query("SET character_set_client=utf8");
+      $con->query("SET character_set_results=utf8");        
+
+      $contagem = 0;
+      $sql = "SELECT Count(idChat) AS contagem FROM chat GROUP BY idRemetente, idDestinatario, lido HAVING idDestinatario=".$_SESSION["planoz_userId"]." AND lido=0";
+      $tab = $con->query($sql);
+      if($tab){while($reg = $tab->fetch()){$totMensagens = $reg['contagem'];} $tab = NULL;}
+
+      $sql = "SELECT * FROM grupos WHERE idGrupo = '".$_SESSION["planoz_grupo"] ."' LIMIT 1" ;
+      $tab = $con->query($sql);
+      if($tab)
+        {
+        while($reg = $tab->fetch())
+          {
+          $nomeGrupo = $reg['nome'];
+          $descricaoGrupo = $reg['descricao'];
+          $enderecoGrupo = $reg['endereco'];
+          $horariosGrupo = $reg['horarios'];
+          $foneGrupo = $reg['fone'];
+          $facebookGrupo = $reg['facebook'];
+          $siteGrupo = $reg['site'];
+          $mapaGrupo = $reg['mapa'];
+          $rotuloMidias = $reg['rotuloMidias']; 
+          $descricaoMidias = $reg['descricaoMidias']; 
+          $rotuloCalendario = $reg['rotuloCalendario']; 
+          $descricaoCalendario = $reg['descricaoCalendario']; 
+          $rotuloDownloads = $reg['rotuloDownloads']; 
+          $descricaoDownloads = $reg['descricaoDownloads']; 
+          $rotuloAplicativos = $reg['rotuloAplicativos'];
+          $rotuloComunicacao = $reg['rotuloComunicacao'];
+          $rotuloContato = $reg['rotuloContato'];
+          }
+        $tab = NULL;
+        }
+
+      $sql = "SELECT * FROM usuarios_config WHERE idUsuario = '".$_SESSION["planoz_userId"] ."' LIMIT 1" ;
+      $tab = $con->query($sql);
+      if($tab){while($reg = $tab->fetch()){$exibir = $reg['plaExibir'];} $tab = NULL;}
+
+      $sql  = "SELECT * FROM usuarios WHERE email = '".$_SESSION["planoz_user"]."' LIMIT 1" ;
+      $tab = $con->query($sql);
+      if($tab)
+        {
+        while($reg = $tab->fetch())
+          {
+          $appMensagens = $reg['appMensagens'];
+          $appFinancas = $reg['appFinancas'];
+          $appAprovacoes = $reg['appAprovacoes'];
+          $appTarefas = $reg['appTarefas'];
+          $appEstatisticas = $reg['appEstatisticas'];
+          $appPesquisas = $reg['appPesquisas'];
+          $appCapelania = $reg['appCapelania'];
+          $appDevocional = $reg['appDevocional'];
+          $appDica = $reg['appDica'];
+          $appBiblia = $reg['appBiblia'];
+          $appEad = $reg['appEad'];
+          $appElChurch = $reg['appElChurch'];
+          $appLoja = 1;
+          }
+        $tab = NULL;
+        }
+
+      $sql  = "SELECT * FROM grupos WHERE idGrupo = '".$_SESSION["planoz_grupo"]."' LIMIT 1" ;
+      $tab = $con->query($sql);
+      if($tab)
+        {
+        while($reg = $tab->fetch())
+          {
+          $urlEad = $reg['urlEad'];
+          $urlElChurch = $reg['urlElChurch'];
+          $urlLoja = $reg['urlLoja'];
+          if($reg['appMensagens'] == 0){$appMensagens = 0;}
+          if($reg['appFinancas'] == 0){$appFinancas = 0;}
+          if($reg['appAprovacoes'] == 0){$appAprovacoes = 0;}
+          if($reg['appTarefas'] == 0){$appTarefas = 0;}
+          if($reg['appEstatisticas'] == 0){$appEstatisticas = 0;}
+          if($reg['appPesquisas'] == 0){$appPesquisas = 0;}
+          if($reg['appCapelania'] == 0){$appCapelania = 0;}
+          if($reg['appDevocional'] == 0){$appDevocional = 0;}
+          if($reg['appDica'] == 0){$appDica = 0;}
+          if($reg['appBiblia'] == 0){$appBiblia = 0;}
+          if($reg['appEad'] == 0){$appEad = 0;}
+          if($reg['appElChurch'] == 0){$appElChurch = 0;}
+          if($reg['appLoja'] == 0){$appLoja = 0;}
+          }
+        $tab = NULL;
+        }
+
+      if($appTarefas)  
+        {
+        $sql  = "SELECT Count(tar_escalas.idEscala) AS conta  
+                 FROM (tar_escalas LEFT JOIN tar_eventos ON tar_escalas.idEvento = tar_eventos.idEvento) INNER JOIN tar_tarefas ON tar_escalas.idTarefa = tar_tarefas.idTarefa 
+                 WHERE tar_escalas.status=0 AND tar_escalas.publicado = 1 AND tar_eventos.idGrupo = ".$_SESSION["planoz_grupo"]." AND tar_escalas.idUsuario = ".$_SESSION["planoz_userId"]." AND tar_escalas.data >= '".date("Y-m-d")."' 
+                 GROUP BY tar_escalas.idUsuario, tar_eventos.idGrupo";
+        $tab = $con->query($sql);
+        if($tab){while($reg = $tab->fetch()){$totTarefas = $reg['conta'];} $tab = NULL;}
+
+        }
+      if($appAprovacoes)
+        {
+        //$sql  = "SELECT Count(tar_escalas.idEscala) AS conta, tar_eventos.idGrupo
+        //         FROM tar_escalas LEFT JOIN tar_eventos ON tar_escalas.idEvento = tar_eventos.idEvento
+        //         GROUP BY tar_escalas.idUsuario, tar_escalas.status, tar_eventos.idGrupo
+        //         HAVING tar_escalas.idUsuario=".$_SESSION["planoz_userId"]." AND tar_eventos.idGrupo=".$_SESSION["planoz_grupo"] ." AND tar_escalas.status=0";
+        //$tab = $con->query($sql);
+        //if($tab){while($reg = $tab->fetch()){$totAprovacoes = $reg['conta'];} $tab = NULL;}
+        }
+
+      $con = NULL;
+      }
+    
+    $ret = "";
+    $ret .= "<table width='100%' class='painelNivel'>";
+    $ret .= "  <tr>";
+    $ret .= "    <td id='td1' width='25%' onclick='beep(); mudarPainel(1)'>".$rotuloAplicativos."</td>"; 
+    $ret .= "    <td id='td2' width='25%' onclick='beep(); mudarPainel(2)'>".$rotuloComunicacao."</td>"; 
+    $ret .= "    <td id='td3' width='25%' onclick='beep(); mudarPainel(3)'>".$rotuloContato."</td>"; 
+    if($nivelSecretaria){$ret .= "    <td id='td4' width='25%' onclick='beep(); mudarPainel(4)'>".$rotuloSecretaria."</td>";}
+    $ret .= "  </tr>";
+    $ret .= "  <tr style='height:2px;'>";
+    $ret .= "    <td id='td1Aux' style='height:2px; font-size:2px; padding:0px; background-color:#999999'>&nbsp;</td>"; 
+    $ret .= "    <td id='td2Aux' style='height:2px; font-size:2px; padding:0px; background-color:#999999'>&nbsp;</td>"; 
+    $ret .= "    <td id='td3Aux' style='height:2px; font-size:2px; padding:0px; background-color:#999999'>&nbsp;</td>"; 
+    if($nivelSecretaria){$ret .= "    <td id='td4Aux' style='height:2px; font-size:2px; padding:0px; background-color:#999999'>&nbsp;</td>";}
+    $ret .= "  </tr>";
+    $ret .= "</table>";  
+
+
+    //Aplicativos ------------------------------------------------------------------------------------------------------------------------------
+
+    $quadros = array();    
+    
+    if($appMensagens){$quadros[] = array("Mensagens", "window.location = \"../mensagens/index.php\"", "imagens/fundo_mensagens.jpg", "100%", "Troque mensagens com outros usuários do aplicativo", $totMensagens);}
+    if($appTarefas){$quadros[] = array("Tarefas", "window.location = \"../tarefas/index.php\"", "imagens/fundo_tarefas.jpg", "100%", "Organize seus eventos, através de uma escala de tarefas", $totTarefas);}
+    if($appEstatisticas){$quadros[] = array("Estatísticas", "window.location = \"../estatisticas/index.php\"", "imagens/fundo_estatisticas.jpg", "100%", "Tenha uma visão rápida das características de seus registros", 0);}
+    if($appDica){$quadros[] = array("DICA", "window.location = \"../dica/index.php\"", "imagens/fundo_dica.jpg", "100%", "Descubra seu perfil psicológico DICA", 0);}
+    if($appAprovacoes){$quadros[] = array("Aprovações", "window.location = \"../aprovacoes/index.php\"", "imagens/fundo_aprovacoes.jpg", "100%", "Faça a gestão de solicitações com alçadas para aprovação", $totAprovacoes);}
+    if($appFinancas){$quadros[] = array("Finanças", "window.location = \"../financas/index.php\"", "imagens/fundo_financas.jpg", "100%", "Faça o seu planejamento e mantenha sob controle suas finanças", 0);}
+    if($appDevocional){$quadros[] = array("Devocional", "window.location = \"ops.php\"", "imagens/fundo_devocional.jpg", "100%", "Tenha um tempo com Deus através de leituras diárias da palavra", 0);}
+    if($appBiblia){$quadros[] = array("Bíblia", "window.location = \"../biblia/index.php\"", "imagens/fundo_biblia.jpg", "100%", "Tenha em mãos a palavra de Deus", 0);}
+    if($appPesquisas){$quadros[] = array("Pesquisas", "window.location = \"ops.php\"", "imagens/fundo_pesquisas.jpg", "100%", "Faça pesquisas rápidas e obtenha opniões sobre o assunto", 0);}
+    if($appCapelania){$quadros[] = array("Capelania", "window.location = \"ops.php\"", "imagens/fundo_capelania.jpg", "100%", "Tenha um cadastro e acompanhamento do trabalho realizado", 0);}
+    if($appEad){$quadros[] = array("EAD", "abrePaginaExterna(\"home.php\", \"".$urlEad."\");", "imagens/fundo_ead.jpg", "100%", "Avisos, cursos e informações", 0);}
+    if($appElChurch){$quadros[] = array("ElChurch", "abrePaginaExterna(\"home.php\", \"".$urlElChurch."\");", "imagens/fundo_elchurch.jpg", "100%", "Faça a gestão de sua igreja através desta ferramenta", 0);}
+    if($appLoja){$quadros[] = array("Loja", "abrePaginaExterna(\"home.php\", \"".$urlLoja."\");", "imagens/fundo_loja.jpg", "100%", "Conheça os livros, cursos e produtos preparados para você", 0);}
+
+    // FIXA EXIBIÇÃO EM LISTA ###############
+    $exibir = 1; 
+    // ######################################
+
+    $ret .= "<div id='tab1' style='display:none'>";
+    if($exibir == 0)
+      {
+      $ret .= "<table class='painel'>";
+      for($i=0; $i<count($quadros); $i++)
+        {
+        if($i % 2 == 0){$ret .= "<tr>";}
+        $ret .= "<td width='50%' onclick='beep(); ".$quadros[$i][1]."' style='cursor:pointer; border: 3px solid #ffffff;'>";
+        $ret .= "  <div style='position:relative;'>";
+        //$ret .= "    <img src='".$quadros[$i][2]."' width='".$quadros[$i][3]."'>";
+        $ret .= "    <img src='imagens/fundo.jpg' width='".$quadros[$i][3]."'>";
+        $ret .= "    <p>".$quadros[$i][0]."</p>";
+        if($quadros[$i][5]>0){$ret .= "<div class='balao' style='position:absolute;'>".$quadros[$i][5]."</div>";}
+        $ret .= "  </div>";
+        $ret .= "</td>"; 
+        if($i % 2 != 0){$ret .= "</tr>";}
+        }
+      if(substr($ret,-5)=="</td>"){$i++; $ret .= "<td style='border-bottom: 1px solid #dddddd; background-color:#bbbbbb'>&nbsp</td></tr>";}  
+      $ret .= "</table>";  
+      }
+    if($exibir == 1)
+      {
+      $ret .= "<table width='100%' class='lista'>";
+      for($i=0; $i<count($quadros); $i++)
+        {
+        $ret .= "<tr>";
+        $ret .= "  <td width='120' onclick='beep(); ".$quadros[$i][1]."' style='padding:10px;'>";
+        $ret .= "    <div style='position:relative;'>";
+        $ret .= "      <img src='".$quadros[$i][2]."' width='".$quadros[$i][3]."'>";
+        if($quadros[$i][5]>0){$ret .= "<div class='balaoMenor' style='position:absolute;'>".$quadros[$i][5]."</div>";}
+        $ret .= "    </div>";
+        $ret .= "  </td>"; 
+        $ret .= "  <td onclick='beep(); ".$quadros[$i][1]."' style='padding-right:5px'>";
+        $ret .= "    <div class='appTitulo'>".$quadros[$i][0]."</div>";
+        $ret .= "    <div class='appDescricao'>".$quadros[$i][4]."</div>";
+        $ret .= "  </td>"; 
+        $ret .= "<tr><td colspan='2'><hr style='padding:0px; margin:0px;'></td></tr>";
+        }
+      $ret .= "</table>";  
+      }
+    $ret .= "<div style='width:100%; text-align:center; padding:25px;'><img src='imagens/add.png' width='50' style='cursor:pointer;' onclick='irPara(\"aplicativos.php\")'></div>";
+    $ret .= "</div>";  
+
+    //comunicação ----------------------------------------------------------------------------------------------------------------------------
+
+    $quadros = array();    
+    $quadros[] = array($rotuloCalendario, "window.location = \"calendario.php\"", "imagens/fundo_calendario.jpg", "100%", $descricaoCalendario, 0);
+    $quadros[] = array($rotuloMidias, "window.location = \"midias.php\"", "imagens/fundo_midias.jpg", "100%", $descricaoMidias, 0);
+    $quadros[] = array($rotuloDownloads, "window.location = \"downloads.php\"", "imagens/fundo_downloads.jpg", "100%", $descricaoDownloads, 0);
+
+    $ret .= "<div id='tab2' style='display:none'>";
+    $ret .= "<table width='100%' class='lista'>";
+    for($i=0; $i<count($quadros); $i++)
+      {
+      $ret .= "<tr>";
+      $ret .= "  <td width='120' onclick='beep(); ".$quadros[$i][1]."' style='padding:10px;'>";
+      $ret .= "      <img src='".$quadros[$i][2]."' width='".$quadros[$i][3]."'>";
+      $ret .= "  </td>"; 
+      $ret .= "  <td onclick='beep(); ".$quadros[$i][1]."' style='padding-right:5px'>";
+      $ret .= "    <div class='appTitulo'>".$quadros[$i][0]."</div>";
+      $ret .= "    <div class='appDescricao'>".$quadros[$i][4]."</div>";
+      $ret .= "  </td>"; 
+      $ret .= "<tr><td colspan='2'><hr style='padding:0px; margin:0px;'></td></tr>";
+      }
+    $ret .= "</table>";  
+    $ret .= "</div>";  
+
+    //Contato ---------------------------------------------------------------------------------------------------------------------------------
+
+    $ret .= "<div id='tab3' style='display:none'>";
+    $ret .= "  <div style='width:100%; padding:15px; padding-bottom:25px;'>";
+    $ret .= "    <div style='width:100%; font-size:20px; color:#333333;'>".$nomeGrupo."</div>";
+    $ret .= "    <div style='width:100%; font-size:14px; color:#666666; padding-top:5px;'>".$descricaoGrupo."</div>";
+    $ret .= "    <div style='width:100%; font-size:15px; font-weight:bold; color:#666666; padding-top:10px;'><i class='fa fa-map-marker' aria-hidden='true'></i> Endereço: ".$enderecoGrupo."</div>";
+    $ret .= "    <div style='width:100%; font-size:15px; color:#666666; padding-top:10px;'><i class='fa fa-clock-o' aria-hidden='true'></i> Horários: ".$horariosGrupo."</div>";
+    $ret .= "    <div style='width:100%; font-size:15px; color:#666666; padding-top:10px;'><i class='fa fa-phone' aria-hidden='true'></i> Fone: ".$foneGrupo."</div>";
+    $ret .= "    <div style='width:100%; font-size:15px; color:#666666; padding-top:0px;'><i class='fa fa-facebook-square' aria-hidden='true'></i> Facebook: ".$facebookGrupo."</div>";
+    $ret .= "    <div style='width:100%; font-size:15px; color:#666666; padding-top:0px;'><i class='fa fa-globe' aria-hidden='true'></i> Site: ".$siteGrupo."</div>";
+    $ret .= "  </div>";
+    $ret .= "  <iframe src='".$mapaGrupo."' width='100%' height='600' frameborder='0' style='border:0' allowfullscreen></iframe>";
+    $ret .= "</div>";  
+
+    //Secretaria ---------------------------------------------------------------------------------------------------------------------------------
+    $quadros = array();    
+    $quadros[] = array("Gestão de Solicitações", "window.location = \"usuarios_solicitacoes.php\"", "imagens/user2.png", "50", "Aceita ou rejeita solicitações dos usuários do sistema");
+    $quadros[] = array("Gestão de Usuários", "window.location = \"usuarios.php\"", "imagens/user.png", "50", "Localização, inclusão e alteração de usuários do sistema");
+    $quadros[] = array("Personalização do Aplicativo", "window.location = \"personalizacao.php\"", "imagens/personalizacao.png", "50", "Personalização do sistema, contato, banner, endereco, etc.");
+    $quadros[] = array("Gestão de Midias", "window.location = \"midias_gestao.php\"", "imagens/config.png", "50", "Incluir, alterar ou excluir midias armazenadas no Youtube");
+    $quadros[] = array("Gestão de Calendário", "window.location = \"calendario_gestao.php\"", "imagens/config.png", "50", "Incluir, alterar ou excluir calendário");
+
+    $ret .= "<div id='tab4' style='display:none'>";
+    $ret .= "<table width='100%' class='lista'>";
+    for($i=0; $i<count($quadros); $i++)
+      {
+      $ret .= "<tr>";
+      $ret .= "  <td width='120' onclick='beep(); ".$quadros[$i][1]."' style='padding:10px;'>";
+      $ret .= "      <img src='".$quadros[$i][2]."' width='".$quadros[$i][3]."'>";
+      $ret .= "  </td>"; 
+      $ret .= "  <td onclick='beep(); ".$quadros[$i][1]."' style='padding-right:5px'>";
+      $ret .= "    <div class='appTitulo'>".$quadros[$i][0]."</div>";
+      $ret .= "    <div class='appDescricao'>".$quadros[$i][4]."</div>";
+      $ret .= "  </td>"; 
+      $ret .= "<tr><td colspan='2'><hr style='padding:0px; margin:0px;'></td></tr>";
+      }
+    $ret .= "</table>";  
+    $ret .= "</div>";  
+
+    echo $ret;
+    exit;
+    }
+
+?>
+<script src='objetos/jquery/jquery.min.js'></script>
+<script src='objetos/bootstrap/js/bootstrap.min.js'></script>
+<script src="objetos/plugins/multiselect/bootstrap-multiselect.js"></script>
+<script src='funcoes.js'></script>
+<script>
+
+  function carregarPainel()
+    {
+    var tabCur = lerCookie('planoz_tab'); 
+    if(tabCur == ''){tabCur = 1;}
+    var gestao = <?php if($nivelSecretaria || $nivelGestor){echo "true";} else {echo "false";}; ?>;
+    if(tabCur > 3 && !gestao){tabCur = 1;}
+
+    $.ajax({
+      type: 'GET',
+      url: 'home.php?acao=CARREGARPAINEL',
+      error: function(){alerta('Ocorreu um erro no Ajaz jQuery','danger');},
+      success: function(msg){$('#dvPainel').html(msg); mudarPainel(tabCur);  }
+      });
+    }
+
+  function mudarPainel(id)
+    {
+    for(var i=1; i<=4; i++)  
+      {
+      $('#tab'+i).css('display','none');
+      $('#td'+i).css('background-color','#333333'); 
+      $('#td'+i+'Aux').css('background-color','#999999'); 
+      }
+    $('#tab'+id).css('display','block');
+    $('#td'+id).css('background-color','#666666');
+    $('#td'+id+'Aux').css('background-color','#5bc0de');
+    gravarCookie('planoz_tab',id);
+    }
+
+  function mudarTabMenu(eventName)
+    {
+    if($('#tab1').is(":visible"))
+      {
+      if(eventName == 'swiperight'){} 
+      if(eventName == 'swipeleft'){mudarPainel(2);}
+      }   
+    else if($('#tab2').is(":visible"))
+      {
+      if(eventName == 'swiperight'){mudarPainel(1);} 
+      if(eventName == 'swipeleft'){mudarPainel(3);}
+      }        
+    else if($('#tab3').is(":visible"))
+      {
+      if(eventName == 'swiperight'){mudarPainel(2);} 
+      if(eventName == 'swipeleft'){mudarPainel(4);}
+      }
+    else if($('#tab4').is(":visible"))
+      {
+      if(eventName == 'swiperight'){mudarPainel(3);} 
+      if(eventName == 'swipeleft'){}
+      }
+    }  
+
+</script>
+<!DOCTYPE html>
+<html>
+<head>
+  <title><?php echo $tituloSite; ?></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="objetos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="objetos/plugins/awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="objetos/plugins/multiselect/bootstrap-multiselect.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div class="workspace sombra">
+    <?php $pagAtual = nomePaginaAtual(); include "menu.php" ?>
+    <div id='dvPainel'></div>
+  </div>
+  <?php require_once "alerta.php"; ?>
+</body>
+</html>
+<script>
+  carregarPainel();
+
+  <?php if($temSolicitacaoGrupo == 1){ ?>
+    setTimeout(function () {
+    if(confirm('Existem solicitações de usuários para entrarem no grupo, deseja exibir a tela de gestão de solicitações ?')==true)
+      {irPara('usuarios_solicitacoes.php');}
+      }, 100);
+  <?php } ?>  
+
+  <?php if($temAvisoAceiteGrupo == 1){ ?>
+    setTimeout(function () {
+      alert('Você foi aceito no grupo que você fez a solicitação, mude de grupo clicando no nome ou no banner superior da tela');
+      }, 100);
+    animaIndicador();
+  <?php } ?>  
+  
+  var firstExec = lerCookie('planoz_primeira_execucao'); 
+  if(firstExec == ''){conectarGrupo();}
+  gravarCookie('planoz_primeira_execucao', 'nao');  
+
+</script>

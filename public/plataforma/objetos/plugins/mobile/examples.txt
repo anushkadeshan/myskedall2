@@ -1,0 +1,1 @@
+https://github.com/benmajor/jQuery-Touch-Events/blob/master/README.md

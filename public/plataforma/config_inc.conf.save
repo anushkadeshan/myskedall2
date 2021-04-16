@@ -1,0 +1,27 @@
+<?php
+
+  $emailSite = "contato.planoz@prak.com.br";
+
+  $urlSite = "http://planoz.prak.com.br";
+  $urlPlataforma = "http://planoz.prak.com.br/plataforma";
+  $urlGooglePlayStore = "https://play.google.com/store/apps/details?id=br.com.prak.planoz";
+  $urlLiondas     = "http://www.liondas.com.br";
+
+  $chaveCrypt = "pRak_pL@noz";
+
+  //PRAK
+  $dbPathDados   = "\\var\\www\\html\\_dados\\";
+  $dbString      = "mysql:host=localhost; dbname=planoz";
+  $dbUser        = "planozadm";$urlLiondas     = "http://www.liondas.com.br";
+
+  $dbPwd         = "Planoz#2020";
+  $emailAtivado  =  true;
+ 
+  $smtpServer        = 'smtp.prak.com.br';
+  $smtpUser          = 'contato.planoz@prak.com.br';
+  $smtpPwd           = 'Salmo121#$%';
+  $smtpPorta         = '587';
+  $smtpAutenticacao  = '1';
+  
+?>
+
