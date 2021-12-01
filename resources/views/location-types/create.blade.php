@@ -1,12 +1,26 @@
-@extends('layouts.app')
+@extends('layouts.admin.master')
+@section('title', 'PlanOz-Type of Location')
 
+@section('css')
+@endsection
+
+@section('style')
+@endsection
+
+@section('breadcrumb-title')
+@endsection
+
+@section('breadcrumb-items')
+<li class="breadcrumb-item">{{__('msg.location')}}</li>
+<li class="breadcrumb-item active"> {{__('msg.type of Location')}}</li>
+@endsection
 @section('content')
 <div class="container-fluid mt-3">
     <section class="content-header">
         <h1 class="pull-left">{{ __('msg.type of Location') }}</h1>
-       
+
     </section>
-    
+
     <div class="content">
         <div class="clearfix"></div>
 
@@ -27,18 +41,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 ">
-                            <input type="submit" style="color:green;font-weight: bold;" value="{{ __('msg.submit') }}">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6 mt-6">
+                            <input type="submit" class="btn btn-success" value="{{ __('msg.submit') }}">
                         </div>
-                      
+
                     </div>
                 </form>
             </div>
         </div>
         <div class="text-center">
-        
+
         </div>
     </div>
 </div>
 @endsection
+@section('script')
+@endsection
+
+@push('js')
+
+@endpush
+

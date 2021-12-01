@@ -46,15 +46,21 @@ class HomeController extends Controller
     {
 
         $groupData = $this->GetGroupList();
-        $user = User::where('id', session('user_id'))->first();
+
+        $user = User::where('id', Auth::id())->first();
         $data = [];
         $apps = $this->ActiveGroup();
         //dd($apps->app_tasks, $user->app_tasks);
         //  dd($user->app_tasks);
         $userGroup = $this->UserGroup();
-        
+       // dd($userGroup);
         $defaultGroup = $this->DefaultGroup();
-        $group = Group::find(session('group-id'));
+        if(session('group-id')==null){
+            $group = Group::find(1);
+        }
+        else{
+            $group = Group::find(session('group-id'));
+        }
        // dd(session('group-id'));
 
         if (session('locale') == 'pt'){
@@ -68,8 +74,9 @@ class HomeController extends Controller
                 ->select('title_en as title', 'description_en as description','image','redirect_link', 'apps.id as app_id')
                 ->where('active', true)
                 ->get();
+            //dd($data);
         }
-        
+
         if (session('SuperAdmin') == 1) {
             $alert = DB::table('space_alerts')->where(['is_read' => 0])->count();
         } else {
@@ -88,7 +95,7 @@ class HomeController extends Controller
         $apps = $this->ActiveGroup();
 
         $data = App::all();
-        
+
         $defaultGroup = $this->DefaultGroup();
         $userGroup = $this->UserGroup();
         $groupData = $this->GetGroupList();
@@ -100,7 +107,7 @@ class HomeController extends Controller
     public function GetGroupList()
     {
         $other_groups = auth()->user()->groups()->get()->pluck('id');
-        
+
         $other_groups = $other_groups->toArray();
 
         return Group::whereNotIn('id', $other_groups)->get();
@@ -110,12 +117,18 @@ class HomeController extends Controller
         $update = App::where('app_key', $key)->update(['active'=>$value]);
         if($update){
             return redirect('/apps');
-        }    
-        
+        }
+
     }
     public function ActiveGroup()
     {
-        $group_id = session('group-id');
+        if(session('group-id')==null){
+            $group_id = 1;
+        }
+        else{
+            $group_id = session('group-id');
+        }
+
         return Group::where('id', $group_id)->first();
     }
     public function DefaultGroup()
@@ -394,7 +407,7 @@ class HomeController extends Controller
                 ->join('groups', 'groups.id', '=', 'space_location.group_id')
                 ->select('space_location.*', 'groups.name as group_name')
                 ->latest()->get();
-            
+
         }
 
         $data['user'] = Auth::user();
@@ -442,7 +455,7 @@ class HomeController extends Controller
         $data['userGroup'] = $this->UserGroup();
         $data['groupList'] = DB::table('groups')->select('id', 'name')->get();
         $data['groupData'] = $this->GetGroupList();
-        
+
         $data['selected_materials'] = Location::find($id)->metarials()->pluck('material_id')->toArray();
         $data['selected_functions'] = Location::find($id)->functions()->pluck('function_id')->toArray();
         $data['materials'] = Material::all();
@@ -464,7 +477,7 @@ class HomeController extends Controller
         $data['user'] = Auth::user();
         $data['activeGroup'] = $this->ActiveGroup();
         $data['defaultGroup'] = $this->DefaultGroup();
-        
+
         $data['selected_materials'] = Location::find($id)->metarials()->pluck('material_id')->toArray();
         $data['selected_functions'] = Location::find($id)->functions()->pluck('function_id')->toArray();
         $data['materials'] = Material::all();
@@ -512,11 +525,11 @@ class HomeController extends Controller
         $set_data['manager'] = $request->manager;
         $set_data['edit_by'] = Auth::user()->id;
         $set_data['date'] = date('Y-m-d H:i:s');
-        
+
         if (!empty($id)) {
             $set_data['updated_at'] = date('Y-m-d H:i:s');
             if (DB::table('space_location')->where(['id' => $id])->update($set_data)) {
-                
+
                 session()->flash('type', 'success');
                 if (session('locale') == 'pt') {
                     session()->flash('message', 'Localização atualizada com sucesso');
@@ -591,7 +604,7 @@ class HomeController extends Controller
     {
         $group = Group::where('id',session('group-id'))->first();
         $managers = $group->managers()->pluck('user_id');
-        //dd(array_combine($request->materials,$request->quantity));        
+        //dd(array_combine($request->materials,$request->quantity));
         $set_data['name'] = $request->name;
         $set_data['address'] = $request->address;
         $set_data['location_type'] = $request->location_type;
@@ -692,7 +705,7 @@ class HomeController extends Controller
             }
         } else {
             $set_data['created_at'] = date('Y-m-d H:i:s');
-            $insert_id = DB::table('space_location')->insertGetId($set_data); 
+            $insert_id = DB::table('space_location')->insertGetId($set_data);
                 if($insert_id){
                     if($request->functions && $request->f_quantity){
                         $functions = array_combine($request->functions, $request->f_quantity);
@@ -710,7 +723,7 @@ class HomeController extends Controller
                         }
                     }
                // dd($mearials);
-                
+
                 $number = count($request->rule_name);
                 // dd($req->file('rules_documents'), $number);
                 if (!empty($request->file('rules_documents'))) {
@@ -747,7 +760,7 @@ class HomeController extends Controller
                     );
                     DB::table('space_alerts')->insert($alert);
                 }
-                
+
 
                 return redirect('admin/location-management');
             } else {

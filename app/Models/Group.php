@@ -46,10 +46,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Group extends Model
 {
-    
+
 
     public $table = 'groups';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -91,7 +91,7 @@ class Group extends Model
         'description_download',
         'label_application',
         'label_comunication',
-        'contact_us'
+        'contact_us',
     ];
 
     /**
@@ -133,7 +133,8 @@ class Group extends Model
         'description_download' => 'string',
         'label_application' => 'string',
         'label_comunication' => 'string',
-        'contact_us' => 'string'
+        'contact_us' => 'string',
+
     ];
 
     /**
@@ -163,7 +164,10 @@ class Group extends Model
         'label_application' => 'required|string|max:40',
         'label_comunication' => 'required|string|max:40',
         'contact_us' => 'required|string|max:40',
+        'group_logo' => 'required|mimes:png',
+        'group_banner' => 'required|mimes:jpg,jpeg',
+
     ];
 
-    
+
 }

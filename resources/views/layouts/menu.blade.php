@@ -20,7 +20,7 @@
 
 @endcan
 
-<li class="nav-item {{ Request::is('group-requests*') ? 'active' : '' }}"> 
+<li class="nav-item {{ Request::is('group-requests*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('groups.requests') }}"><i class="fa fa-thumbs-up"></i><span> {{__('msg.Group Requests')}}</span></a>
 </li><li class="{{ Request::is('alerts*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('alerts.index') }}"><i class="fa fa-bell"></i><span> {{__('msg.Alerts')}} </span></a>

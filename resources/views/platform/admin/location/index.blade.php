@@ -51,7 +51,7 @@
 							<div class="carousel-inner">
 								@if($location->photos != "")
 									@foreach(explode(',', $location->photos) as $info)
-										@if(preg_match('/(\.jpg|\.png|\.bmp|\.jpeg|\.JPG)$/i',$info))  
+										@if(preg_match('/(\.jpg|\.png|\.bmp|\.jpeg|\.JPG)$/i',$info))
 											<div class="carousel-item {{ $loop->first ?  'active' : '' }}">
 												<img class="d-block w-100" height="250" src="{{asset('_dados/plataforma/location/images/'.$info)}}">
 											</div>
@@ -67,7 +67,18 @@
 									<span class="sr-only">Next</span>
 								</a>
 							</div>
+
 						</div>
+                        <div class="mt-10" style="margin-top: 10px; pad">
+                            <a class="carousel-control-prev" style="color: red; font-weight; font-weight:bold" href="#carouselExampleControls{{$location->id}}" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                                <i class="fa fa-chevron-left"></i>Previous</a>
+                            <a class="carousel-control-next" style="color: red; font-weight; font-weight:bold" href="#carouselExampleControls{{$location->id}}" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next </span>
+                                Next <i class="fa fa-chevron-right"></i></a>
+                        </div>
+
 						<div class="card-body">
 							<h5 class="card-title"><b>{{$location->name}}</b>
 								@if($location->is_flag==0)
@@ -76,10 +87,10 @@
 									<span style="float: right; font-size:12px" style="background-color: red" class="label label-danger ">{{__('msg.Not Available')}} </span>
 								@endif
 							</h5>
-							
+
 							<p class="card-text">{{__('msg.Address')}}  : <span class="text-muted">{{$location->address}}</span></p>
 							<p class="card-text">{{__('msg.Contact Name')}}  : <span class="text-muted">{{$location->contact}} | <span class="card-text text-black" style="color: black">{{__('msg.Contact No')}}  : <span class="text-muted">{{$location->telephone}}</span></span></span></p>
-							 
+
 							<p class="card-text">{{__('msg.No of People')}}  : <span class="text-muted">{{$location->total_people}} | <span class="card-text text-black" style="color: black">{{__('msg.Size')}}  : <span class="text-muted">{{$location->size}}</span></span></span></p>
 							<p class="card-text">{{__('msg.Price')}}  : <span class="text-muted">{{$location->price}}</span></p>
 							<p class="card-text">{{__('msg.Area Type')}} : <span class="text-muted">{{$location->area_type}} | <span class="card-text text-black" style="color: black">{{__('msg.Air Conditioned')}}  : <span class="text-muted">{{$location->air_conditioner}}</span></span>
@@ -100,11 +111,11 @@
 					</div>
 				</div>
 			@endforeach
-			
+
 		</div>
-			
-		
-		
+
+
+
 	@endif
 	<!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -112,5 +123,5 @@
 <!-- Popper JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	
+
 @endsection

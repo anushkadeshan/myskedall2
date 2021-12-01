@@ -2,7 +2,7 @@
     <table class="table" id="approvals-table">
         <thead>
             <tr>
-                
+
                 <th></th>
                 <th>Initial Date</th>
                 <th>Initial Time</th>
@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-      
+
         </tbody>
     </table>
 </div>
@@ -48,7 +48,7 @@
                     <div style="font-size:20px;">{{ __('msg.To Share Space Request') }}</div>
                     <div class="form-group" style="margin-top:15px; width:100%;">
                         <font style="color:#999999">{{ __('msg.Enter Your Email') }}</font>
-                        
+
                         <input type="text" id="share-request-email" value="" maxlength="255" class="form-control">
                         <input type="hidden" id="share-request-id" value="">
                     </div>
@@ -84,7 +84,7 @@
                         <font style="color:#999999">{{ __('msg.Share With') }}</font>
                         <br>
                         <br>
-                        
+
                         <a id="whatsappm" data-action="share/whatsapp/share"
                             class="pr-5"><img src={{asset('/social/whatsapp.svg')}} height="40" alt=""></a>&nbsp&nbsp
                         <a target="_blank" id="telegramm" ><img
@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-@push('scripts')
+@push('js')
     <script>
         $(document).ready(function(){
             var table = $('#approvals-table').DataTable({
@@ -199,13 +199,13 @@
                                 "<button type='submit' class='btn btn-danger btn-xs' onclick='delete_row("+data.sp_id+")'><i class='fa fa-trash'></i></button>"+
                                 "<a onclick='ShareSpaceRequest("+data.sp_id+")' class='btn btn-primary btn-xs'><i class='fa fa-share'></i></a>"+
                                 "</div>";
-                                
-                                
+
+
                     }}
                 ],
             });
 
-            
+
         });
 
         function ShareSpaceRequest(id){
@@ -215,7 +215,7 @@
             if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
                 $("#telegramm").attr("href", link);
                 $("#whatsappm").attr("href", "whatsapp://send?text=Your Space Request ID is "+id+" . You can See your Space request details via this link. {{ URL::to('/space/edit-request/"+id+"') }}");
-                
+
                 $('#ShareSpaceRequest_mobile').modal('show');
             }
             else{
@@ -249,10 +249,10 @@
 					}else{
 						Alert(response['message'], 'danger');
                         console.log("ShareSpaceRequestEmail -> response", response);
-						
+
 					}
 				}
-			}); 
+			});
         }
 
         function isApproveRequest(id,status){
@@ -283,7 +283,7 @@
 				}
 			});
             }
-			
+
 		}
         function Alert(message, type="") {
 			if (type == 'success') {
@@ -325,7 +325,7 @@
                         location.reload();
                     }
                 })
-            } 
+            }
 
         }
     </script>

@@ -36,7 +36,7 @@
                             <option value="{{$requester->id}}">{{$requester->name}}</option>
                         @endforeach
                     </select>
-                    
+
                 </th>
                 <th>
                     <select data-column="3" name="date" id="date" class="form-control filter-select">
@@ -45,7 +45,7 @@
                             <option value="{{$event}}">{{$event}}</option>
                         @endforeach
                     </select>
-                    
+
                 </th>
                 <th></th>
                 <th>
@@ -57,8 +57,8 @@
                     </select>
                 </th>
                 <th>
-                    
-                    
+
+
                 </th>
                 <th>
                     <select data-column="7" name="routine" id="routine" class="form-control filter-select">
@@ -88,7 +88,7 @@
 			</div>
 		</div>
     </div>
-@push('scripts')
+@push('js')
 <script>
     function requestorModel(id){
         var url = '{{url("/")}}';
@@ -124,7 +124,7 @@ $(document).ready(function(){
             {data: 'event_name', name: 'event_name'},
             {data: 'group_name', name: 'group_name'},
             {data: 'routine', name: 'routine'},
-            
+
             {data: function(data) {
                 var newurl = BaseUrl+'/'+data.url;
                 return '<a target="_blank" href="'+newurl+'">'+newurl+'</a>';
@@ -158,12 +158,12 @@ $(document).ready(function(){
                 edit_url = edit_url.replace(':id', data.sp_id);
 
                 return "<div class='btn-group'>"+
-                        "<a href='"+show_url+"' class='btn btn-warning btn-xs'><i class='fa fa-eye'></i></a>"+
-                        "<a href='"+edit_url+"' class='btn btn-success btn-xs'><i class='fa fa-edit'></i></a>"+
-                        "<button type='submit' class='btn btn-danger btn-xs' onclick='delete_row("+data.sp_id+")'><i class='fa fa-trash'></i></button>"+
+                        "<a href='"+show_url+"'><button type='button' class='btn btn-warning btn-sm'><i class='fa fa-eye'></i></button</a>"+
+                        "<a href='"+edit_url+"'><button type='button' class='btn btn-success btn-sm'><i class='fa fa-edit'></i></button></a>"+
+                        "<button type='submit' class='btn btn-danger btn-sm' onclick='delete_row("+data.sp_id+")'><i class='fa fa-trash'></i></button>"+
                         "</div>";
-                        
-                        
+
+
             }}
         ],
     });
@@ -174,9 +174,9 @@ $(document).ready(function(){
         .draw();
     });
 
-    
+
 });
-    
+
 function delete_row(id) {
     var r = confirm("Are you Sure ?");
     if (r == true) {
@@ -202,7 +202,7 @@ function delete_row(id) {
                 location.reload();
             }
         })
-    } 
+    }
 
 }
 </script>

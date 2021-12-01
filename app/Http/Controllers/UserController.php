@@ -52,7 +52,7 @@ class UserController extends AppBaseController
             })->paginate(10);
         }
         if(Auth::user()->hasRole(['Local Admin'])){
-            
+
             $users = User::with('groups','apps')->whereHas('groups', function ($query) {
                // $groups = auth()->user()->groups()->withPivot('group_id')->pluck('group_id')->toArray();
                 $admins = User::whereHas('roles', function ($query) {
@@ -68,10 +68,10 @@ class UserController extends AppBaseController
 
         }
         if(Auth::user()->hasRole(['Module Admin'])) {
-            
+
             $users = User::with('groups','apps')->whereHas('groups', function ($query) {
                 //$groups = auth()->user()->groups()->withPivot('group_id')->pluck('group_id')->toArray();
-                
+
                 $admins = User::whereHas('roles', function ($query) {
                     return $query->whereIn('roles.name', ['Super Admin', 'Local Admin']);
                 })->get()->pluck('id')->toArray();
@@ -85,11 +85,11 @@ class UserController extends AppBaseController
         }
 
         $roles = $this->roleRepository->all();
-        return view('users.index')
+        return view('users.index2')
             ->with(['users'=> $users,
-                    'roles'=>$roles, 
-                    'userGroup' => $userGroup, 
-                    'activeGroup'=> $activeGroup, 
+                    'roles'=>$roles,
+                    'userGroup' => $userGroup,
+                    'activeGroup'=> $activeGroup,
                     'defaultGroup'=>$defaultGroup,
                     'groupData' => $groupData,
                 ]);
@@ -108,7 +108,7 @@ class UserController extends AppBaseController
         $defaultGroup = $HomeControllrt->DefaultGroup();
         $groupData = $HomeControllrt->GetGroupList();
 
-        return view('users.create')->with([
+        return view('users.create2')->with([
             'userGroup' => $userGroup,
             'activeGroup' => $activeGroup,
             'defaultGroup' => $defaultGroup,
@@ -134,7 +134,7 @@ class UserController extends AppBaseController
 
         $user->groups()->attach(1, ['approved' => 1]);
         $user->assignRole('User');
-            
+
        // $user->apps()->attach(12);
         Flash::success('User saved successfully.');
 
@@ -162,7 +162,7 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
 
-        return view('users.show')->with([
+        return view('users.show2')->with([
             'user' => $user,
             'userGroup' => $userGroup,
             'activeGroup' => $activeGroup,

@@ -15,9 +15,8 @@
                 <td>
                     {!! Form::open(['route' => ['roles.destroy', $role->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a type="button" class="btn btn-warning" href="{{ route('roles.show', [$role->id]) }}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>
-                        <a type="button" class="btn btn-success" href="{{ route('roles.edit', [$role->id]) }}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>
-                        {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+
+
                     </div>
                     {!! Form::close() !!}
                 </td>

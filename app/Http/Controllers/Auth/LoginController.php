@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -28,8 +30,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    
-    protected $redirectTo = '/home';
+
+    protected $redirectTo = '';
 
     /**
      * Create a new controller instance.
@@ -38,13 +40,13 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->redirectTo = route('authGroup');
     }
 
     protected function authenticated(Request $request, User $user)
     {
-        $request->session()->put('group-id', $user->primary_group_id);
+        //dd($this->redirectPath());
         $request->session()->put('user_id', $user->id);
-        return redirect()->intended($this->redirectPath());
+        return redirect()->route('authGroup');
     }
 }

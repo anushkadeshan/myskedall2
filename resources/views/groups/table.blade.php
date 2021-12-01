@@ -4,7 +4,6 @@
             <tr>
                 <th>#</th>
                 <th>{{__('msg.name')}} </th>
-                <th>{{__('msg.Address')}} </th>
                 <th>{{__('msg.Phone')}} </th>
                 <th>{{__('msg.Apps')}} </th>
                 <th>{{__('msg.Managers')}} </th>
@@ -19,7 +18,6 @@
                 <tr>
                     <td>{{$no++}}</td>
                     <td>{{ $group->name }}</td>
-                    <td>{{ $group->address }}</td>
                     <td>{{ $group->phone }}</td>
                     <td style="min-width:200px">
                         <form action="{{url('assign-apps-to-group')}}" method="POST">
@@ -32,16 +30,16 @@
                                 @foreach($apps as $app)
                                     @php
                                         $app_groups = \DB::table('group_apps')->where('group_id',$group->id)->get();
-                                    @endphp                               
+                                    @endphp
                                     <option @foreach($app_groups as $app_group)
                                             @if($app_group->app_id==$app->id) selected @endif
                                             @endforeach value="{{$app->id}}">{{$app->title_en}}</option>
                                 @endforeach
                                 </select>
-                                
-                            </div>  
+
+                            </div>
                             <div style="float:left; margin-left:5px">
-                            <button type="submit" class="btn btn-success">{{__('msg.update')}}</button>
+                            <button type="submit" class="btn btn-success btn-sm">{{__('msg.update')}}</button>
                             </div>
                         </div>
                     </form>
@@ -57,14 +55,14 @@
                                         @foreach($managers as $manager)
                                             @php
                                                 $group_managers = \DB::table('groups_managers')->where('group_id',$group->id)->pluck('user_id')->toArray();
-                                            @endphp                               
+                                            @endphp
                                             <option @if(!is_null($group_managers)) @if(in_array($manager->id,$group_managers)) selected @endif @endif value="{{$manager->id}}">{{$manager->name}}</option>
                                         @endforeach
                                     </select>
-                                    
-                                </div>  
+
+                                </div>
                                 <div style="float:left; margin-left:5px">
-                                <button type="submit" class="btn btn-success">{{__('msg.update')}}</button>
+                                <button type="submit" class="btn btn-success btn-sm">{{__('msg.update')}}</button>
                                 </div>
                             </div>
                         </form>
@@ -83,10 +81,10 @@
         </tbody>
     </table>
 </div>
-@push('scripts')
+@push('js')
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.js"></script>
     <script>
-        
+
     $('.label.ui.dropdown')
         .dropdown();
     $('.no.label.ui.dropdown')
@@ -98,6 +96,6 @@
     $('.ui.dropdown')
         .dropdown('restore defaults')
     })
-    
+
     </script>
 @endpush

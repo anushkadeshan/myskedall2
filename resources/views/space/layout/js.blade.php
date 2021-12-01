@@ -8,7 +8,7 @@
 	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-pageLoadMore/1.0.0/js/dataTables.pageLoadMore.min.js"></script>
 	<link rel="stylesheet" href="{{asset('css/clockpicker.min.css')}}">
-	
+
 	<script>
 		$.ajaxSetup({
 			headers: {
@@ -119,7 +119,7 @@
 							window.location = url;
 						},2500);
 						//window.reload();
-					}else{ 
+					}else{
 						Alert(response['message'], 'danger');
 					}
 				}
@@ -130,7 +130,7 @@
 			if(check==""){
 				$('#UserAgreement').modal('show');
 			}
-			
+
 			//$('#fill-click-value').val('checked');
 			//$('#rules-of-use').attr('class','btn btn-success form-control');
 		}
@@ -182,17 +182,17 @@
 					$('#location_area_type').html(response.location['area_type']);
 					$('#location_air').html(response.location['air_conditioner']);
 					$('#location_parking').html(response.location['parking']);
-					$('#location_card').modal('show');
+                    $("#location_card").css("display", "");
 					$("#seemore").attr('href',"{{url('/admin/view-location/')}}/"+response.location['id']);
 					if(response['status']=='success'){
 						//Alert('Exact Price of selected location is '+response['price'], 'warning');
 						var array={'id':locationid,'text':$('#space-location :selected').text()}
                         $('#locationjson').val(JSON.stringify(array));
                         $('#space_manager').val(response['manager']);
-					
-						
+
+
                         //console.log("CheckPriceByLocation -> response['manager']", response['manager']);
-							
+
 						//$('#exact-price').val(response['price']);
 					}else{
                         //Alert(response['message'], 'danger');
@@ -344,7 +344,7 @@
 				"paginate": {
 					"previous": "{{__('msg.previous')}}",
 					"next": "{{__('msg.next')}}",
-					
+
 				},
 				"info": "{{__('msg.Showing _START_ to _END_ of _TOTAL_ entries')}}",
 			},
@@ -409,7 +409,7 @@
 					"paginate": {
 						"previous": "{{__('msg.previous')}}",
 						"next": "{{__('msg.next')}}",
-						
+
 					},
 					"info": "{{__('msg.Showing _START_ to _END_ of _TOTAL_ entries')}}",
 				},
@@ -473,10 +473,10 @@
 					}else{
 						Alert(response['message'], 'danger');
                         console.log("ShareSpaceRequestEmail -> response", response);
-						
+
 					}
 				}
-			}); 
+			});
         }
 
         function ShareSpaceRequest(id){
@@ -525,7 +525,7 @@
 				"paginate": {
 					"previous": "{{__('msg.previous')}}",
 					"next": "{{__('msg.next')}}",
-					
+
 				},
 				"info": "{{__('msg.Showing _START_ to _END_ of _TOTAL_ entries')}}",
 			},
@@ -584,7 +584,7 @@
 								return	'<img id="status-icon-'+data.id+'" src="{{asset("img/smiling-green.png")}}" style="width:20px;">';
 							}
 						}
-						
+
 					}, "orderable": false
 				},{
 					"data":function(data){

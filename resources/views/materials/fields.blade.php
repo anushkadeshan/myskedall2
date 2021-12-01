@@ -1,16 +1,16 @@
 <!-- Material Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-6 mb-4">
     {!! Form::label('material', 'Material:') !!}
     {!! Form::text('material', null, ['class' => 'form-control','maxlength' => 200,'maxlength' => 200]) !!}
 </div>
 
 <!-- Quantity Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-6 mb-4">
     {!! Form::label('quantity', 'Quantity:') !!}
     {!! Form::number('quantity', null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-6 mb-4">
     {!! Form::label('group_id', 'Group:') !!}
     @php
         $groups = DB::table('groups')->select('name','id')->get();

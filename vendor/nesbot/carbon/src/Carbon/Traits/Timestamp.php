@@ -45,6 +45,7 @@ trait Timestamp
         $delta = floor($decimal / static::MICROSECONDS_PER_SECOND);
         $integer += $delta;
         $decimal -= $delta * static::MICROSECONDS_PER_SECOND;
+        $decimal = str_pad((string) $decimal, 6, '0', STR_PAD_LEFT);
 
         return static::rawCreateFromFormat('U u', "$integer $decimal");
     }
@@ -162,7 +163,7 @@ trait Timestamp
      */
     private static function getIntegerAndDecimalParts($numbers, $decimals = 6)
     {
-        if (is_int($numbers) || is_float($numbers)) {
+        if (\is_int($numbers) || \is_float($numbers)) {
             $numbers = number_format($numbers, $decimals, '.', '');
         }
 
@@ -173,8 +174,8 @@ trait Timestamp
         foreach (preg_split('`[^0-9.]+`', $numbers) as $chunk) {
             [$integerPart, $decimalPart] = explode('.', "$chunk.");
 
-            $integer += intval($integerPart);
-            $decimal += floatval("0.$decimalPart");
+            $integer += (int) $integerPart;
+            $decimal += (float) ("0.$decimalPart");
         }
 
         $overflow = floor($decimal);

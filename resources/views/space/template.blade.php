@@ -10,6 +10,8 @@
     <link href="{{asset('platform/style.css')}}" rel="stylesheet">
     <link href="{{asset('css/datetime-picker.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="{{asset('node_modules/owl.carousel/dist/assets/owl.carousel.min.css')}}" />
+
         <script>
         var BaseUrl = '{{url("/api/")}}';
         var HomeUrl='{{url("/")}}';
@@ -280,6 +282,7 @@
 			Alert('{{session('message')}}','{{session('type')}}');
 		</script>
 	@endif
+  
 </body>
 
 </html>

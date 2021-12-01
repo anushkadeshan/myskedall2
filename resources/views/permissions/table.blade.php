@@ -30,8 +30,8 @@
                                 <option @if($role->hasPermissionTo($permission->id)) selected @endif value="{{$role->id}}">{{$role->name}}</option>
                             @endforeach
                             </select>
-                            
-                        </div>  
+
+                        </div>
                         <div style="float:left; margin-left:5px">
                         <button type="submit" class="btn btn-success">{{__('msg.update')}} </button>
                         </div>
@@ -39,13 +39,7 @@
                 </form>
                 </td>
                 <td>
-                    {!! Form::open(['route' => ['permissions.destroy', $permission->id], 'method' => 'delete']) !!}
-                    <div class='btn-group'>
-                        <a type="button" class="btn btn-warning" href="{{ route('permissions.show', [$permission->id]) }}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>
-                        <a type="button" class="btn btn-success" href="{{ route('permissions.edit', [$permission->id]) }}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>
-                        {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                    </div>
-                    {!! Form::close() !!}
+
                 </td>
             </tr>
         @endforeach
@@ -53,10 +47,10 @@
     </table>
     {{ $permissions->withQueryString()->links() }}
 </div>
-@push('scripts')
+@push('js')
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.js"></script>
     <script>
-        
+
     $('.label.ui.dropdown')
         .dropdown();
     $('.no.label.ui.dropdown')
@@ -68,6 +62,6 @@
     $('.ui.dropdown')
         .dropdown('restore defaults')
     })
-    
+
     </script>
 @endpush

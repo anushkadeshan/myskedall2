@@ -19,12 +19,15 @@
      <!-- PRO version -->
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <link href="{{asset('css/datetime-picker.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{asset('css/clockpicker.min.css')}}">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
     <style>
         .bootstrap-select .bs-ok-default::after {
             width: 0.3em;
@@ -36,9 +39,86 @@
         .btn.dropdown-toggle:focus {
             outline: none !important;
         }
-        
+
+    </style>
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+
+        [type="checkbox"] {
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .form-checkbox,
+        .form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            flex-shrink: 0;
+            color: currentColor;
+            background-color: #fff;
+            border-color: #e2e8f0;
+            border-width: 1px;
+            height: 1.4em;
+            width: 1.4em;
+        }
+
+        .form-checkbox {
+            border-radius: 0.25rem;
+        }
+
+        .form-radio {
+            border-radius: 50%;
+        }
+
+        .form-checkbox:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .form-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .line {
+            background: repeating-linear-gradient(to bottom,
+                    #eee,
+                    #eee 1px,
+                    #fff 1px,
+                    #fff 8%);
+        }
+
+        .tick {
+            background: repeating-linear-gradient(to right,
+                    #eee,
+                    #eee 1px,
+                    #fff 1px,
+                    #fff 5%);
+        }
     </style>
 @stack('styles')
+<livewire:styles>
+
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 <header class="app-header navbar">
@@ -141,7 +221,7 @@
     </main>
 </div>
 <footer class="app-footer">
-    
+
 </footer>
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -166,6 +246,14 @@
 <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
 <script src="{{asset('js/datetime-picker.js')}}" type="text/javascript"></script>
 <script src="{{asset('js/clockpicker.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+<script>
+    function app() {
+        return {
+            step: 1,
+        }
+    }
+</script>
 <script>
     var BaseUrl = '{{url("/")}}';
     var ApiUrl = '{{url('/api')}}';
@@ -186,5 +274,5 @@
 	</script>
 @endif
 @stack('scripts')
-
+<livewire:scripts>
 </html>

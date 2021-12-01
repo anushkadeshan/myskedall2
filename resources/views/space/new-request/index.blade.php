@@ -1,4 +1,5 @@
 @extends('space/template')
+
 @section('content')
 <div class="row">
 	<form action="" method="post" id="request_form">
@@ -119,6 +120,8 @@
 			</div>
 		</div>
 		<input type="hidden" value="1" name="tactic">
+
+
 		<div class="col-md-12">
 			<div class="col-md-12">
                 <input type="button" style="color:green;font-weight: bold;" onclick="RequestSpace()" value="{{ __('msg.Request SPACE') }}">
@@ -129,9 +132,47 @@
 
             </div>
 		</div>
-		
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 40px; margin-left: 40px; margin-right:40px; max-width:870px">
+                <div id="location_card" class="card card-primary" style="border:gray solid 1px;padding-bottom:10px; border-radius:10px; display:none">
+                    <div class="card-header">
+                        <h5 class="card-title" ><b id="location_title2"></b></h5>
+                    </div>
+                    <div class="card-body text-center">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="carousel-inner">
+									<div class="carousel-item">
+										<img class="d-block w-100" id="location_img" height="250" src="">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<p class="card-text">{{__('msg.Address')}}  : <span class="text-muted" id="location_address"></span></p>
+								<p class="card-text">{{__('msg.Contact Name')}}  : <span class="text-muted" id="location_contact"> | <span class="card-text text-black" style="color: black">{{__('msg.Contact No')}}  : <span class="text-muted" id="location_telephone"></span></span></span></p>
+								<p class="card-text">{{__('msg.Contact No')}}  : <span class="text-muted" id="location_telephone"></span></span></span></p>
 
-		
+								<p class="card-text">{{__('msg.No of People')}}  : <span class="text-muted" id="location_people"> | <span class="card-text text-black" style="color: black">{{__('msg.Size')}}  : <span class="text-muted" id="location_size"></span></span></span></p>
+								<p class="card-text">{{__('msg.Price')}}  : <span class="text-muted" id="location_price"></span></p>
+								<p class="card-text">{{__('msg.Area Type')}} : <span class="text-muted" id="location_area_type"> | <span class="card-text text-black" style="color: black">{{__('msg.Air Conditioned')}}  : <span class="text-muted" id="location_air"></span></span>
+									| <span class="card-text text-black" style="color: black">{{__('msg.Parking')}}  : <span class="text-muted" id="location_parking"></span></span>
+								</span></p>
+
+								<a href="" id="seemore" target="_blank">
+									<button type="button" class="btn btn-success margin-bottom:20px" >{{ __('msg.View More Information') }}</button>
+								</a>
+							</div>
+
+						</div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
 		<div class="modal fade" id="UserAgreement" role="dialog">
 			<div class="modal-dialog modal-lg" style="top:30%" role="document">
 			<div class="modal-content">
@@ -168,7 +209,7 @@
 							<p class="card-text">{{__('msg.Address')}}  : <span class="text-muted" id="location_address"></span></p>
 							<p class="card-text">{{__('msg.Contact Name')}}  : <span class="text-muted" id="location_contact"> | <span class="card-text text-black" style="color: black">{{__('msg.Contact No')}}  : <span class="text-muted" id="location_telephone"></span></span></span></p>
 							<p class="card-text">{{__('msg.Contact No')}}  : <span class="text-muted" id="location_telephone"></span></span></span></p>
-							 
+
 							<p class="card-text">{{__('msg.No of People')}}  : <span class="text-muted" id="location_people"> | <span class="card-text text-black" style="color: black">{{__('msg.Size')}}  : <span class="text-muted" id="location_size"></span></span></span></p>
 							<p class="card-text">{{__('msg.Price')}}  : <span class="text-muted" id="location_price"></span></p>
 							<p class="card-text">{{__('msg.Area Type')}} : <span class="text-muted" id="location_area_type"> | <span class="card-text text-black" style="color: black">{{__('msg.Air Conditioned')}}  : <span class="text-muted" id="location_air"></span></span>
@@ -179,7 +220,7 @@
 								<button type="button" class="btn btn-success" >{{ __('msg.View More') }}</button>
 							</a>
 
-					
+
 				</div>
 				<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">{{ __('msg.close') }}</button>
@@ -323,4 +364,10 @@
         </div>
 	</form>
 </div>
+	<!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 @endsection

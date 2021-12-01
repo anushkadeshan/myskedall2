@@ -88,6 +88,16 @@ class GroupController extends AppBaseController
         $input = $request->all();
 
         $group = $this->groupRepository->create($input);
+
+        $group_logo =$request->file('group_logo');
+        $group_banner =$request->file('group_banner');
+
+		$group_logo_name = 'logo.png';
+		$group_banner_name = 'banner.jpg';
+
+        $group_logo->move(public_path().'/_dados/plataforma/grupos/'.$group->id, $group_logo_name);
+        $group_banner->move(public_path().'/_dados/plataforma/grupos/'.$group->id, $group_banner_name);
+
         $superAdmin = User::role('Super Admin')->first();
 
         $row =  DB::table('user_groups')->insert(['approved' => 1, 'approved_at' => now(), 'user_id'=> $superAdmin->id,'group_id'=> $group->id]);
@@ -139,13 +149,13 @@ class GroupController extends AppBaseController
     public function edit($id)
     {
         $group = $this->groupRepository->find($id);
-        
+
         $HomeControllrt = new HomeController;
         $userGroup = $HomeControllrt->UserGroup();
         $activeGroup = $HomeControllrt->ActiveGroup();
         $defaultGroup = $HomeControllrt->DefaultGroup();
         $groupData = $HomeControllrt->GetGroupList();
-        
+
         if (empty($group)) {
             Flash::error('Group not found');
 
@@ -218,7 +228,7 @@ class GroupController extends AppBaseController
         $activeGroup = $HomeControllrt->ActiveGroup();
         $defaultGroup = $HomeControllrt->DefaultGroup();
         $groupData = $HomeControllrt->GetGroupList();
-        
+
         return view('groups.requests')->with([
             'userGroup' => $userGroup,
             'activeGroup' => $activeGroup,
@@ -246,7 +256,7 @@ class GroupController extends AppBaseController
             }
         }
         // dd($apps);
-        
-		
+
+
 	}
 }

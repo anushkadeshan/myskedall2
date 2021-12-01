@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 //dd(Auth::routes());
 // Authentication Routes...
 Route::get('login', 'LoginController@Index')->name('login')->middleware('guest');
+Route::get('auth-group', 'LoginController@authGroup')->name('authGroup');
+Route::post('auth-group', 'LoginController@authGroupLogin')->name('authGroupLogin');
+Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');
+Route::get('auth/google/callback', 'Auth\GoogleController@handleGoogleCallback');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/', 'HomeController@Index');
@@ -39,9 +44,13 @@ Route::get('registraion', function ($name = 'This Page should be design in next 
 Route::post('alert/delete/{id}', 'AlertController@destroy');
 Route::post('approvals/delete/{id}', 'ApprovalController@destroy');
 Route::group(['middleware'=>'auth'],function(){
-	
+
+    Route::get('/clear-cache', function() {
+		$exitCode = Artisan::call('cache:clear');
+		// return what you want
+	});
 	Route::get('/home','HomeController@Home')->name('home');
-	
+
 	Route::get('/delete-profile-photo', 'ApiController@DeleteProfilePhoto');
 	Route::get('/change-active-group/{group_id}','HomeController@ChangeActiveGroup');
 	Route::get('/app-permission/{key}/{value}','HomeController@AppPermission');
@@ -57,7 +66,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::get('/edit-reason/{id?}','HomeController@AdminEditReason');
 		Route::post('/edit-reason/{id?}','HomeController@AdminPostEditReason');
 		Route::get('/delete-reason/{id}','HomeController@AdminDeleteReason');
-		Route::get('/location-management','HomeController@AdminLocationManagement');
+		Route::get('/location-management','HomeController@AdminLocationManagement')->name('location-managament');
 		Route::get('/new-location','HomeController@AdminNewLocation');
 		Route::get('/edit-location/{id?}', 'HomeController@AdminEditLocation');
 		Route::get('/view-location/{id?}', 'HomeController@AdminViewLocation');
@@ -71,8 +80,8 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::post('/edit-external-location/{id?}','HomeController@AdminPostEditExternalLocation');
 		Route::get('/delete-external-location/{id}','HomeController@AdminDeleteExternalLocation');
 		Route::get('/alerts','HomeController@AdminAlerts');
-        
-        Route::get('/supports', 'HomeController@AdminSupports');
+
+        Route::get('/supports', 'HomeController@AdminSupports')->name('supports.index');
 		Route::get('/edit-support/{id?}', 'HomeController@AdminEditSupport');
         Route::post('/edit-support/{id?}', 'HomeController@AdminPostEditSupport');
         Route::get('/delete-support/{id}', 'HomeController@AdminDeleteSupport');
@@ -102,7 +111,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::get('/approvalData', 'ApprovalController@approvals');
 		Route::post('/change/action/', 'AlertController@changeAction');
 		Route::post('/update-request-reject-reason/', 'ApprovalController@rejectReason');
-		Route::get('reports', 'ReportController@index');
+		Route::get('reports', 'ReportController@index')->name('reports.index');
 		Route::get('reports/locations', 'ReportController@locations');
 		Route::post('reports/locations', 'ReportController@postLocations');
 		Route::get('reports/items', 'ReportController@items');
@@ -120,7 +129,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::post('reports/update-reason', 'ReportController@updateLocationchecklistReason');
 		Route::post('get/update-material-checklist', 'ReportController@updateMaterialChecklistData');
 		Route::post('reports/update-reason-material', 'ReportController@updateMaterialchecklistReason');
-		
+
 		Route::get('reports/audit', 'ReportController@audit');
 		Route::get('get/audit-data', 'ReportController@auditData');
 		Route::post('get/audit-data', 'ReportController@auditData');
@@ -157,7 +166,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::post('get-price-by-location','ApiController@GetPriceByLocation');
         Route::post('SaveRequestPriority','ApiController@SaveRequestPriority');
         Route::post('SaveRequestAsDraft', 'ApiController@SaveRequestAsDraft');
- 
+
 		Route::group(['prefix'=>'admin'],function(){
 			Route::post('space-requests','ApiController@AdminSpaceRequest');
 			Route::post('organization-list','ApiController@AdminOrganizationList');
@@ -181,12 +190,12 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::post('change-user-admin', 'ApiController@ChangeUserAdmin');
 			Route::post('change-location-status', 'ApiController@ChangeLocationStatus');
 			Route::post('change-user-group', 'ApiController@ChangeUserGroup');
-			
+
 		});
 	});
 	Route::get('app/space/{id}','SpaceController@Home')->middleware(['Space','CheckAppPermission']);
 	Route::group(['prefix'=>'space','middleware'=>'Space'],function(){
-		
+
 		Route::get('/search-space-requests', 'SpaceController@searchSpaceRequests');
 		Route::get('/new-request','SpaceController@NewRequest');
 		Route::post('/new-request','SpaceController@NewRequestMethod');
@@ -230,6 +239,20 @@ Route::group(['middleware'=>'auth'],function(){
 	Route::resource('functions', 'FunctionController');
 
 	Route::resource('approvals', 'ApprovalController');
+    Route::get('app/approvals/{id}','AppApprovalsController@index')->middleware(['CheckAppPermission']);
+    Route::group(['prefix'=>'apps/approvals'],function(){
+        Route::get('home', 'AppApprovalsController@index')->name('approvals.home');
+        Route::get('requests/{status}', 'AppApprovalsController@requests')->name('approvals.requests');
+        Route::get('create-request', 'AppApprovalsController@create')->name('approvals.create');
+        Route::get('edit-request/{id}', 'AppApprovalsController@edit')->name('approvals.edit');
+        Route::get('create-types', 'AppApprovalsController@types')->name('approvals.types');
+        Route::get('create-levels', 'LevelController@create')->name('create.levels');
+        Route::get('levels', 'LevelController@index')->name('approvals.levels');
+        Route::get('supports', 'AppApprovalsController@support')->name('create.support');
+        Route::get('calendar','FullCalenderController@index')->name('approvals.calender');
+    });
+
+    Route::post('fullcalendar/delete','FullCalenderController@destroy');
 });
 
 

@@ -6,8 +6,10 @@
                 <th>{{__('msg.name')}}</th>
                 <th class="d-none d-lg-table-cell">{{__('msg.Level')}} </th>
                 <th class="d-none d-lg-table-cell">{{__('msg.Status')}} </th>
+                {{--
                 <th class="d-none d-lg-table-cell">{{__('msg.Have Warning')}} </th>
                 <th class="d-none d-lg-table-cell">{{__('msg.Have Group Warning')}} </th>
+                --}}
                 @role('Super Admin')
                 <th>{{__('msg.Role')}}</th>
                 @endrole
@@ -38,6 +40,7 @@
                     <span class="badge badge-danger">Rejected</span>
                 @endif
             </td>
+            {{--
             <td class="d-none d-lg-table-cell">
                 @if($user->have_warning)
                     <span class="badge badge-danger">Yes</span>
@@ -52,6 +55,7 @@
                     <span class="badge badge-success">No</span>
                 @endif
             </td>
+            --}}
             @role('Super Admin')
                 <td>
                 <div class="form-group">
@@ -64,23 +68,23 @@
                 </div>
             </td>
             @endrole
-                
+
                 <td>
                     @foreach($user->groups as $group)
                     @if($group->pivot->approved==true)
-                    <span class="badge badge-success">{{$group->name}}</span>  
+                    <span class="badge badge-success">{{$group->name}}</span>
                     @else
-                    <span class="badge badge-danger">{{$group->name}}</span> 
+                    <span class="badge badge-danger">{{$group->name}}</span>
                     @endif
-                      
+
                     @endforeach
                 </td>
                 <td>
                     {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
-                    <div class='btn-group'>
-                        <a type="button" class="btn btn-primary" onclick="openModalApps({{$user->id}})" ><i class="fa fa-list"></i></a>
-                        <a type="button" class="btn btn-warning" href="{{ route('users.show', [$user->id]) }}" class='btn btn-default btn-xs'><i class="fa fa-eye"></i></a>
-                        <a type="button" class="btn btn-success" href="{{ route('users.edit', [$user->id]) }}" class='btn btn-default btn-xs'><i class="fa fa-edit"></i></a>
+                    <div class='btn-group' role="group">
+                        <a type="button" class="btn btn-primary btn-xs" onclick="openModalApps({{$user->id}})" ><i class="fa fa-list"></i></a>
+                        <a type="button" class="btn btn-warning btn-xs" href="{{ route('users.show', [$user->id]) }}"><i class="fa fa-eye"></i></a>
+                        <a type="button" class="btn btn-success btn-xs" href="{{ route('users.edit', [$user->id]) }}"><i class="fa fa-edit"></i></a>
                         {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}
@@ -92,7 +96,7 @@
                         <form action="{{url('assign-apps-to-user')}}" method="POST">
                             <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Assign Apps to {{$user->name}}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -119,14 +123,14 @@
                                     No Apps Found for User's Groups
                                 @endif
                                 @foreach ($apps as $app)
-                                <div class="icheck-primary icheck-inline">                         
+                                <div class="icheck-primary icheck-inline">
                                     <input @foreach($user->apps as $user_app) @if($user_app->pivot->app_id==$app->id)checked @endif @endforeach type="checkbox" id="chb{{$app->id}}{{$user->id}}" name="apps[]" value="{{$app->id}}" />
                                     <label for="chb{{$app->id}}{{$user->id}}">{{$app->title_en}}</label>
                                 </div>
                                 @endforeach
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 @csrf
                                 @if($apps->count() > 0)
                                 <button type="submit" class="btn btn-primary">Save changes</button>
@@ -141,7 +145,7 @@
     </table>
     {{ $users->withQueryString()->links() }}
 </div>
-@push('scripts')
+@push('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.css" integrity="sha512-J5tsMaZISEmI+Ly68nBDiQyNW6vzBoUlNHGsH8T3DzHTn2h9swZqiMeGm/4WMDxAphi5LMZMNA30LvxaEPiPkg==" crossorigin="anonymous" />
 <script>
     function role(a,id) {
@@ -162,7 +166,7 @@
             }
         });
     }
-    
+
     function openModalApps(user_id) {
         $('#ModalApps'+user_id).modal('show');
     }

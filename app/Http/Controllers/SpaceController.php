@@ -89,7 +89,13 @@ class SpaceController extends Controller
             $rejectedTotal = SpaceRequests::where(['group_id' => session('group-id'), 'user_id' => session('user_id')])->where('status', '<=', 1)->count();
             $repproveTotal = SpaceRequests::where(['group_id' => session('group-id'), 'user_id' => session('user_id'), 'status' => 2, 'is_repproved' => 1])->count();
         }
-		
+
+        if (auth()->user()->hasRole('Module Admin')||auth()->user()->hasRole('Secretary')) {
+            $approveTotal = SpaceRequests::where(['group_id' => session('group-id'), 'status' => 2, 'is_repproved' => 0])->count();
+            $rejectedTotal = SpaceRequests::where(['group_id' => session('group-id')])->where('status', '<=', 1)->count();
+            $repproveTotal = SpaceRequests::where(['group_id' => session('group-id'), 'status' => 2, 'is_repproved' => 1])->count();
+        }
+
 		return (object)['approveTotal'=>$approveTotal,'rejectedTotal'=>$rejectedTotal,'repproveTotal'=>$repproveTotal];
 	}
 	public function ApprovedRequest(){
@@ -150,7 +156,7 @@ class SpaceController extends Controller
         $userGroup = $this->UserGroup();
         $defaultGroup = $this->DefaultGroup();
 
-        
+
 		$requestTotal = $this->CountRequestTotal();
 		return view('space/home/index',compact('requestTotal'))->withRoutename('search-request')->withData($data)
             ->withUser($user)->withGroupData($groupData)
@@ -174,16 +180,16 @@ class SpaceController extends Controller
 		if(!empty($reuse_id)){
 			$data['data']=SpaceRequests::find($reuse_id);
 			$location=DB::table('space_location')->where(['address'=>$data['data']->location])->first();
-			
+
 		}
-        
+
 		$data['eventsList']=DB::table('space_events')->select('id','title')->where(['status'=>1,'group_id'=>session('group-id')])->get();
 		$data['reasonList']=DB::table('space_reason')->select('id','reason')->where(['status'=>1, 'group_id' => session('group-id')])->get();
         $data['locationList']=DB::table('space_location')
                             ->where('group_id',session('group-id'))
-                            ->select('space_location.id as id', 'space_location.address','manager', 'space_location.name as location_name')->get();
+                            ->select('space_location.*','space_location.id as id', 'space_location.address','manager', 'space_location.name as location_name')->get();
         $data['page']="EditRequest";
-        
+
         $data['managers'] = User::role(['Local Admin','Module Admin'])->select('name')->get();
         //dd($data);
 		return view('space/new-request/index',$data)
@@ -286,7 +292,7 @@ class SpaceController extends Controller
             //dd($set_data);
             $draft = SpaceRequests::create($set_data);
 
-        
+
             if($draft){
                 $req_id = $draft->id;
                 session(['new_sp_req_id' => $req_id]);
@@ -350,7 +356,7 @@ class SpaceController extends Controller
                         ->where(DB::raw('CONCAT(initial_date, " ", initial_time)'), '<=', $from)
                         ->where(DB::raw('CONCAT(final_date, " ", final_time)'), '>=', $till)
                         ->first();
-                        dd($query, '1');
+                        //dd($query, '1');
                     switch ($query) {
                         case null:
                             $request->request->add(['group_id' => session('group-id')]);
@@ -443,8 +449,8 @@ class SpaceController extends Controller
                                 } else {
                                     return back()->withInput();
                                 }
-                            
-                            
+
+
                             break;
 
                         default:
@@ -501,7 +507,7 @@ class SpaceController extends Controller
                         switch ($query) {
                             case null:
                                 $request->request->add(['group_id' => session('group-id')]);
-                                
+
                                 $insert = SpaceRequests::InsertRequest($request, $group->name);
                                 if ($insert) {
                                     $data = [
@@ -537,7 +543,7 @@ class SpaceController extends Controller
                                             DB::table('space_alerts')->insert($alert);
                                         }
                                     }
-                                                                       
+
                                     //mail to requester
                                     $email = Auth::user()->email;
 
@@ -670,7 +676,7 @@ class SpaceController extends Controller
         $data['locationList'] = DB::table('space_location')
         ->where('group_id', session('group-id'))
         ->select('space_location.id as id', 'space_location.address', 'manager', 'space_location.address as location_name')->get();
-        
+
         return view('space/reuse-request/index',$data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
@@ -804,7 +810,7 @@ class SpaceController extends Controller
         $location = DB::table('space_location')->where(['address' => $request->location])->first();
        //dd($location, $request->location);
         if (!empty($location->total_people) && !empty($request->total_people) && $location->total_people >= $request->total_people) {
-            
+
             if ($request->price == 0) {
                 $request->location = $location->id;
                 $fromtime = $request->initial_date . ' ' . $request->initial_time . ':00';
@@ -812,14 +818,14 @@ class SpaceController extends Controller
 
                 $from = min($fromtime, $totime);
                 $till = max($fromtime, $totime);
-                
+
                 $query = DB::table('space_requests')->select(DB::raw('CONCAT(initial_date, " ", initial_time) AS initial'), DB::raw('CONCAT(final_date, " ", final_time) AS final'), 'status')
                     ->where('location', $request->location)
                     ->where(DB::raw('CONCAT(initial_date, " ", initial_time)'), '<=', $from)
                     ->where(DB::raw('CONCAT(final_date, " ", final_time)'), '>=', $till)
                     ->first();
 
-                
+
                 switch ($query) {
                     case null:
                         $set_data['events'] = $request->events;
@@ -979,11 +985,11 @@ class SpaceController extends Controller
                             return redirect()->action([SpaceController::class, 'Home'], ['id' => 12]);
                         }
                         /////////////
-                        
+
                         break;
 
                     default:
-                    
+
                         if ($query->status == 2) {
                             if (session('locale') == 'pt') {
                                 $message = 'Desculpe, a localização não está disponível. Por favor, entre em contato com o gerente.';
@@ -1014,9 +1020,9 @@ class SpaceController extends Controller
                         break;
                 }
             } else {
-                
+
                 if ($location->price <= $request->price) {
-                    
+
                     $request->location = $location->id;
                     $fromtime = $request->initial_date . ' ' . $request->initial_time . ':00';
                     $totime =  $request->final_date . ' ' . $request->final_time . ':00';
@@ -1024,7 +1030,7 @@ class SpaceController extends Controller
                     $from = min($fromtime, $totime);
                     $till = max($fromtime, $totime);
                     // dd();
-            
+
                     $query = DB::table('space_requests')->select(DB::raw('CONCAT(initial_date, " ", initial_time) AS initial'), DB::raw('CONCAT(final_date, " ", final_time) AS final'),'status')
                         ->where('location', $request->location)
                         ->where(DB::raw('CONCAT(initial_date, " ", initial_time)'), '<=', $from)
@@ -1245,7 +1251,7 @@ class SpaceController extends Controller
             }
             return back()->withInput();
         }
-        
+
     }
 
     public function searchSpaceRequests(){
@@ -1259,7 +1265,7 @@ class SpaceController extends Controller
         $defaultGroup = $this->DefaultGroup();
 
         $requestTotal = $this->CountRequestTotal();
-        
+
         return view('space/search-requests/search', compact('requestTotal'))->withRoutename('')
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
@@ -1269,7 +1275,7 @@ class SpaceController extends Controller
     public function ViewRequest($request_id){
         $groupData = $this->GetGroupList();
         $user = User::where('id', session('user_id'))->first();
-        
+
         $apps = $this->ActiveGroup();
         //dd($apps->app_tasks, $user->app_tasks);
         //  dd($user->app_tasks);

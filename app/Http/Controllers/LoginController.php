@@ -1,15 +1,45 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\LoginUser;
-use Illuminate\Http\Request;
 use DB;
+use App\Group;
+use Illuminate\Http\Request;
+use App\Http\Requests\LoginUser;
+use Illuminate\Support\Facades\Auth;
+
 class LoginController extends Controller
 {
 
 	public function Index(){
-	   return view('login/index');
+        $groups = Group::select('name','id')->get();
+	   return view('login/new')->with('groups',$groups);
 	}
+
+    public function authGroup(){
+        $groups = Group::whereHas('users', function ($query) {
+            return $query->where(['user_id'=> Auth::id(), 'approved'=> 1]);
+        })->select('name','id')->get('id');
+	    return view('login/auth-group')->with('groups',$groups);
+	}
+
+
+    public function authGroupLogin(Request $request){
+        $approved_groups = Group::whereHas('users', function ($query) {
+            return $query->where(['user_id'=> Auth::id(), 'approved'=> 1]);
+        })->pluck('id')->toArray();
+
+        $ok = in_array($request->group_id,$approved_groups);
+        if($ok){
+            session(['group-id'=> $request->group_id]);
+        }
+        else{
+            session(['group-id'=> 1]);
+        }
+        return redirect('/home');
+
+
+    }
+
 	public function Login(LoginUser $request){
 		$verifyBy= "pRak_pL@noz";
 		$record =DB::table('users')->select('*')->where('email',$request->email)->get()->first();
@@ -30,6 +60,7 @@ class LoginController extends Controller
 				$session['login_key']="base64:T15DXJOyUzHOrHdINSy/ehd4UZmEebMs9YQgr4kzIrk=";
 				$session['login_ip_address'] ="27.5.4.83";
 				session()->put($session);
+
 				return redirect('/home');
 			}else{
 				session()->flash('password_error', 'Invalid Password');

@@ -34,3 +34,4 @@ class ToShareEmail extends Mailable
 		->withPlayStoreLink($playStoreLink)->withWebsiteLink($websiteLink);
     }
 }
+

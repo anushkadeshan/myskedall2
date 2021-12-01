@@ -8,7 +8,7 @@
                         <input type="text" name="search-group-requests" id="search-group-requests" value=""
                             maxlength="100" class="form-control"  placeholder="{{ __('msg.search a User') }}">
                         <button type="button" name="btBuscar" id="btBuscar" onClick='fetch_group_data()'
-                            class="btn btn-default"
+                            class="btn btn-primary"
                             style="height:35px; "><i class="fa fas-search"></i><span class="hidden-xs">
                                 {{ __('msg.search') }}</span></button>
                     </div>
@@ -17,8 +17,8 @@
         </td>
     </tr>
 </table>
-<table class="table" style="width:96%" id="groupRequests">
-    <div class="alert alert-danger" id="alert" role="alert" style="display: none">
+<table class="table mt-10" style="width:96%" id="groupRequests">
+    <div class="alert alert-danger mt-10" id="alert" role="alert" style="display: none">
         {{ __('msg.No records Found !') }}
     </div>
     <div class="alert alert-success" id="success-alert" role="alert" style="display: none">
@@ -33,7 +33,7 @@
 
 </table>
 </div>
-@push('scripts')
+@push('js')
 <script>
     $(document).ready(function(){
         fetch_group_data();
@@ -58,7 +58,7 @@
             fetch_group_data(query);
         });
 
-        
+
     });
 
     function fetch_group_data(query = ''){
@@ -114,6 +114,6 @@
             });
         }
 
-    
-</script>    
+
+</script>
 @endpush

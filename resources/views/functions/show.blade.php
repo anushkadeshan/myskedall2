@@ -1,15 +1,30 @@
-@extends('layouts.app')
+@extends('layouts.admin.master')
+@section('title', 'PlanOz-Functions')
 
+@section('css')
+@endsection
+
+@section('style')
+@endsection
+
+@section('breadcrumb-title')
+@endsection
+
+@section('breadcrumb-items')
+<li class="breadcrumb-item">{{__('msg.Functions')}}</li>
+<li class="breadcrumb-item active"> {{$function->professional}}</li>
+@endsection
 @section('content')
 <div class="container-fluid mt-3">
-    <section class="content-header">
-        <h1>
-            Function
-        </h1>
-    </section>
+
     <div class="content">
-        <div class="box box-primary">
-            <div class="box-body">
+        <div class="card">
+            <section class="card-header">
+                <h1>
+                    {{$function->professional}}
+                </h1>
+            </section>
+            <div class="card-body">
                 <div class="row" style="padding-left: 20px">
                     <div class="col-md-12">
                         @include('functions.show_fields')
@@ -21,3 +36,7 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+@endsection
+

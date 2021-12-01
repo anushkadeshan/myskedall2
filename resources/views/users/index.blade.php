@@ -23,11 +23,11 @@
                         @include('users.table')
                     </div>
                 </div>
-                    
+
             </div>
         </div>
         <div class="text-center">
-        
+
         </div>
     </div>
 </div>

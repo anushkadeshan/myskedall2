@@ -19,7 +19,7 @@ class ApiController extends Controller
 {
     public function SendGroupRequest(Request $request,$groupId){
         $user_id = session('user_id');
-        
+
         $record = auth()->user()->groups()->where('group_id',$groupId)->exists();
 		if($record){
             if(session('locale')=='pt'){
@@ -47,7 +47,7 @@ class ApiController extends Controller
 			$set_data['group_id']=$groupId;
 			$set_data['is_approve']=0;
             $set_data['created_at']=date('Y-m-d H:i:s');
-            
+
 
 			auth()->user()->groups()->attach($groupId);
             if (session('locale') == 'pt') {
@@ -58,7 +58,7 @@ class ApiController extends Controller
                 Flash::success('Request Send Successfully.');
                 return response()->json(['status' => 'success', 'message' => 'Request Send Successfully']);
             }
-			
+
 		}
 	}
 	public function ShowSpaceRequest(Request $request,$requestType=""){
@@ -127,7 +127,7 @@ class ApiController extends Controller
                 }
 			}
 			$keyword = $request->get('search')['value'];
-            
+
 			if(!empty($keyword)  && strlen($keyword)>=3){
 				$data->where(function ($data) use ($keyword){
 					$data->Where('events','LIKE',"%".$keyword."%")
@@ -136,7 +136,7 @@ class ApiController extends Controller
 					->orWhere('space','LIKE',"%".$keyword."%");
 				});
             }
-            
+
 			//$data=$data->offset(7*$offset)->take(7)->get();
 		}else{
 			$keyword = $request->get('search')['value'];
@@ -167,7 +167,7 @@ class ApiController extends Controller
 			$count =0;
 		}else{
             $count = $data->count();
-            
+
             $data = $data->orderBy($orderkey,$ordervalue)->offset($request->get('start'))->take(7)->get();
            // dd($data);
         }
@@ -177,7 +177,7 @@ class ApiController extends Controller
         //dd($request->all());
 		if(!empty($request->file('files'))){
             $image =$request->file('files');
-            
+
 			$image_name = session('user_id').'.jpg';
 			if($image->move(public_path().'/_dados/plataforma/usuarios', $image_name)){
                 if (session('locale') == 'pt') {
@@ -329,7 +329,7 @@ class ApiController extends Controller
 	public function AdminSpaceRequest(Request $request){
         if($request->address){
             if (auth()->user()->hasRole('Super Admin')) {
-                $data = DB::table('space_requests')->select('id', 'initial_date', 'initial_time', 'events', 'space', 'status', 'is_repproved')                
+                $data = DB::table('space_requests')->select('id', 'initial_date', 'initial_time', 'events', 'space', 'status', 'is_repproved')
                     ->where('location', $request->address)
                     ->where('space_requests.group_id', session('group-id'));
             } else {
@@ -348,7 +348,7 @@ class ApiController extends Controller
                 ->where('space_requests.group_id',session('group-id'));
             }
         }
-        
+
 
 		if(!empty($request->get('search')['value'])){
             $search = $request->get('search')['value'];
@@ -359,9 +359,9 @@ class ApiController extends Controller
 		}
         $count = $data->count();
         $data = $data->offset($request->get('start'))->take(7)->get();
-        
+
         return response()->json(['draw'=>$request->draw,'aaData'=>$data,'recordsTotal'=>$count,'recordsFiltered'=>$count], 200);
-        
+
 	}
 	public function IsApproveAdminRequest(Request $request){
         //dd($request->all());
@@ -400,7 +400,7 @@ class ApiController extends Controller
 				$set_data['location_requester']=$data->location_requester;
 				$set_data['space']=$data->space;
                 $set_data['created_at']=date('Y-m-d H:i:s');
-                
+
                 DB::table('space_reservations')->insert($set_data);
 
                 for ($i=1; $i <= 6 ; $i++) {
@@ -427,7 +427,7 @@ class ApiController extends Controller
                 Flash::success('Status Changed Successfully');
                 return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Status Changed Successfully', 'data' => $data]);
             }
-		
+
 	}
 	public function AdminOrganizationList(Request $request){
 		$data = DB::table('space_events')->select('space_events.*','groups.name','users.name as username')
@@ -460,7 +460,7 @@ class ApiController extends Controller
             ->join('users', 'users.id', '=', 'space_reason.user_id')
             ->where('group_id', session('group-id'));
         }
-        
+
 		if(!empty($request->get('search')['value'])){
 			$search = $request->get('search')['value'];
 			$data=$data->where('space_reason.reason','LIKE','%'.$search.'%');
@@ -481,7 +481,7 @@ class ApiController extends Controller
         }
 	}
 	public function LocationManagement(Request $request){
-        
+
         if (auth()->user()->hasAnyRole('Super Admin', 'Local Admin')) {
             $data = DB::table('space_location')
             ->join('groups', 'groups.id', '=', 'space_location.group_id')
@@ -505,8 +505,8 @@ class ApiController extends Controller
             ->select('space_location.*', 'groups.name as group_name')
             ->latest();
         }
-        
-        
+
+
 		if(!empty($request->get('search')['value'])){
 			$search = $request->get('search')['value'];
 			$data=$data->where('address','LIKE','%'.$search.'%')
@@ -518,7 +518,7 @@ class ApiController extends Controller
 		}
 		$count = $data->count();
 		$data = $data->offset($request->get('start'))->take(7)->get();
-		
+
 		return response()->json(['draw'=>$request->draw,'aaData'=>$data,'recordsTotal'=>$count,'recordsFiltered'=>$count], 200);
 	}
 	public function ExternalLocation(Request $request){
@@ -563,14 +563,14 @@ class ApiController extends Controller
 	}
 	public function GetPriceByLocation(Request $request){
         $price =$request->price;
-        
-        $data = DB::table('space_location')->where(['space_location.id'=>$request->locationid])
+
+        $data = DB::table('space_location')->where('space_location.id',$request->locationid)
                 ->join('users','users.id','=','space_location.manager')
                 ->select('space_location.*','users.name as manager_name','users.id as user_id')
                 ->first();
         //dd($data);
         $rules = DB::table('space_location_rules')->where('location_id', $request->locationid)->get();
-        //dd($data, $rules);
+        dd($data, $rules);
 		if($data->price<=$price){
 			return response()->json(['code'=>200,'status'=>'success','price'=>$data->price, 'manager'=>$data->manager_name,'rules' => $rules]);
 		}else{
@@ -594,10 +594,10 @@ class ApiController extends Controller
 			$data=DB::table('space_requests')->select('users.name as username','users.email as useremail','space_requests.*')
 			->join('users','users.id','=','space_requests.user_id')
             ->where(['space_requests.id'=>$request->id])->first();
-            
+
             try {
                 $mail = Mail::to($request->email)->send(new ShareSpaceRequest($data));
-                
+
                 if (session('locale') == 'pt') {
                     return response()->json(['code' => 200, 'status' => 'success', 'message' => 'E-mail enviado com sucesso']);
                 } else {
@@ -606,13 +606,13 @@ class ApiController extends Controller
             } catch (\Exception $e) {
                 return response()->json(['code' => 200, 'status' => 'fail', 'message' => 'Something error in mail server']);
             }
-         
+
 		}
 	}
 	public function SaveRequestPriority(Request $request){
         //send alerts
         $group = Group::select('name')->where(['id' => session('group-id')])->first();
-        
+
         $data = json_decode($request->request_data);
       //dd($data);
         $location = DB::table('space_location')->where(['id' => $data->location])->first();
@@ -661,7 +661,7 @@ class ApiController extends Controller
         if($manager) {
             try {
                 Mail::to($manager->email)->send(new AlertToSpaceManager($data));
-        
+
                 if (session('locale') == 'pt') {
                     return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Vamos tentar fornecer localização neste slot de tempo']);
                 }
@@ -711,7 +711,7 @@ class ApiController extends Controller
         if(auth()->user()->hasRole('Super Admin')){
             $data = DB::table('space_sup_questions')
                 ->join('users', 'users.id', '=', 'space_sup_questions.user_id');
-                
+
         }
         else if(auth()->user()->hasRole('Local Admin|Module Admin')){
             $data = DB::table('space_sup_questions')
@@ -723,14 +723,14 @@ class ApiController extends Controller
             ->join('users', 'users.id', '=', 'space_sup_questions.user_id')
             ->where('space_sup_questions.user_id',session('user_id'));
         }
-        
+
         if (!empty($request->get('search')['value'])) {
             $search = $request->get('search')['value'];
             $data = $data->where('message', 'LIKE', '%' . $search . '%');
         }
         $count = $data->count();
         $data = $data->offset($request->get('start'))->take(7)->get();
-        
+
         return response()->json(['draw' => $request->draw, 'aaData' => $data, 'recordsTotal' => $count, 'recordsFiltered' => $count], 200);
     }
 
@@ -766,7 +766,7 @@ class ApiController extends Controller
                         ->where('approved', 0)
                         ->where('user_groups.group_id', session('group-id'))
                         ->get();
- 
+
                 }
                 if(auth()->user()->hasAnyRole(['Local Admin', 'Module Admin'])) {
                     $group_requests = DB::table('user_groups')
@@ -782,7 +782,7 @@ class ApiController extends Controller
             if($group_requests) {
                 foreach ($group_requests as $key => $request) {
                     $timestamp = strtotime($request->created_at);
-                    
+
                     if(session('locale')=='pt'){
                         $output .= '<tr>' .
                         '<td> <img class="img img-rounded" width="40"
@@ -909,7 +909,7 @@ class ApiController extends Controller
 		$data = $data->offset($request->get('start'))->take(7)->get();
 		return response()->json(['draw'=>$request->draw,'aaData'=>$data,'recordsTotal'=>$count,'recordsFiltered'=>$count], 200);
     }
-    
+
     public function DeleteLocationSketchFile(Request $req){
         $location = DB::table('space_location')->where('id',$req->id)->first();
         $sketchArray = explode(",", $location->sketch);
@@ -927,7 +927,7 @@ class ApiController extends Controller
             DB::table('space_location')->where('id',$req->id)->update(['sketch'=> $sketchs]);
             if (session('locale') == 'pt') {
                 return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Documento deletado com sucesso']);
-            } 
+            }
             else{
                 return response()->json(['code' => 200, 'status' => 'success', 'message' => 'File Deleted Successfully']);
             }
@@ -935,13 +935,13 @@ class ApiController extends Controller
         else{
             if(session('locale') == 'pt') {
                 return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'Documento não deletado, algum coisa errada']);
-            } 
+            }
             else{
                 return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'File Not Deleted, Something Error']);
             }
         }
-        
-        
+
+
     }
 
     public function DeleteLocationPhoto(Request $req)
@@ -976,7 +976,7 @@ class ApiController extends Controller
 
     public function NewLocationSketchs(Request $req)
     {
-        
+
         $location = DB::table('space_location')->where('id', $req->id)->first();
         $sketchArray = explode(",", $location->sketch);
         $photoArray = explode(",", $location->photos);
@@ -1021,7 +1021,7 @@ class ApiController extends Controller
                         DB::table('space_alerts')->insert($alert);
                     }
                 }
-                
+
             }
         }
 
@@ -1044,7 +1044,7 @@ class ApiController extends Controller
 
             //dd($both_arrays,$sketch);
             $insert = DB::table('space_location')->where('id', $req->id)->update(['photos' => $photo]);
-            
+
         }
 
         if ($insert) {
@@ -1065,7 +1065,7 @@ class ApiController extends Controller
             return back()->withInput();
         }
 
-        
+
     }
 
     public function DeleteLocationBluePrintFile(Request $req)
@@ -1099,7 +1099,7 @@ class ApiController extends Controller
 
     public function NewLocationBluePrints(Request $req)
     {
-        
+
         $location = DB::table('space_location')->where('id', $req->id)->first();
         $blue_printArray = explode(",", $location->blue_print);
         //dd($sketchArray);
@@ -1142,7 +1142,7 @@ class ApiController extends Controller
                         DB::table('space_alerts')->insert($alert);
                     }
                 }
-                
+
                 return back()->withInput();
             } else {
                 session()->flash('type', 'danger');
@@ -1172,7 +1172,7 @@ class ApiController extends Controller
         } else {
             return response()->json(['error' => 'Submit youths Details.']);
         }
-        
+
 
         if ($row) {
             session()->flash('type', 'success');
@@ -1201,7 +1201,7 @@ class ApiController extends Controller
                     DB::table('space_alerts')->insert($alert);
                 }
             }
-            
+
             return back()->withInput();
         } else {
             session()->flash('type', 'danger');
@@ -1217,7 +1217,7 @@ class ApiController extends Controller
     public function DeleteLocationRule(Request $req)
     {
         $old_file = $req->file;
-        
+
         $file_to_delete = public_path('_dados/plataforma/location/rules/') . $old_file;
         if (file_exists($file_to_delete)) {
             @unlink($file_to_delete);
@@ -1273,7 +1273,7 @@ class ApiController extends Controller
                         return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'Level Not Updated. Something Error']);
                     }
                 }
-            
+
                 break;
             case 'manager_level':
                 $query  = DB::table('users')->where('user_id', $req->id)->update(['distributor_level' => 0, 'secretary_level' => 0, 'manager_level' => 1]);
@@ -1290,9 +1290,9 @@ class ApiController extends Controller
                         return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'Level Not Updated. Something Error']);
                     }
                 }
-                
+
                 break;
-            
+
             default:
                 $query  = DB::table('users')->where('user_id', $req->id)->update(['distributor_level' => 0, 'secretary_level' => 1, 'manager_level' => 0]);
                 if ($query) {
@@ -1310,7 +1310,7 @@ class ApiController extends Controller
                 }
                 break;
         }
-     
+
     }
 
     public function ChangeLocationStatus(Request $req)
@@ -1325,7 +1325,7 @@ class ApiController extends Controller
         }
         //dd($req->all());
         $query = DB::table('space_location')->where('id', $req->id)->update(['status' => $value, 'status_update_by' => Auth::user()->id]);
-        
+
         if ($query) {
             if ($req->value == "false") {
                 $alert = array(

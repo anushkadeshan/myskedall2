@@ -53,5 +53,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\App', 'user_apps', 'user_id', 'app_id');
     }
-    
+
+    public function approver()
+    {
+        return $this->belongsToMany('App\Models\Approvals\Level', 'level_approvers', 'aprrover_id', 'level_id');
+    }
+
 }
