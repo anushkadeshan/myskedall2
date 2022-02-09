@@ -36,9 +36,14 @@
     <link id="color" rel="stylesheet" href="{{asset('assets/admin/css/color-1.css')}}" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/css/responsive.css')}}">
+    <style>
+        #grad {
+  background-image: linear-gradient(red, yellow);
+}
+    </style>
 </head>
 
-<body>
+<body id="grad">
 <livewire:login.index/>
         <!-- latest jquery-->
         <script src="{{asset('assets/admin/js/jquery-3.5.1.min.js')}}"></script>

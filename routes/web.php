@@ -164,6 +164,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::post('/help-contact-report','ApiController@HelpContactReport');
 		Route::post('get-request-location','ApiController@GetRequestLocation');
 		Route::post('get-price-by-location','ApiController@GetPriceByLocation');
+		Route::get('get-location','ApiController@GetLocation');
         Route::post('SaveRequestPriority','ApiController@SaveRequestPriority');
         Route::post('SaveRequestAsDraft', 'ApiController@SaveRequestAsDraft');
 
@@ -219,9 +220,11 @@ Route::group(['middleware'=>'auth'],function(){
 	});
 	Route::group(['middleware' => ['permission:Create User|Edit User|View User|Delete User']], function () {
 		Route::resource('users', 'UserController');
+		Route::get('profile', 'UserController@profile')->name('profile');
 	});
 	Route::group(['middleware' => ['permission:Assign Apps to User']], function () {
 		Route::post('assign-apps-to-user', 'AppController@assignAppstoUser');
+		
 	});
 
 	Route::get('/group-requests', 'GroupController@groupRequests')->name('groups.requests')->middleware('permission:Accept Group Requests');
@@ -245,7 +248,9 @@ Route::group(['middleware'=>'auth'],function(){
         Route::get('requests/{status}', 'AppApprovalsController@requests')->name('approvals.requests');
         Route::get('create-request', 'AppApprovalsController@create')->name('approvals.create');
         Route::get('edit-request/{id}', 'AppApprovalsController@edit')->name('approvals.edit');
-        Route::get('create-types', 'AppApprovalsController@types')->name('approvals.types');
+        Route::get('view-request/{id}', 'AppApprovalsController@show')->name('approvals.view');
+        Route::get('types', 'AppApprovalsController@types')->name('approvals.types');
+        Route::get('sub-types', 'AppApprovalsController@subtypes')->name('approvals.subtypes');
         Route::get('create-levels', 'LevelController@create')->name('create.levels');
         Route::get('levels', 'LevelController@index')->name('approvals.levels');
         Route::get('supports', 'AppApprovalsController@support')->name('create.support');

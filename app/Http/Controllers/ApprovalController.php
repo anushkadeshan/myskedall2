@@ -50,13 +50,14 @@ class ApprovalController extends AppBaseController
     }
 
     public function approvals(Request $request){
-        //dd($request->all());
+        
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
         $columnIndex_arr = $request->get('order');
+       // dd($request->get('order'));
         $columnName_arr = $request->get('columns');
-
+       // dd($columnIndex_arr);
         $order_arr = $request->get('order');
         $search_arr = $request->get('search');
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
@@ -312,8 +313,7 @@ class ApprovalController extends AppBaseController
         $approval->status = 1;
         $approval->save();
 
-        Flash::success('Space request status changed successfully.');
-
+        toast(trans('msg.Space request status changed successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('approvals.index'));
 
 	}

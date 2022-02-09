@@ -83,10 +83,26 @@ class HomeController extends Controller
             $alert = DB::table('space_alerts')->where(['is_read' => 0])->where('group_id', session('group-id'))->count();
         }
         //dd($data,session('user_id'));
-        return view('platform/home/index')->withData($data)
-            ->withUser($user)->withGroupData($groupData)
-            ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
-            ->withUserGroup($userGroup)->withSpaceAlert($alert);
+        $HomeControllrt = new HomeController;
+        $userGroup = $HomeControllrt->UserGroup();
+        $activeGroup = $HomeControllrt->ActiveGroup();
+        $defaultGroup = $HomeControllrt->DefaultGroup();
+        $groupData = $HomeControllrt->GetGroupList();
+
+        return view('dashboard.index')->with([
+            'userGroup' => $userGroup,
+            'activeGroup' => $activeGroup,
+            'defaultGroup' => $defaultGroup,
+            'groupData' => $groupData,
+            'data' => $data,
+            'user' => $user,
+            'spaceAlert' => $alert
+
+        ]);
+        //return view('platform/home/index')->withData($data)
+        //    ->withUser($user)->withGroupData($groupData)
+        //    ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
+        //    ->withUserGroup($userGroup)->withSpaceAlert($alert);
     }
     public function Apps()
     {
@@ -419,7 +435,7 @@ class HomeController extends Controller
         $data['locationTypes'] = DB::table('space_location_type')->select('id', 'location_type')->get();
         $data['page'] = 'LocationManagement';
         //dd($data);
-        return view('platform/admin/location/index', $data);
+        return view('platform/admin/location/new-index', $data);
     }
     public function AdminNewLocation()
     {
@@ -529,14 +545,8 @@ class HomeController extends Controller
         if (!empty($id)) {
             $set_data['updated_at'] = date('Y-m-d H:i:s');
             if (DB::table('space_location')->where(['id' => $id])->update($set_data)) {
-
-                session()->flash('type', 'success');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Localização atualizada com sucesso');
-                } else {
-                    session()->flash('message', 'Location Updated Successfully');
-                }
-
+                toast(trans('msg.Location Updated Successfully'),'success','top-right')->showCloseButton();
+        
                 DB::table('location_materials')->where('location_id', $id)->delete();
                 DB::table('location_functions')->where('location_id', $id)->delete();
                 if ($request->functions && $request->f_quantity) {
@@ -570,31 +580,16 @@ class HomeController extends Controller
                 }
                 return redirect('admin/location-management');
             } else {
-                session()->flash('type', 'danger');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Opps! Algo deu errado');
-                } else {
-                    session()->flash('message', 'Opps! Something Went Wrong');
-                }
+                toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
                 return back()->withInput();
             }
         } else {
             $set_data['created_at'] = date('Y-m-d H:i:s');
             if (DB::table('space_location')->insertGetId($set_data)) {
-                session()->flash('type', 'success');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Localização adicionada com sucesso');
-                } else {
-                    session()->flash('message', 'Location Added Successfully');
-                }
+                toast(trans('msg.Location Added Successfully'),'success','top-right')->showCloseButton();
                 return redirect('admin/location-management');
             } else {
-                session()->flash('type', 'danger');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Opps! Algo deu errado');
-                } else {
-                    session()->flash('message', 'Opps! Something Went Wrong');
-                }
+                toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
                 return back()->withInput();
             }
         }
@@ -687,20 +682,10 @@ class HomeController extends Controller
                 }
             }
             if (DB::table('space_location')->where(['id' => $id])->update($set_data)) {
-                session()->flash('type', 'success');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Localização atualizada com sucesso');
-                } else {
-                    session()->flash('message', 'Location Updated Successfully');
-                }
+                toast(trans('msg.Location Updated Successfully'),'success','top-right')->showCloseButton();
                 return redirect('admin/location-management');
             } else {
-                session()->flash('type', 'danger');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Opps! Algo deu errado');
-                } else {
-                    session()->flash('message', 'Opps! Something Went Wrong');
-                }
+                toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
                 return back()->withInput();
             }
         } else {
@@ -738,15 +723,11 @@ class HomeController extends Controller
                             $row = DB::table('space_location_rules')->insert(['rule_name' => $request->rule_name[$i], 'responsible' => $request->responsible[$i], 'rules_documents' => $array[$i], 'location_id' => $insert_id, 'created_at' => date('Y-m-d H:i:s'),]);
                         }
                     } else {
-                        return response()->json(['error' => 'Something Error.']);
+                        toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
                     }
                 }
                 session()->flash('type', 'success');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Localização adicionada com sucesso');
-                } else {
-                    session()->flash('message', 'Location Added and sent for approval to Manager Successfully');
-                }
+                toast(trans('msg.Location Added and sent for approval to Manager Successfully'),'success','top- ')->showCloseButton();
                 foreach($managers as $key => $manager_id){
                     $alert = array(
                         'user_id' => Auth::user()->id,
@@ -764,12 +745,7 @@ class HomeController extends Controller
 
                 return redirect('admin/location-management');
             } else {
-                session()->flash('type', 'danger');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Opps! Algo deu errado');
-                } else {
-                    session()->flash('message', 'Opps! Something Went Wrong');
-                }
+                toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
                 return back()->withInput();
             }
         }
@@ -777,12 +753,7 @@ class HomeController extends Controller
     public function AdminDeleteLocation(Request $request, $id = "")
     {
         DB::table('space_location')->where(['id' => $id])->delete();
-        session()->flash('type', 'success');
-        if (session('locale') == 'pt') {
-            session()->flash('message', 'Localização excluída com sucesso');
-        } else {
-            session()->flash('message', 'Location Deleted Successfully');
-        }
+        toast(trans('msg.Location Deleted Successfully'),'success','top-right')->showCloseButton();
         return redirect('admin/location-management');
     }
     public function AdminExternalLocation()
@@ -1076,20 +1047,10 @@ class HomeController extends Controller
     {
         $location = DB::table('space_location')->where('id', $request->id)->update(['is_flag' => 1, 'flag_reason' => $request->flag_reason]);
         if ($location) {
-            session()->flash('type', 'success');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Marca de localização bloqueada');
-            } else {
-                session()->flash('message', 'Location Mark as Blocked');
-            }
+            toast(trans('msg.Location Mark as Blocked'),'success','top-right')->showCloseButton();
             return redirect('admin/location-management');
         } else {
-            session()->flash('type', 'danger');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Opps! Algo deu errado');
-            } else {
-                session()->flash('message', 'Opps! Something Went Wrong');
-            }
+            toast(trans('msg.Opps! Something Went Wrong'),'error','top-right')->showCloseButton();
             return back()->withInput();
         }
     }
@@ -1098,20 +1059,10 @@ class HomeController extends Controller
     {
         $location = DB::table('space_location')->where('id', $request->id)->update(['is_flag' => 0, 'flag_reason' => $request->flag_reason]);
         if ($location) {
-            session()->flash('type', 'success');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Marca de localização desbloqueada');
-            } else {
-                session()->flash('message', 'Location Mark as Unblocked');
-            }
+            toast(trans('msg.Location Mark as Unblocked'),'success','top-right')->showCloseButton();
             return redirect('admin/location-management');
         } else {
-            session()->flash('type', 'danger');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Opps! Algo deu errado');
-            } else {
-                session()->flash('message', 'Opps! Something Went Wrong');
-            }
+            toast(trans('msg.Opps! Something Went Wrong'),'error','top-right')->showCloseButton();
             return back()->withInput();
         }
     }

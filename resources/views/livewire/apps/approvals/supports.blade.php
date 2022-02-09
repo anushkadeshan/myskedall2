@@ -35,7 +35,7 @@
                 <!-- Step Content -->
                 <div class="pt-4">
                     <div x-show.transition.in="step === 1">
-                        App Tutorial - How to Use
+                        @lang('msg.App Tutorial - How to Use')
                     </div>
                     <div x-show.transition.in="step === 2">
                         <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 m-10 bg-gray-50 p-10">
@@ -74,7 +74,7 @@
                         <div class="w-1/2">
                             <button x-show="step > 1" @click="step--"
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-gray-600"><i
-                                    class="fas fa-step-backward"></i> Previous</button>
+                                    class="fas fa-step-backward"></i> @lang('msg.Previous')</button>
                         </div>
                         <div class="w-1/2 text-right">
                             <button x-show="step < 2" @click="step++"

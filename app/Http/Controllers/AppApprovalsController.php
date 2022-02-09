@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\AppApprovals;
+use App\Models\Approval;
 use App\Models\Approvals\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use App\Models\Approvals\Request as ApprovalsRequest;
 
 class AppApprovalsController extends Controller
@@ -42,6 +44,7 @@ class AppApprovalsController extends Controller
         $activeGroup = $HomeControllrt->ActiveGroup();
         $defaultGroup = $HomeControllrt->DefaultGroup();
         $groupData = $HomeControllrt->GetGroupList();
+        Session::forget('request_id');
 
         return view('app-approvals.create')->with([
             'userGroup' => $userGroup,
@@ -65,6 +68,7 @@ class AppApprovalsController extends Controller
     public function requests($current_status)
     {
         session(['app_current_status' => $current_status]);
+       // dd(session('app_current_status'));
         $HomeControllrt = new HomeController;
         $userGroup = $HomeControllrt->UserGroup();
         $activeGroup = $HomeControllrt->ActiveGroup();
@@ -93,6 +97,20 @@ class AppApprovalsController extends Controller
             'groupData' => $groupData,
         ]);
     }
+    public function subtypes(){
+        $HomeControllrt = new HomeController;
+        $userGroup = $HomeControllrt->UserGroup();
+        $activeGroup = $HomeControllrt->ActiveGroup();
+        $defaultGroup = $HomeControllrt->DefaultGroup();
+        $groupData = $HomeControllrt->GetGroupList();
+
+        return view('app-approvals.sub-types')->with([
+            'userGroup' => $userGroup,
+            'activeGroup' => $activeGroup,
+            'defaultGroup' => $defaultGroup,
+            'groupData' => $groupData,
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -100,9 +118,22 @@ class AppApprovalsController extends Controller
      * @param  \App\AppApprovals  $appApprovals
      * @return \Illuminate\Http\Response
      */
-    public function show(AppApprovals $appApprovals)
+    public function show($id)
     {
-        //
+        $ApprovalsRequest = Request::with('group','requestType','requester','levels','approvars')->find($id);
+        $HomeControllrt = new HomeController;
+        $userGroup = $HomeControllrt->UserGroup();
+        $activeGroup = $HomeControllrt->ActiveGroup();
+        $defaultGroup = $HomeControllrt->DefaultGroup();
+        $groupData = $HomeControllrt->GetGroupList();
+        //dd($ApprovalsRequest);
+        return view('app-approvals.view-request')->with([
+            'userGroup' => $userGroup,
+            'activeGroup' => $activeGroup,
+            'defaultGroup' => $defaultGroup,
+            'groupData' => $groupData,
+            'request' => $ApprovalsRequest
+        ]);
     }
 
     /**

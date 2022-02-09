@@ -2,6 +2,7 @@
 @section('title', 'Approval Requests')
 
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{asset('assets/admin/css/vendors/datatables.css')}}">
 @endsection
 
 @section('style')
@@ -29,7 +30,7 @@
            </div>
         </div>
         <div class="card-body">
-            <livewire:apps.approvals.requests-table  />
+            <livewire:apps.approvals.filters  />
             <livewire:apps.approvals.requests-multiple-actions />
         </div>
     </div>
@@ -38,6 +39,7 @@
 @endsection
 
 @section('script')
-
+<script src="{{asset('assets/admin/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/admin/js/datatable/datatables/datatable.custom.js')}}"></script>
 @endsection
 

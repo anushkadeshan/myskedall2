@@ -83,7 +83,7 @@ class UserController extends AppBaseController
                 return $query;
             })->paginate(10);
         }
-
+        
         $roles = $this->roleRepository->all();
         return view('users.index2')
             ->with(['users'=> $users,
@@ -136,7 +136,8 @@ class UserController extends AppBaseController
         $user->assignRole('User');
 
        // $user->apps()->attach(12);
-        Flash::success('User saved successfully.');
+        Flash::success('');
+        toast(trans('msg.User saved successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('users.index'));
     }
@@ -157,7 +158,7 @@ class UserController extends AppBaseController
         $defaultGroup = $HomeControllrt->DefaultGroup();
         $groupData = $HomeControllrt->GetGroupList();
         if (empty($user)) {
-            Flash::error('User not found');
+            toast(trans('msg.User not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('users.index'));
         }
@@ -187,7 +188,7 @@ class UserController extends AppBaseController
         $defaultGroup = $HomeControllrt->DefaultGroup();
         $groupData = $HomeControllrt->GetGroupList();
         if (empty($user)) {
-            Flash::error('User not found');
+            toast(trans('msg.User not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('users.index'));
         }
@@ -214,14 +215,14 @@ class UserController extends AppBaseController
         $user = $this->userRepository->find($id);
 
         if (empty($user)) {
-            Flash::error('User not found');
+            toast(trans('msg.User not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('users.index'));
         }
 
         $user = $this->userRepository->update($request->all(), $id);
 
-        Flash::success('User updated successfully.');
+        toast(trans('msg.User updated successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('users.index'));
     }
@@ -240,15 +241,37 @@ class UserController extends AppBaseController
         $user = $this->userRepository->find($id);
 
         if (empty($user)) {
-            Flash::error('User not found');
+            toast(trans('msg.User not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('users.index'));
         }
 
         $this->userRepository->delete($id);
 
-        Flash::success('User deleted successfully.');
-
+        toast(trans('msg.User deleted successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('users.index'));
+    }
+
+    public function profile()
+    {
+        $user = $this->userRepository->find(session('user_id'));
+        $HomeControllrt = new HomeController;
+        $userGroup = $HomeControllrt->UserGroup();
+        $activeGroup = $HomeControllrt->ActiveGroup();
+        $defaultGroup = $HomeControllrt->DefaultGroup();
+        $groupData = $HomeControllrt->GetGroupList();
+        if (empty($user)) {
+            toast(trans('msg.User not found.'),'error','top-right')->showCloseButton();
+
+            return redirect(route('users.index'));
+        }
+
+        return view('users.profile')->with([
+            'user' => $user,
+            'userGroup' => $userGroup,
+            'activeGroup' => $activeGroup,
+            'defaultGroup' => $defaultGroup,
+            'groupData' => $groupData,
+        ]);
     }
 }

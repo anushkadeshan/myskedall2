@@ -1,90 +1,90 @@
-@extends('platform/template')
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+@extends('layouts.admin.master')
+@section('title', 'PlanOz-Type of Location')
+
+@section('css')
+@endsection
+
+@section('style')
 <style>
-    .modal-backdrop {
-  z-index: -1;
-}
-/* Style the form */
-#view {
-background-color: #ffffff;
-margin: 10px auto;
-width: 70%;
-min-width: 300px;
-}
+  /* Style the form */
+  #regForm {
+  background-color: #ffffff;
+  margin: 10px auto;
+  padding: 40px;
+  width: 80%;
+  min-width: 300px;
+  }
+  
+  #progress {
+  background-color: #ffffff;
+  margin: 10px auto;
+  padding: 40px;
+  min-width: 300px;
+  }
+  
+  /* Style the input fields */
+  input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  }
+  
+  select {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  }
+  
+  textarea{
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  }
+  
+  
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid {
+  background-color: #ffdddd;
+  }
+  
+  /* Hide all steps by default: */
+  .tab {
+  display: none;
+  }
+  
+  
+  
+  /* Make circles that indicate the steps of the form: */
+  .step {
+  }
+  
+  /* Mark the active step: */
+  .step.active {
+  opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+  background-color: #4CAF50;
+  }
+  
+  
+  </style>
+@endsection
 
+@section('breadcrumb-title')
+@endsection
 
-#progress {
-background-color: #ffffff;
-margin: 10px auto;
-margin-top: 30px;
-padding: 40px;
-min-width: 300px;
-}
-/* Style the input fields */
-input {
-padding: 10px;
-width: 100%;
-font-size: 17px;
-font-family: Raleway;
-border: 1px solid #aaaaaa;
-}
-
-select {
-padding: 10px;
-width: 100%;
-font-size: 17px;
-font-family: Raleway;
-border: 1px solid #aaaaaa;
-}
-
-textarea{
-padding: 10px;
-width: 100%;
-font-size: 17px;
-font-family: Raleway;
-border: 1px solid #aaaaaa;
-}
-
-
-/* Mark input boxes that gets an error on validation: */
-input.invalid {
-background-color: #ffdddd;
-}
-
-/* Hide all steps by default: */
-.tab {
-display: none;
-}
-
-
-
-/* Make circles that indicate the steps of the form: */
-.step {
-}
-
-/* Mark the active step: */
-.step.active {
-opacity: 1;
-}
-
-/* Mark the steps that are finished and valid: */
-.step.finish {
-background-color: #4CAF50;
-}
-
-.img-wrap {
-    position: relative;
-    ...
-}
-.img-wrap .close {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    z-index: 100;
-    ...
-}
-
-</style>
+@section('breadcrumb-items')
+<li class="breadcrumb-item">{{__('msg.location')}}</li>
+<li class="breadcrumb-item active"> {{__('msg.Location Management')}}</li>
+@endsection
 @section('content')
 <form id="regForm" action="{{url('admin/edit-location/'.$data->id)}}?" method="POST" enctype="multipart/form-data">
 <div id="view">
@@ -320,8 +320,8 @@ background-color: #4CAF50;
 
     <div style="overflow:auto; margin-top:10px;">
         <div style="float:right;">
-            <button type="button" id="prevBtn"  onclick="nextPrev(-1)">Previous <i class="fa fa-chevron-circle-left"></i></button>
-            <button type="button" id="nextBtn"  onclick="nextPrev(1)">Next <i class="fa fa-chevron-circle-right"></i></button>
+            <button type="button" id="prevBtn" class="btn btn-outline-primary"  onclick="nextPrev(-1)"><i class="fa fa-chevron-circle-left"></i> Previous </button>
+            <button type="button" id="nextBtn" class="btn btn-outline-success"  onclick="nextPrev(1)">Next <i class="fa fa-chevron-circle-right"></i></button>
         </div>
     </div>
 
@@ -362,7 +362,7 @@ background-color: #4CAF50;
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{__('msg.Edit Photos and Sketchs of')}}  {{$data->name}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -415,7 +415,7 @@ background-color: #4CAF50;
                         </div>
                     </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('msg.close')}} </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('msg.close')}} </button>
                     <button type="submit" class="btn btn-primary">{{__('msg.Upload Files')}} </button>
                     </form>
                 </div>
@@ -429,7 +429,7 @@ background-color: #4CAF50;
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{__('msg.Edit Blue Prints of')}}  {{$data->name}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -463,7 +463,7 @@ background-color: #4CAF50;
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('msg.close')}} </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('msg.close')}} </button>
                     <button type="submit" class="btn btn-primary">{{__('msg.Upload Files')}} </button>
                     </form>
                 </div>
@@ -477,7 +477,7 @@ background-color: #4CAF50;
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{__('msg.Edit Rules of')}}  {{$data->name}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -530,7 +530,7 @@ background-color: #4CAF50;
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="id" value="{{$data->id}}">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('msg.close')}} </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('msg.close')}} </button>
                     <button type="submit" class="btn btn-primary">{{__('msg.Update Rules')}} </button>
                     </form>
                 </div>
@@ -538,6 +538,10 @@ background-color: #4CAF50;
         </div>
     </div>
 @endcan
+
+
+@endsection
+@section('script')
 
 <!-- Models -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -811,5 +815,4 @@ $(document).ready(function(){
 
 });
 </script>
-
 @endsection

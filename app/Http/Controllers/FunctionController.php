@@ -195,7 +195,7 @@ class FunctionController extends AppBaseController
 
         $this->functionRepository->delete($id);
 
-        Flash::success('Function deleted successfully.');
+        toast(trans('msg.Function deleted successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('functions.index'));
     }

@@ -115,6 +115,7 @@
                                 </select>
                                 @error('level') <span class="text-danger">*{{ $message }}</span> @enderror
                             </div>
+                            {{--
                             <div>
                                 <label class="text-gray-700 dark:text-gray-200"
                                     for="status">{{__('msg.status')}}</label>
@@ -122,6 +123,7 @@
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 @error('status') <span class="text-danger">*{{ $message }}</span> @enderror
                             </div>
+                            --}}
                         </div>
                         <div class="m-10 bg-gray-50 p-10">
                             <label class="text-gray-700 dark:text-gray-200"
@@ -201,6 +203,91 @@
                                         @error('payment_method.'.$value) <span class="text-danger">*{{ $message
                                         }}</span> @enderror
                                 </div>
+                                @php
+                                    $payments = App\Models\Approvals\Finance::where('item_id',$value->id)->first();
+                                @endphp
+                                @if($value->payment_method== 'Bank Transfer')
+                                <div class="bg-white p-10" wire:key="payment_method1">
+                                    <b class="p-10">{{__('msg.bank payment')}}</b>
+                                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 m-10 bg-gray-50 p-10">
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="schol_given_on">{{__('msg.bank_id')}}</label>
+                                            <input disabled id="bank_id" type="text" value="{{$payments->bank_id}}"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                            @error('bank_id') <span class="text-danger">*{{ $message }}</span> @enderror
+                                        </div>
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="agency">{{__('msg.agency')}}</label>
+                                            <input disabled  id="agency" type="text" value="{{$payments->agency}}"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                            @error('agency') <span class="text-danger">*{{ $message }}</span> @enderror
+                                        </div>
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="agency">{{__('msg.account')}}</label>
+                                            <input disabled  id="account" type="text" value="{{$payments->account}}"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                            @error('account') <span class="text-danger">*{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="due_date">{{__('msg.account_owner')}}</label>
+                                            <input disabled id="due_date" type="text" value="{{$payments->account_owner}}"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                            @error('account_owner') <span class="text-danger">*{{ $message }}</span> @enderror
+                                        </div>
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="due_date">{{__('msg.cpf_cnpj')}}</label>
+                                            <input disabled id="cpf_cnpj" type="text" value="{{$payments->cpf_cnpj}}"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                            @error('cpf_cnpj') <span class="text-danger">*{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if($value->payment_method == 'APP (Paypal/QR/PIX)' || $payment_method == 'Eletronic Invoice')
+                                <div class="bg-white p-10" wire:key="payment_method2">
+                                    <b class="p-10">{{__('msg.App/Link/PIX/Electronic Invoice Payment')}}</b>
+                                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 m-10 bg-gray-50 p-10">
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="type">{{__('msg.app_type')}}</label>
+                                            <select name="app_type.0" id="type"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                                <option value="">Select a Option</option>
+                                                <option @if($payments->app_type == 'QR') selected @endif value="QR">QR</option>
+                                                <option @if($payments->app_type == 'Paypal') selected @endif  value="Paypal">Paypal</option>
+                                                <option @if($payments->app_type == 'PIX') selected @endif value="PIX">PIX</option>
+                                                <option @if($payments->app_type == 'Electronic Invoice') selected @endif value="Electronic Invoice">Electronic Invoice</option>
+                                            </select> @error('app_type') <span class="text-danger">*{{ $message
+                                                }}</span> @enderror
+                                        </div>
+                                        <div>
+                                            <label class="text-gray-700 dark:text-gray-200"
+                                                for="transaction_url">{{__('msg.transaction_url')}}</label>
+                                            <input id="transaction_url" type="text" value="{{$payments->transaction_url}}"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                            @error('transaction_url') <span class="text-danger">*{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if($value->payment_method =='Invoice Upload (Drive)')
+
+                                <div class="bg-white p-10" wire:key="payment_method3">
+                                    <b class="p-10"> {{__('msg.Invoice Upload (G Drive)')}}</b>
+                                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 m-10 bg-gray-50 p-10 text-black">
+                                        <a href="{{URL::asset('storage/'.$payments->invoice_file)}}">
+                                            <button class="btn btn-success"> Download File</button>
+
+                                        </a>
+                                    </div>
+                                </div>
+                                @endif
                                 <div>
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.value')}}</label>
@@ -208,7 +295,9 @@
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                     @error('value.'.$value) <span class="text-danger">*{{ $message }}</span> @enderror
                                 </div>
-                                @role('Super Admin|Module Admin|Local Admin')
+
+
+                                @if($approver)
                                 <div>
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.approved_value')}} </label>
@@ -220,8 +309,8 @@
                                 <div>
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.approve_observations')}} </label>
-                                    <input id="approve_observations"  type="text" wire:key="{{ $loop->index }}" wire:model="approver_oberservation.{{$value->id}}"
-                                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                                    <textarea id="approve_observations"  type="text" wire:key="{{ $loop->index }}" wire:model="approver_oberservation.{{$value->id}}"
+                                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
                                         <span class="text-primary">@if($value->approver_oberservation)  {{$value->approver_oberservation}} @endif</span>
                                 </div>
                                 @else
@@ -238,7 +327,7 @@
                                     <input disabled id="approve_observations"  type="text" wire:key="{{ $loop->index }}" value="{{$value->approver_oberservation}}"
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                 </div>
-                                @endhasanyrole
+                                @endif
                             </div>
                         </div>
                         @endforeach
@@ -355,6 +444,13 @@
                                   </div>
                                 </div>
                               </div>
+                              @if($approver)
+                              <div class="mt-10">
+                                <input type="checkbox" name="" id="Acknowledgement" wire:model="acknowledgement">
+                                <label for="Acknowledgement">@lang('msg.Ask Acknowledgement')</label>
+                              </div>
+                              @endif
+                             
                         </div>
                     </div>
                     <!-- Modal -->
@@ -362,7 +458,7 @@
                         <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">__('msg.Add New Item')</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -416,19 +512,19 @@
                                         <select name="payment_method" wire:model="new_payment_method" id="type"
                                             class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                             <option value="">Select a Option</option>
-                                            <option value="Bank Transfer">Bank Transfer</option>
-                                            <option value="APP (Paypal/QR/PIX)">APP (Paypal/QR/PIX)</option>
-                                            <option value="Eletronic Invoice">Eletronic Invoice</option>
-                                            <option value="Invoice Upload (Drive)">Invoice Upload (Drive)</option>
-                                            <option value="Outro">Outro</option>
+                                            <option value="Bank Transfer">{{__('msg.Bank Transfer')}}</option>
+                                            <option value="APP (Paypal/QR/PIX)">@lang('msg.APP (Paypal/QR/PIX)')</option>
+                                            <option value="Eletronic Invoice">{{__('msg.Eletronic Invoice')}}</option>
+                                            <option value="Invoice Upload (Drive)">{{__('msg.Invoice Upload (Drive)')}}</option>
+                                            <option value="Outro">{{__('msg.Outro')}}</option>
                                         </select> @error('new_payment_method') <span class="text-danger">*{{ $message
                                             }}</span> @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" wire:click.prevent="AddNewItem" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('msg.close')</button>
+                            <button type="button" wire:click.prevent="AddNewItem" class="btn btn-primary">@lang('msg.Save changes')</button>
                             </div>
                         </div>
                         </div>
@@ -447,12 +543,12 @@
                         <div class="w-1/2">
                             <button x-show="step > 1" @click="step--"
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-gray-600"><i
-                                    class="fas fa-step-backward"></i> Previous</button>
+                                    class="fas fa-step-backward"></i> @lang('msg.Previous')</button>
                         </div>
-                        @role('Super Admin|Module Admin|Local Admin')
+                        @if($approver)
                         <div class="w-1/2">
                             @if($current_status==1)
-                            <button wire:click.prevent="Approved" class="bg-green w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
+                            <button wire:click.prevent="Approved" class="bg-green-600 w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
                                 {{__('msg.Approved')}}
                             </button>
                             @else
@@ -463,7 +559,7 @@
                         </div>
                         <div class="w-1/2">
                         @if($current_status==2)
-                            <button wire:click.prevent="Repproved" class="bg-purple w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
+                            <button wire:click.prevent="Repproved" class="bg-purple-600 w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
                                 {{__('msg.Repproved')}}
                             </button>
                             @else
@@ -474,7 +570,7 @@
                         </div>
                         <div class="w-1/2">
                         @if($current_status==4)
-                            <button wire:click.prevent="Return" class="bg-pink w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
+                            <button wire:click.prevent="Return" class="bg-pink-600 w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
                                 {{__('msg.Return')}}
                             </button>
                             @else
@@ -485,7 +581,7 @@
                         </div>
                         <div class="w-1/2">
                         @if($current_status==3)
-                            <button wire:click.prevent="Consulting" class="bg-blue w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
+                            <button wire:click.prevent="Consulting" class="bg-blue-600 w-40 text-white font-semibold hover:text-white-900 py-2 px-4 border border-green-600 hover:border-transparent rounded">
                                 {{__('msg.Consulting')}}
                             </button>
                             @else
@@ -494,12 +590,20 @@
                             </button>
                         @endif
                         </div>
-                        @endrole
+                        @endif
+                        @if(!$approver && $acknowledgement==true)
                         <div class="w-1/2 text-right">
-                            <button x-show="step < 4" @click="step++"
+                            <button x-show="step === 4"  wire:click="AcknowledgeByRequester"
+                                class="text-right px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">{{(__('msg.Acknowledge'))}}
+                                </button>
+                        </div>
+                        @endif
+                        <div class="w-1/2 text-right">
+                            <button x-show="step < 4" @click="step++" 
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">{{(__('msg.next'))}}
                                 <i class="fas fa-step-forward"></i></button>
                         </div>
+
                     </div>
                 </div>
             </div>

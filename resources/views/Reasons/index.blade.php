@@ -87,9 +87,10 @@
 
 @push('js')
     <script>
+        var url = "{{url('/')}}"
         $('#showReasonlist').DataTable( {
 			ajax: {
-				url:BaseUrl+'/admin/space-reasons',
+				url:url+'/admin/space-reasons',
 				type:'POST',
 				datatype:'json',
                 headers: {
@@ -146,7 +147,7 @@
 
 			$.ajax({
 				type: 'POST',
-				url: BaseUrl+'/api/admin/change-reason-status',
+				url: url+'/api/admin/change-reason-status',
 				dataType: "json",
 				data:{
 					'id':id,
@@ -156,7 +157,14 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 				success: function(response) {
-                    location.reload();
+                    Swal.fire({
+                        text: response['message'],
+                        icon: 'success',
+                        toast: true,
+                        position : 'top-end',
+                        showConfirmButton : false,
+                        timer: 3000
+					});
 				}
 			});
 		}

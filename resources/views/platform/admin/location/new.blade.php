@@ -1,79 +1,95 @@
-@extends('platform/template')
-@section('content')
+@extends('layouts.admin.master')
+@section('title', 'PlanOz-Type of Location')
+
+@section('css')
+@endsection
+
+@section('style')
 <style>
-/* Style the form */
-#regForm {
-background-color: #ffffff;
-margin: 10px auto;
-padding: 40px;
-width: 70%;
-min-width: 300px;
-}
+  /* Style the form */
+  #regForm {
+  background-color: #ffffff;
+  margin: 10px auto;
+  padding: 40px;
+  width: 80%;
+  min-width: 300px;
+  }
+  
+  #progress {
+  background-color: #ffffff;
+  margin: 10px auto;
+  padding: 40px;
+  min-width: 300px;
+  }
+  
+  /* Style the input fields */
+  input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  }
+  
+  select {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  }
+  
+  textarea{
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  }
+  
+  
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid {
+  background-color: #ffdddd;
+  }
+  
+  /* Hide all steps by default: */
+  .tab {
+  display: none;
+  }
+  
+  
+  
+  /* Make circles that indicate the steps of the form: */
+  .step {
+  }
+  
+  /* Mark the active step: */
+  .step.active {
+  opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+  background-color: #4CAF50;
+  }
+  
+  
+  </style>
+@endsection
 
-#progress {
-background-color: #ffffff;
-margin: 10px auto;
-padding: 40px;
-min-width: 300px;
-}
+@section('breadcrumb-title')
+@endsection
 
-/* Style the input fields */
-input {
-padding: 10px;
-width: 100%;
-font-size: 17px;
-font-family: Raleway;
-border: 1px solid #aaaaaa;
-}
+@section('breadcrumb-items')
+<li class="breadcrumb-item">{{__('msg.location')}}</li>
+<li class="breadcrumb-item active"> {{__('msg.Location Management')}}</li>
+@endsection
+@section('content')
 
-select {
-padding: 10px;
-width: 100%;
-font-size: 17px;
-font-family: Raleway;
-border: 1px solid #aaaaaa;
-}
-
-textarea{
-padding: 10px;
-width: 100%;
-font-size: 17px;
-font-family: Raleway;
-border: 1px solid #aaaaaa;
-}
-
-
-/* Mark input boxes that gets an error on validation: */
-input.invalid {
-background-color: #ffdddd;
-}
-
-/* Hide all steps by default: */
-.tab {
-display: none;
-}
-
-
-
-/* Make circles that indicate the steps of the form: */
-.step {
-}
-
-/* Mark the active step: */
-.step.active {
-opacity: 1;
-}
-
-/* Mark the steps that are finished and valid: */
-.step.finish {
-background-color: #4CAF50;
-}
-
-
-</style>
 <!------ Include the above in your HEAD tag ---------->
-
-<form id="regForm" action="{{url('admin/add-location/')}}" method="POST" enctype="multipart/form-data">
+<div class="pt-10">
+<form id="regForm"  action="{{url('admin/add-location/')}}" method="POST" enctype="multipart/form-data">
     {{csrf_field()}}
     <h1>{{__('msg.Location Creation')}} :</h1>
 
@@ -217,10 +233,10 @@ background-color: #4CAF50;
         </p>
     </div>
 
-    <div style="overflow:auto;">
+    <div style="overflow:auto;" class="mt-2">
         <div style="float:right;">
-            <button type="button" id="prevBtn" onclick="nextPrev(-1)">{{__('msg.Previous')}} </button>
-            <button type="button" id="nextBtn" onclick="nextPrev(1)"> {{__('msg.Next')}} </button>
+            <button type="button" class="btn btn-outline-primary" id="prevBtn" onclick="nextPrev(-1)">{{__('msg.Previous')}} </button>
+            <button type="button" id="nextBtn" class="btn btn-outline-success" onclick="nextPrev(1)"> {{__('msg.Next')}} </button>
         </div>
     </div>
 
@@ -250,6 +266,10 @@ background-color: #4CAF50;
     </div>
       
 </form>
+</div>
+@endsection
+
+@section('script')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>

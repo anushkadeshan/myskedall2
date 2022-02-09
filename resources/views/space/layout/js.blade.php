@@ -147,6 +147,32 @@
 			$('#SubmitConfirmModel').modal('show');
 
 		}
+		$(document).ready(function(){
+			var location_id = '{{session('location_id')}}';
+			$.ajax({
+				url: BaseUrl + "/get-location",
+				method: 'GET',
+				data: {'locationid':location_id,},
+				success: function(response) {
+					//console.log(response);
+					var photo = response.location['photos'].split(',');
+					$("#location_img").attr('src',"{{asset('_dados/plataforma/location/images')}}/"+photo[0]);
+					$('#location_title').html(response.location['name']);
+					$('#location_address').html(response.location['address']);
+					$('#location_contact').html(response.location['contact']);
+					$('#location_telephone').html(response.location['telephone']);
+					$('#location_people').html(response.location['total_people']);
+					$('#location_size').html(response.location['size']);
+					$('#location_price').html(response.location['price']);
+					$('#location_area_type').html(response.location['area_type']);
+					$('#location_air').html(response.location['air_conditioner']);
+					$('#location_parking').html(response.location['parking']);
+                    $("#location_card").css("display", "block");
+					$("#seemore").attr('href',"{{url('/admin/view-location/')}}/"+response.location['id']);
+				}
+			});
+			 
+		});
 		function CheckPriceByLocation(){
 			document.getElementById("rules").innerHTML = "";
 			var locationid = $('#space-location').val();
@@ -166,10 +192,11 @@
 								' <span><a target="_blank" href="'+url+'">View Document</a></span></div> ';
 							$('#rules').append(element); //append it to anywhere in DOM using selector
 						});
+					console.log(response.location['photos'].split(','));
 					var photo = response.location['photos'].split(',');
 
-					console.log(response.location['photos'].split(','));
-					console.log(photo[0]);
+					
+					//console.log(photo[0]);
 					$("#location_img").attr('src',"{{asset('_dados/plataforma/location/images')}}/"+photo[0]);
 
 					$('#location_title').html(response.location['name']);
@@ -182,7 +209,7 @@
 					$('#location_area_type').html(response.location['area_type']);
 					$('#location_air').html(response.location['air_conditioner']);
 					$('#location_parking').html(response.location['parking']);
-                    $("#location_card").css("display", "");
+                    $("#location_card").css("display", "block");
 					$("#seemore").attr('href',"{{url('/admin/view-location/')}}/"+response.location['id']);
 					if(response['status']=='success'){
 						//Alert('Exact Price of selected location is '+response['price'], 'warning');
@@ -331,6 +358,7 @@
 			var search=true;
 		@endif
 		var routename = $('#route-name').val();
+		console.log(routename);
 		$('#showSpaceRequests').DataTable( {
 			ajax: {
 				url:BaseUrl+'/show-space-requests?routename='+routename,

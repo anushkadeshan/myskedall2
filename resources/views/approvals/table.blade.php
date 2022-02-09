@@ -99,12 +99,14 @@
         </div>
     </div>
 @push('js')
+
     <script>
+        var url = "{{url('/')}}"
         $(document).ready(function(){
             var table = $('#approvals-table').DataTable({
                 processing: true,
                 serverSide: true,
-                "ordering": false,
+                "ordering": true,
                 'columnDefs': [
                     {
                         "targets": 8, // your case first column
@@ -113,7 +115,7 @@
                     },
                 ],
                 ajax: {
-                url: BaseUrl+'/admin/approvalData',
+                url: url+'/admin/approvalData',
                 },
                 columns: [
                     {data: 'id', name: 'id'},
@@ -263,7 +265,7 @@
             else{
                 $.ajax({
 				type: 'POST',
-				url: BaseUrl+'/api/admin/is-approve-space-request',
+				url: url+'/api/admin/is-approve-space-request',
 				dataType: "json",
                 headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -276,9 +278,23 @@
 				success: function(response) {
                     console.log(response);
 					if(response['status']=='success'){
-                        location.reload();
+                        Swal.fire({
+							text: response['message'],
+							icon: 'success',
+							toast: true,
+							position : 'top-end',
+            				showConfirmButton : false,
+							timer: 3000
+						}); 
 					}else{
-						location.reload();
+						Swal.fire({
+							text: response['message'],
+							icon: 'error',
+							toast: true,
+							position : 'top-end',
+            				showConfirmButton : false,
+							timer: 3000
+						});
 					}
 				}
 			});

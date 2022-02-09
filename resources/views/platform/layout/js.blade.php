@@ -755,10 +755,23 @@
 				},
 				success: function(response) {
 					if(response['status']=='success'){
-						Alert(response['message'], 'success');
-						
+						Swal.fire({
+							text: response['message'],
+							icon: 'success',
+							toast: true,
+							position : 'top-end',
+            				showConfirmButton : false,
+							timer: 3000
+							});
 					}else{
-						Alert(response['message'], 'danger');
+						Swal.fire({
+							text: response['message'],
+							icon: 'error',
+							toast: true,
+							position : 'top-end',
+            				showConfirmButton : false,
+							timer: 3000
+						});
 					}
 				}
 			});

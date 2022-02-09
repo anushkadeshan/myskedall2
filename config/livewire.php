@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'asset_url' => 'http://space.test',
+    'asset_url' => env('LIVEWIRE_ASSET_URL', ''),
 
     /*
     |--------------------------------------------------------------------------

@@ -14,7 +14,7 @@
                 <!-- Top Navigation -->
                 <div class="border-b-2 py-2">
                     <div class="uppercase tracking-wide text-xs font-bold text-gray-500 mb-1 leading-tight"
-                        x-text="`Step: ${step} of 4`"></div>
+                        x-text="`Step: ${step} of 3`"></div>
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                         <div class="flex-1">
                             <div x-show="step === 1">
@@ -41,7 +41,6 @@
                     </div>
                 </div>
                 <!-- /Top Navigation -->
-
                 <!-- Step Content -->
                 <div class="pt-4">
                     <div x-show.transition.in="step === 1">
@@ -64,7 +63,7 @@
                                 <label class="text-gray-700 dark:text-gray-200" for="type">{{__('msg.type')}}</label>
                                 <select name="type" wire:model="type" id="type"
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                    <option value="">Select a Option</option>
+                                    <option value="">@lang('msg.Select a Option')</option>
                                     @foreach($typesColl as $type)
                                         <option value="{{$type->id}}">{{$type->type}}</option>
                                     @endforeach
@@ -75,7 +74,7 @@
                                 <label class="text-gray-700 dark:text-gray-200">{{__('msg.sub type')}}</label>
                                 <select name="sub_type" wire:model="sub_type" id="type"
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                    <option value="">Select a Option</option>
+                                    <option value="">@lang('msg.Select a Option')</option>
                                     @foreach($subtypes as $key => $subtype)
                                         <option value="{{$subtype->id}}">{{$subtype->sub_type}}</option>
                                     @endforeach
@@ -98,28 +97,28 @@
                             <div>
                                 <label class="text-gray-700 dark:text-gray-200"
                                     for="limit_date">{{__('msg.priority')}}</label>
-                                <input wire:model="priority" id="priority" type="text"
+                                <select name="priority" wire:model="priority" id="type"
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                @error('priority') <span class="text-danger">*{{ $message }}</span> @enderror
+                                    <option value="">@lang('msg.Select a Option')</option>
+                                    <option value="Low">@lang('msg.Low')</option>
+                                    <option value="Medium">@lang('msg.Medium')</option>
+                                    <option value="High">@lang('msg.High')</option>
+
+                                </select>
+
+                                    @error('priority') <span class="text-danger">*{{ $message }}</span> @enderror
                             </div>
                             <div>
                                 <label class="text-gray-700 dark:text-gray-200"
                                     for="limit_date">{{__('msg.level')}}</label>
                                 <select name="level" wire:model="level" id="type"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                <option value="">Select a Option</option>
+                                <option value="">@lang('msg.Select a Option')</option>
                                 @foreach($levels as $key => $level)
                                     <option value="{{$level->id}}">{{$level->name}}</option>
                                 @endforeach
                                 </select>
                                 @error('level') <span class="text-danger">*{{ $message }}</span> @enderror
-                            </div>
-                            <div>
-                                <label class="text-gray-700 dark:text-gray-200"
-                                    for="status">{{__('msg.status')}}</label>
-                                <input wire:model="status" id="status" type="text"
-                                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                @error('status') <span class="text-danger">*{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
@@ -152,25 +151,25 @@
                                 </div>
 
                             </div>
-                            <div class="grid grid-cols-1 gap-6 mt-2 sm:grid-cols-2" wire:ignore	>
+                            <div class="grid grid-cols-1 gap-6 mt-2 sm:grid-cols-2" wire:ignore.self>
                                 <div wire:key="name">
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.name')}}</label>
-                                    <input wire:model="name.0" id="name" type="text"
+                                    <input wire:model.defer="name.0" id="name" type="text" wire:ignore
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                     @error('name') <span class="text-danger">*{{ $message }}</span> @enderror
                                 </div>
                                 <div wire:key="value">
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.value')}}</label>
-                                    <input wire:model="value.0" id="value" type="number"
+                                    <input wire:model.defer="value.0" id="value" type="number" wire:ignore
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                     @error('value') <span class="text-danger">*{{ $message }}</span> @enderror
                                 </div>
                                 <div wire:key="details">
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.details')}}</label>
-                                    <textarea wire:model="details.0" id="details"
+                                    <textarea wire:model.defer="details.0" id="details" wire:ignore
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                     </textarea>
                                     @error('details') <span class="text-danger">*{{ $message }}</span> @enderror
@@ -178,16 +177,16 @@
                                 <div wire:key="reference_link">
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="status">{{__('msg.reference_link')}}</label>
-                                    <input wire:model="reference_link.0" id="value" type="text"
+                                    <input wire:model.defer="reference_link.0" id="value" type="text" wire:ignore
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                     @error('reference_link') <span class="text-danger">*{{ $message }}</span> @enderror
                                 </div>
                                 <div >
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="type">{{__('msg.responsible_dept')}}</label>
-                                    <select  wire:key="responsible_dept" name="responsible_dept" wire:model="responsible_dept.0" id="type"
+                                    <select  wire:key="responsible_dept" name="responsible_dept" wire:model.defer="responsible_dept.0" id="type"
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                        <option value="">Select a Option</option>
+                                        <option value="">@lang('msg.Select a Option')</option>
                                         <option value="">CR- Department</option>
                                         <option value="">Other 2</option>
                                     </select> @error('responsible_dept') <span class="text-danger">*{{ $message
@@ -196,21 +195,20 @@
                                 <div  wire:ignore.self>
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="type">{{__('msg.payment_method')}}</label>
-                                    <select wire:key="payment_method" name="payment_method" wire:model="payment_method.0" id="type"
+                                    <select wire:key="payment_method" name="payment_method" wire:model="payment_method.0" id="type" wire.ignore
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                        <option value="">Select a Option</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="APP (Paypal/QR/PIX)">APP (Paypal/QR/PIX)</option>
-                                        <option value="Eletronic Invoice">Eletronic Invoice</option>
-                                        <option value="Invoice Upload (Drive)">Invoice Upload (Drive)</option>
-                                        <option value="Outro">Outro</option>
+                                        <option value="">@lang('msg.Select a Option')</option>
+                                        <option value="Bank Transfer">{{__('msg.Bank Transfer')}}</option>
+                                        <option value="APP (Paypal/QR/PIX)">@lang('msg.APP (Paypal/QR/PIX)')</option>
+                                        <option value="Eletronic Invoice">{{__('msg.Eletronic Invoice')}}</option>
+                                        <option value="Invoice Upload (Drive)">{{__('msg.Invoice Upload (Drive)')}}</option>
+                                        <option value="Outro">{{__('msg.Outro')}}</option>
                                     </select> @error('payment_method') <span class="text-danger">*{{ $message
                                         }}</span> @enderror
                                 </div>
                             </div>
                             @if(isset($payment_method[0]))
                             @if($payment_method[0]== 'Bank Transfer')
-
                                 <div class="bg-white p-10" wire:key="payment_method1">
                                     <b class="p-10">{{__('msg.bank payment')}}</b>
                                     <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-3 m-10 bg-gray-50 p-10">
@@ -260,13 +258,13 @@
                                         <div>
                                             <label class="text-gray-700 dark:text-gray-200"
                                                 for="type">{{__('msg.app_type')}}</label>
-                                            <select name="app_type.0" wire:model="app_type" id="type"
+                                            <select wire:key="app_type" name="app_type.0" wire:model="app_type" id="type" wire:ignore
                                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                                 <option value="">Select a Option</option>
                                                 <option value="QR">QR</option>
                                                 <option value="Paypal">Paypal</option>
                                                 <option value="PIX">PIX</option>
-                                                <option value="Electronic Invoice">Electronic Invoice</option>
+                                                <option value="Electronic Invoice">{{__('msg.Eletronic Invoice')}}</option>
                                             </select> @error('app_type') <span class="text-danger">*{{ $message
                                                 }}</span> @enderror
                                         </div>
@@ -307,7 +305,7 @@
 
                                         <div>
                                             <span id="filename" class="block text-blue-400 font-normal"></span>
-                                            <div wire:loading wire:target="invoice">Uploading...</div>
+                                            <div wire:loading wire:target="invoice">{{__('msg.Uploading')}}...</div>
                                         </div>
                                     </div>
                                 </div>
@@ -375,7 +373,7 @@
                                 <div>
                                     <label class="text-gray-700 dark:text-gray-200"
                                         for="type">{{__('msg.payment_method')}}</label>
-                                    <select name="payment_method" wire:model="payment_method.{{ $value }}" wire:select="PaymentMethod"  id="type"
+                                    <select name="payment_method" wire:model="payment_method.{{ $value }}"  id="type"
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                                         <option value="Bank Transfer">Bank Transfer</option>
                                         <option value="APP (Paypal/QR/PIX)">APP (Paypal/QR/PIX)</option>
@@ -607,28 +605,31 @@
                 <div class="mx-auto px-4">
                     <div class="flex justify-between">
                         <div class="w-1/2">
-                            <button x-show="step > 1" @click="step--"
+                            <button x-show="step > 1" @click="step--" 
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-gray-600"><i
-                                    class="fas fa-step-backward"></i> Previous</button>
+                                    class="fas fa-step-backward"></i>{{ __('msg.Previous')}}</button>
                         </div>
                         <div class="w-1/2 text-right">
-                            <button x-show="step === 1" wire:click="requestSaveDraft"
+                            <button x-show="step === 1" wire:click="requestSaveDraft"   {{ $unseen_requets ? 'disabled' : ' '}}
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">{{__('msg.save as draft')}}
                                 <i class="fas fa-save"></i></button>
                             @if($is_draft)
-                            <button x-show="step === 2" wire:click="itemsSaveDraft"
+                            <button x-show="step === 2" wire:click="itemsSaveDraft"  {{ $unseen_requets ? 'disabled' : ' '}} 
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">{{__('msg.save as draft')}}
                                 <i class="fas fa-save"></i></button>
                             @else
-                            <button x-show="step === 2" wire:click="save"
+                            <button x-show="step === 2" wire:click="save"   {{ $unseen_requets ? 'disabled' : ' '}}
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">{{__('msg.save all')}}
                                 <i class="fas fa-save"></i></button>
                             @endif
 
-                            <button x-show="step < 3" @click="step++"
+                            <button x-show="step < 2" @click="step++"   {{ $unseen_requets ? 'disabled' : ' '}}
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">{{(__('msg.next'))}}
                                 <i class="fas fa-step-forward"></i></button>
-                            <button x-show="step === 3" wire:click.prevent="finish"
+                            <button x-show="step === 2" @click="step++"   {{ $unseen_requets ? 'disabled' : ' '}}
+                                class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">{{(__('msg.chat'))}}
+                                <i class="fas fa-step-forward"></i></button>
+                            <button x-show="step === 3" wire:click.prevent="finish"  {{ $unseen_requets ? 'disabled' : ' '}}
                                 class="text-white bg-green-700 hover:bg-green-600 font-bold py-2 px-4 rounded inline-flex items-center">
                                 {{__('msg.finish')}}
                             </button>

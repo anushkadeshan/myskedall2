@@ -14,6 +14,7 @@ class Home extends Component
     public $yellow = 0;
     public $pink = 0;
     public $purple = 0;
+    public $gray = 0;
     public $approver = false;
     public $blue_levels;
     public $green_levels;
@@ -21,6 +22,7 @@ class Home extends Component
     public $yellow_levels;
     public $pink_levels;
     public $purple_levels;
+    public $gray_levels;
 
     public function mount(){
         if(auth()->user()->approver->count() >0){
@@ -95,6 +97,7 @@ class Home extends Component
                 ->groupBy('levels.name')
                 ->get();
 
+            
         }
         else{
             $this->blue = Request::whereNull('sean_by_user')->whereNotIn('current_status',[0])->where('requster_id',auth()->user()->id)->where('requests.group_id',session('group-id'))->count();

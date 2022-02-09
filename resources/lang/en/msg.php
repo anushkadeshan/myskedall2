@@ -503,5 +503,207 @@ return array(
     'profile' => 'Profile',
     'requests' => 'Requests',
     'Levels' => 'Levels',
+    'chat' => 'Chat',
+    'Due Date' => 'Due Date',
+    'Limit Date' => 'Limit Date',
+    'Approval Request' => 'Approval Request',
+    'approver' => 'Approver',
+    'Approval Status' => 'Approval Status',
+    'approved date' => 'Approved Date',
+    'Request to join an another app' => 'Request to join an another app',
+    'Quantity' => 'Quantity',
+    'Professional' => 'Professional',
+    'Your Previous requests has been not seen by aprover. Therefore You can not request further' => 'Your Previous requests has been not seen by aprover. Therefore You can not request further',
+    'Alert' => 'Alert',
+    'Requestor' => 'Requestor',
+    'Group Name' => 'Group Name',
+    'Action Taken ?' => 'Action Taken ?',
+    'Url:' => 'Url:',
+    'Updated By:' => 'Updated By:',
+    'Updated At:' => 'Updated At:',
+    'Deleted By:' => 'Deleted By:',
+    'Date' => 'Date',
+    'Requestor' => 'Requestor',
+    'Event Name' => 'Event Name',
+    'Group' => 'Group',
+    'Routine' => 'Routine',
+    'Url' => 'Url',
+    'Action Taken' => 'Action Taken',
+    'Updated at' => 'Updated at',
+    'Updated By' => 'Updated By',
+    'Action' => 'Action',
+    'Requestor Details' => 'Requestor Details',
+    'Professional' => 'Professional',
+    'Quantity' => 'Quantity',
+    'Allocated' => 'Allocated',
+    'Available' => 'Available',
+    'Group' => 'Group',
+    'Copyright' => 'Copyright',
+    'Approver' => 'Approver',
+    'Searching' => 'Searching',
+    'Select a Option' => 'Select a Option',
+    'Low' => 'Low',
+    'Medium' => 'Medium',
+    'High' => 'High',
+    'Bank Transfer' => 'Bank Transfer',
+    'APP (Paypal/QR/PIX)' => 'APP (Paypal/QR/PIX)',
+    'Eletronic Invoice' => 'Eletronic Invoice',
+    'Invoice Upload (Drive)' => 'Invoice Upload (Drive)',
+    'Outro' => 'Outro',
+    'Uploading' => 'Uploading',
+    'Create Sub Types' => 'Create Sub Types',
+    'Create Request Types' => 'Create Request Types',
+    'Add New Item' => 'Add New Item',
+    'Consulting' => 'Consulting',
+    'Return' => 'Return',
+    'Repproved' => 'Repproved',
+    'Approved' => 'Approved',
+    'Pending' => 'Pending',
+    'All' => 'All',
+    'Update Basic Data' => 'Update Basic Data',
+    'Update Approvers Role' => 'Update Approvers Role',
+    'Add New Apporvers' => 'Add New Apporvers',
+    'Sum of Requests' => 'Sum of Requests',
+    'Multiple Actions' => 'Multiple Actions',
+    'App Tutorial - How to Use' => 'App Tutorial - How to Use',
+    'Select a Group' => 'Select a Group',
+    'Allocated Locations' => 'Allocated Locations',
+
+
+    'Ask Acknowledgement' => 'Ask Acknowledgement',
+    'Acknowledgement updated successfully.' => 'Acknowledgement updated successfully.',
+    'Acknowledge' => 'Acknowledge',
+    'Not taken science' => 'Not taken science',
+    'Approved with considerations' => 'Approved with considerations',
+    'Disapproved with justification' => 'Disapproved with justification',
+    'Pending under review' => 'Pending under review',
+    'Drafts in preparation' => 'Drafts in preparation',
+    'Returned with remarks' => 'Returned with remarks',
+    'Edit Requests' => 'Edit Requests',
+    'View Requests' => 'View Requests',
+
+    'User saved successfully.' => 'User saved successfully.',
+    'User not found' => 'User not found',
+    'User updated successfully' => 'User updated successfully',
+    'User deleted successfully.' => 'User deleted successfully.',
+    'Role Assigned successfully.' => 'Role Assigned successfully.',
+    'Role saved successfully.' => 'Role saved successfully.',
+    'Role not found.' => 'Role not found.',
+    'Role updated successfully.' => 'Role updated successfully.',
+    'Permission saved successfully.' => 'Permission saved successfully.',
+    'Permission updated successfully.' => 'Permission updated successfully.',
+    'Permission deleted successfully.' => 'Permission deleted successfully.',
+    'Permission added to Roles successfully.' => 'Permission added to Roles successfully.',
+    'Permission not found.' => 'Permission not found.',
+    'Group saved successfully.' => 'Group saved successfully.',
+    'Group not found' => 'Group not found',
+    'Managers assigned to Group successfully.' => 'Managers assigned to Group successfully.',
+    'Something Error !' => 'Something Error !',
+    'Group deleted successfully.' => 'Group deleted successfully.',
+    'Group updated successfully.' => 'Group updated successfully.',
+    'Apps assigned to User successfully.' => 'Apps assigned to User successfully.',
+    'Apps assigned to Group successfully.' => 'Apps assigned to Group successfully.',
+    'Edit Alert' => 'Edit Alert',
+    'Alert not found' => 'Alert not found',
+    'Alert updated successfully.' => 'Alert updated successfully.',
+    'Alert Deleted successfully.' => 'Alert Deleted successfully.',
+    'You do not have permissions to delete alert' => 'You do not have permissions to delete alert',
+
+    'Material not found' => 'Material not found',
+    'Material saved successfully.' => 'Material saved successfully.',
+    'Material deleted successfully.' => 'Material deleted successfully.',
+    'Material updated successfully.' => 'Material updated successfully.',
+    'Function deleted successfully.' => 'Function deleted successfully.',
+    'Function saved successfully.' => 'Function saved successfully.',
+    'Function Data updated successfully' => 'Function Data updated successfully',
+    'Location Type Updated Successfully.' => 'Location Type Updated Successfully.',
+    'Location Type Added Successfully.' => 'Location Type Added Successfully.',
+    'Location Mark as Blocked' => 'Location Mark as Blocked',
+    'Opps! Something Went Wrong' => 'Opps! Something Went Wrong',
+    'Location Mark as Unblocked' => 'Location Mark as Unblocked',
+    'Space request status changed successfully.' => 'Space request status changed successfully.',
+
+    'Reason Updated Successfully.' => 'Reason Updated Successfully.',
+    'Reason created Successfully.' => 'Reason created Successfully.',
+    'Request data saved as draft.' => 'Request data saved as draft.',
+    'Items data saved as draft.' => 'Items data saved as draft.',
+    'All approval request data saved successfully.' => 'All approval request data saved successfully.',
+    'Acknowledgement updated successfully.' => 'Acknowledgement updated successfully.',
+    'New Item Added' => 'New Item Added',
+    'Status Saved successfully.' => 'Status Saved successfully.',
+    'Item repproved successfully.' => 'Item repproved successfully.',
+    'Item Changed successfully.' => 'Item Changed successfully.',
+    'Item approved successfully.' => 'Item approved successfully.',
+    'Records Repproved.' => 'Records Repproved.',
+    'Records Approved' => 'Records Approved',
+    'Records Deleted' => 'Records Deleted',
+    'Approver deleted successfully' => 'Approver deleted successfully',
+    'Level deleted successfully' => 'Level deleted successfully',
+    'Level data updated successfully' => 'Level data updated successfully',
+    'Support Saved successfully.' => 'Support Saved successfully.',
+
+    'User Profile' => 'User Profile',
+    'Current Password' => 'Current Password',
+    'New Password' => 'New Password',
+    'Confirm New Password' => 'Confirm New Password',
+    'Have group warning' => 'Have group warning',
+    'No group warning' => 'No group warning',
+    'Have warning' =>'Have warning',
+    'No warning' =>'No warning',
+    'Password changed.' => 'Password changed.',
+    'Password does not match.' => 'Password does not match.',
+    'User profile updated successfully.' => 'User profile updated successfully.',
+    'Rejected' => 'Rejected',
+    'Quantity should be more than allocated quantity.' => 'Quantity should be more than allocated quantity.',
+    
+    'Location Updated Successfully' => 'Location Updated Successfully',
+    'Location Added and sent for approval to Manager Successfully' => 'Location Added and sent for approval to Manager Successfully',
+    'Location Deleted Successfully' => 'Location Deleted Successfully',
+    'Location Updated Successfully' => 'Location Updated Successfully',
+    'Location Added Successfully' => 'Location Added Successfully',
+    'Files Added Successfully' => 'Files Added Successfully',
+    'Files Not Added, Something Error' => 'Files Not Added, Something Error',
+    'File Deleted Successfully' => 'File Deleted Successfully',
+    'File Not Deleted, Something Error' => 'File Not Deleted, Something Error',
+    'Files Not Added, Something Error' => 'Files Not Added, Something Error',
+    'Rules Added Successfully' => 'Rules Added Successfully',
+    'Rules Not Added, Something Error' => 'Rules Not Added, Something Error',
+    'Rule Deleted Successfully' => 'Rule Deleted Successfully',
+    'Rules Not deleted, Something Error' => 'Rules Not deleted, Something Error',
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 );

@@ -22,7 +22,7 @@ class AppController extends Controller
        // dd($apps);
         $insert = $group->apps()->sync($apps);
         if($insert){
-            Flash::success('Apps assigned to Group successfully.');
+            toast(trans('msg.Apps assigned to Group successfully.'),'success','top-right')->showCloseButton();
             return redirect(route('groups.index'));
         }
         else{
@@ -40,7 +40,7 @@ class AppController extends Controller
         // dd($apps);
         $insert = $user->apps()->sync($apps);
         if ($insert) {
-            Flash::success('Apps assigned to User successfully.');
+            toast(trans('msg.Apps assigned to User successfully.'),'success','top-right')->showCloseButton();
             return redirect(route('users.index'));
         } else {
             Flash::success('Something Error.');

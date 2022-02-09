@@ -181,24 +181,32 @@ class ApiController extends Controller
 			$image_name = session('user_id').'.jpg';
 			if($image->move(public_path().'/_dados/plataforma/usuarios', $image_name)){
                 if (session('locale') == 'pt') {
+                    
 				    return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Upload de foto concluída']);
+                    toast('Upload de foto concluída','success','top-right')->showCloseButton();
+
                 }else{
 				    return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Photo Uploaded Successfully']);
+                    toast('Photo Uploaded Successfully','success','top-right')->showCloseButton();
                 }
 			}else{
                 if (session('locale') == 'pt') {
-				    return response()->json(['code' => 200, 'status' => 'fail', 'message' => 'Arquivo inválido']);
+                    toast('Arquivo inválido','error','top-right')->showCloseButton();
+				    return response()->json(['code' => 200, 'status' => 'error', 'message' => 'Arquivo inválido']);
                 }
                 else{
-                    return response()->json(['code' => 200, 'status' => 'fail', 'message' => 'Invalid File Required']);
+                    toast('Invalid File Required','error','top-right')->showCloseButton();
+                    return response()->json(['code' => 200, 'status' => 'error', 'message' => 'Invalid File Required']);
                 }
 			}
 		}else{
             if (session('locale') == 'pt') {
-                return response()->json(['code' => 200, 'status' => 'fail', 'message' => 'Campo de arquivos necessário']);
+                toast('Campo de arquivos necessário','error','top-right')->showCloseButton();
+                return response()->json(['code' => 200, 'status' => 'error', 'message' => 'Campo de arquivos necessário']);
             }
             else{
-                return response()->json(['code' => 200, 'status' => 'fail', 'message' => 'File Feild Required']);
+                toast('File Feild Required','error','top-right')->showCloseButton();
+                return response()->json(['code' => 200, 'status' => 'error', 'message' => 'File Feild Required']);
             }
 		}
     }
@@ -570,7 +578,7 @@ class ApiController extends Controller
                 ->first();
         //dd($data);
         $rules = DB::table('space_location_rules')->where('location_id', $request->locationid)->get();
-        dd($data, $rules);
+        //dd($data, $rules);
 		if($data->price<=$price){
 			return response()->json(['code'=>200,'status'=>'success','price'=>$data->price, 'manager'=>$data->manager_name,'rules' => $rules]);
 		}else{
@@ -580,6 +588,15 @@ class ApiController extends Controller
             //return response()->json(['code' => 200, 'status' => 'fail', 'message' => $message, 'manager' => $data->manager_name]);
             return response()->json(['manager' => $data->manager_name, 'rules' => $rules,'location'=>$data]);
 		}
+	}
+
+    public function GetLocation(Request $request){
+        $data = DB::table('space_location')->where('space_location.id',$request->locationid)
+                ->join('users','users.id','=','space_location.manager')
+                ->select('space_location.*','users.name as manager_name','users.id as user_id')
+                ->first();
+        return response()->json(['location'=>$data]);
+		
 	}
 	public function ShareSpaceRequest(Request $request){
 		$validator = Validator::make($request->all(),['email'=>'required|email']);
@@ -1048,20 +1065,10 @@ class ApiController extends Controller
         }
 
         if ($insert) {
-            session()->flash('type', 'success');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Files Added Successfully');
-            } else {
-                session()->flash('message', 'Files Added Successfully');
-            }
+            toast(trans('msg.Files Added Successfully'),'success','top-right')->showCloseButton();
             return back()->withInput();
         } else {
-            session()->flash('type', 'danger');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Files Not Added, Something Error');
-            } else {
-                session()->flash('message', 'Files Not Added, Something Error');
-            }
+            toast(trans('msg.Files Not Added, Something Error'),'error','top-right')->showCloseButton();
             return back()->withInput();
         }
 
@@ -1083,17 +1090,10 @@ class ApiController extends Controller
         if (file_exists($file_to_delete)) {
             @unlink($file_to_delete);
             DB::table('space_location')->where('id', $req->id)->update(['blue_print' => $blue_prints]);
-            if (session('locale') == 'pt') {
-                return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Documento deletado com sucesso']);
-            } else {
-                return response()->json(['code' => 200, 'status' => 'success', 'message' => 'File Deleted Successfully']);
-            }
+           
+            toast(trans('msg.File Deleted Successfully'),'success','top-right')->showCloseButton();
         } else {
-            if (session('locale') == 'pt') {
-                return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'Documento não deletado, algum coisa errada']);
-            } else {
-                return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'File Not Deleted, Something Error']);
-            }
+            toast(trans('msg.File Not Deleted, Something Error'),'error','top-right')->showCloseButton();
         }
     }
 
@@ -1117,13 +1117,8 @@ class ApiController extends Controller
             //dd($both_arrays,$sketch);
             $insert = DB::table('space_location')->where('id', $req->id)->update(['blue_print' => $blue_print]);
             if ($insert) {
-                session()->flash('type', 'success');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Arquivos inseridos com sucesso');
-                } else {
-                    session()->flash('message', 'Files Added Successfully');
-                }
-
+            
+                toast(trans('msg.Files Added Successfully'),'success','top-right')->showCloseButton();
                 $group = Group::where('id', session('group-id'))->first();
                 $managers = $group->managers()->pluck('user_id');
 
@@ -1145,12 +1140,7 @@ class ApiController extends Controller
 
                 return back()->withInput();
             } else {
-                session()->flash('type', 'danger');
-                if (session('locale') == 'pt') {
-                    session()->flash('message', 'Arquivos não inseridos, alguma coisa errada');
-                } else {
-                    session()->flash('message', 'Files Not Added, Something Error');
-                }
+                toast(trans('msg.Files Not Added, Something Error'),'error','top-right')->showCloseButton();
                 return back()->withInput();
             }
         }
@@ -1170,17 +1160,12 @@ class ApiController extends Controller
                 $row = DB::table('space_location_rules')->insert(['rule_name' => $req->rule_name[$i], 'responsible' => $req->responsible[$i], 'rules_documents' => $array[$i], 'location_id' => $req->id, 'created_at' => date('Y-m-d H:i:s'),]);
             }
         } else {
-            return response()->json(['error' => 'Submit youths Details.']);
+            return response()->json(['error' => 'Submit location Details.']);
         }
 
 
         if ($row) {
-            session()->flash('type', 'success');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Regras inseridas com sucesso');
-            } else {
-                session()->flash('message', 'Rules Added Successfully');
-            }
+            toast(trans('msg.Rules Added Successfully'),'success','top-right')->showCloseButton();
 
             $group = Group::where('id', session('group-id'))->first();
             $managers = $group->managers()->pluck('user_id');
@@ -1204,12 +1189,8 @@ class ApiController extends Controller
 
             return back()->withInput();
         } else {
-            session()->flash('type', 'danger');
-            if (session('locale') == 'pt') {
-                session()->flash('message', 'Regras não inseridas com sucesso');
-            } else {
-                session()->flash('message', 'Rules Not Added, Something Error');
-            }
+           
+            toast(trans('msg.Rules Not Added, Something Error'),'error','top-right')->showCloseButton();
             return back()->withInput();
         }
     }
@@ -1222,17 +1203,11 @@ class ApiController extends Controller
         if (file_exists($file_to_delete)) {
             @unlink($file_to_delete);
             DB::table('space_location_rules')->where('id', $req->id)->delete();
-            if (session('locale') == 'pt') {
-                return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Regras não inseridas com sucesso']);
-            } else {
-                return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Rule Deleted Successfully']);
-            }
+            
+            toast(trans('msg.Rule Deleted Successfully'),'success','top-right')->showCloseButton();
         } else {
-            if (session('locale') == 'pt') {
-                return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'Regras não inseridas com sucesso, alguma coisa errada']);
-            } else {
-                return response()->json(['code' => 401, 'status' => 'fail', 'message' => 'Rule Not Deleted, Something Error']);
-            }
+            
+            toast(trans('msg.Rules Not deleted, Something Error'),'error','top-right')->showCloseButton();
         }
     }
 

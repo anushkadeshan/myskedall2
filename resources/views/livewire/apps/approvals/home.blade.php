@@ -35,7 +35,7 @@
                             <div class="card-counter primary">
                                 <i class="fa fa-eye"></i>
                                 <span class="count-numbers">{{$blue}}</span>
-                                <span class="count-name">CIÊNCIA e providências</span>
+                                <span class="count-name">@lang('msg.Not taken science')</span>
                             </div>
                             @if($approver)
                             <div class="collapse primary" id="collapseExample">
@@ -43,7 +43,7 @@
                                 <a href="{{ route('approvals.requests', [$bl->current_status]) }}">
                                 <div class="row mb-1">
                                     <div class="col-md-6">
-                                        <h5>{{$bl->name}}</h5>
+                                        <h5 class="text-white">{{$bl->name}}</h5>
                                     </div>
                                     <div class="col-md-6 text-right" style="float:right;">
                                         <span class="badge badge-primary lead"  style="float:right;">
@@ -61,7 +61,7 @@
                             <div class="card-counter success">
                                 <i class="far fa-smile"></i>
                                 <span class="count-numbers">{{$green}}</span>
-                                <span class="count-name">APROVADOS com considerações</span>
+                                <span class="count-name">@lang('msg.Approved with considerations')</span>
                             </div>
                             @if($approver)
                             <div class="collapse success" id="collapseExample2">
@@ -69,10 +69,10 @@
                                 <a href="{{ route('approvals.requests', [$gl->current_status]) }}">
                                 <div class="row mb-1">
                                     <div class="col-md-6 ">
-                                        <h5>{{$gl->name}}</h5>
+                                        <h5 class="text-white">{{$gl->name}}</h5>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <span class="badge badge-primary lead">
+                                        <span class="badge badge-success lead">
                                             <h5>{{$gl->count}}</h5>
                                         </span>
                                     </div>
@@ -87,7 +87,7 @@
                             <div class="card-counter danger">
                                 <i class="far fa-frown"></i>
                                 <span class="count-numbers">{{$red}}</span>
-                                <span class="count-name">REPROVADOS com justificativa</span>
+                                <span class="count-name">@lang('msg.Disapproved with justification')</span>
                             </div>
                             @if($approver)
                             <div class="collapse danger" id="collapseExample3">
@@ -95,7 +95,7 @@
                                 <a href="{{ route('approvals.requests', [$rl->current_status]) }}">
                                 <div class="row mb-1">
                                     <div class="col-md-6 ">
-                                        <h5>{{$rl->name}}</h5>
+                                        <h5 class="text-white">{{$rl->name}}</h5>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <span class="badge badge-danger lead" style="float:right;">
@@ -113,7 +113,7 @@
                             <div class="card-counter warning">
                                 <i class="far fa-meh"></i>
                                 <span class="count-numbers">{{$yellow}}</span>
-                                <span class="count-name">PENDENTES em análise</span>
+                                <span class="count-name">@lang('msg.Pending under review')</span>
                             </div>
                             @if($approver)
                             <div class="collapse warning" id="collapseExample4">
@@ -138,7 +138,7 @@
                             <div class="card-counter pink">
                                 <i class="fa fa-clock"></i>
                                 <span class="count-numbers">{{$pink}}</span>
-                                <span class="count-name">Esboços em elaboração</span>
+                                <span class="count-name">@lang('msg.Drafts in preparation')</span>
                             </div>
                             @if($approver)
                             <div class="collapse pink" id="collapseExample5">
@@ -146,7 +146,7 @@
                                 <a href="{{ route('approvals.requests', [$pl->current_status]) }}">
                                 <div class="row mb-1">
                                     <div class="col-md-6 ">
-                                        <h5>{{$pl->name}}</h5>
+                                        <h5 class="text-white">{{$pl->name}}</h5>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <span class="badge badge-danger lead" style="float:right;">
@@ -164,7 +164,7 @@
                             <div class="card-counter purple">
                                 <i class="fa fa-repeat"></i>
                                 <span class="count-numbers">{{$purple}}</span>
-                                <span class="count-name">DEVOLVIDOS com observações</span>
+                                <span class="count-name">@lang('msg.Returned with remarks')</span>
                             </div>
                             @if($approver)
                             <div class="collapse purple" id="collapseExample6">
@@ -172,7 +172,7 @@
                                 <a href="{{ route('approvals.requests', [$pl->current_status]) }}">
                                 <div class="row mb-1">
                                     <div class="col-md-6 ">
-                                        <h5>{{$pl->name}}</h5>
+                                        <h5 class="text-white">{{$pl->name}}</h5>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <span class="badge badge-danger lead" style="float:right;">

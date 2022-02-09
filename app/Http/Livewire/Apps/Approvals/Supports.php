@@ -20,7 +20,12 @@ class Supports extends Component
         $this->support = '';
         $this->message = '';
 
-        session()->flash('message', 'Saved successfully.');
+        $this->alert('success', trans('msg.Support Saved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function render()

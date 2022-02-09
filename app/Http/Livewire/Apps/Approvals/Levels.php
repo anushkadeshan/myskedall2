@@ -6,9 +6,11 @@ use App\User;
 use Livewire\Component;
 use App\Models\Approvals\Level;
 use Illuminate\Support\Facades\DB;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Levels extends Component
 {
+    use LivewireAlert;
     public $levels;
     public $name;
     public $type;
@@ -146,14 +148,23 @@ class Levels extends Component
         DB::table('level_approvers')->where('id',$id)->delete();
         $this->mount();
 
-        session()->flash('message', 'Approver deleted successfully');
+        $this->alert('success', trans('msg.Approver deleted successfully'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function deleteLevel($id){
         DB::table('levels')->where('id',$id)->delete();
         $this->mount();
-
-        session()->flash('message', 'Level deleted successfully');
+        $this->alert('success', trans('msg.Level deleted successfully'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     function edit($id) {
@@ -216,7 +227,14 @@ class Levels extends Component
         }
         $this->mount();
         $this->dispatchBrowserEvent('data-updated');
-        session()->flash('message', 'Level data updated successfully');
+        
+        $this->alert('success', trans('msg.Level data updated successfully'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
+       
 
     }
 

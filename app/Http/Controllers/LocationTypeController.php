@@ -144,7 +144,7 @@ class LocationTypeController extends Controller
                     Flash::success('Tipo de localidade enviado com sucesso');
                 } else {
                     Flash::success('Location Type Updated Successfully');
-                }
+                } 
                 return redirect('admin/location-types');
             } else {
                 session()->flash('type', 'danger');

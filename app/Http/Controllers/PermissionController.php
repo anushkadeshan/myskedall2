@@ -90,8 +90,7 @@ class PermissionController extends AppBaseController
 
         $permission = $this->permissionRepository->create($input);
 
-        Flash::success('Permission saved successfully.');
-
+        toast(trans('msg.Permission saved successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('permissions.index'));
     }
 
@@ -113,7 +112,7 @@ class PermissionController extends AppBaseController
         $permission = $this->permissionRepository->find($id);
 
         if (empty($permission)) {
-            Flash::error('Permission not found');
+            toast(trans('msg.Permission not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('permissions.index'));
         }
@@ -146,7 +145,7 @@ class PermissionController extends AppBaseController
         $permission = $this->permissionRepository->find($id);
 
         if (empty($permission)) {
-            Flash::error('Permission not found');
+            toast(trans('msg.Permission not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('permissions.index'));
         }
@@ -174,14 +173,13 @@ class PermissionController extends AppBaseController
         $permission = $this->permissionRepository->find($id);
 
         if (empty($permission)) {
-            Flash::error('Permission not found');
+            toast(trans('msg.Permission not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('permissions.index'));
         }
 
         $permission = $this->permissionRepository->update($request->all(), $id);
-
-        Flash::success('Permission updated successfully.');
+        toast(trans('msg.Permission updated successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('permissions.index'));
     }
@@ -200,14 +198,14 @@ class PermissionController extends AppBaseController
         $permission = $this->permissionRepository->find($id);
 
         if (empty($permission)) {
-            Flash::error('Permission not found');
+            toast(trans('msg.Permission not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('permissions.index'));
         }
 
         $this->permissionRepository->delete($id);
 
-        Flash::success('Permission deleted successfully.');
+        toast(trans('msg.Permission deleted successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('permissions.index'));
     }
@@ -226,7 +224,8 @@ class PermissionController extends AppBaseController
 
         $permission->syncRoles($roles);
    
-        Flash::success('Permission added to Roles successfully.');
+        toast(trans('msg.Permission added to Roles successfully.'),'success','top-right')->showCloseButton();
+
         return redirect(route('permissions.index'));
 
     }

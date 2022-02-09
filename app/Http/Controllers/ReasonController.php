@@ -88,21 +88,10 @@ class ReasonController extends Controller
         $set_data['updated_at'] = date('Y-m-d H:i:s');
         $set_data['created_at'] = date('Y-m-d H:i:s');
         if (DB::table('space_reason')->insertGetId($set_data)) {
-            session()->flash('type', 'success');
-            if (session('locale') == 'pt') {
-                Flash::success('Motivo adicionado com sucesso.');
-                session()->flash('message', 'Motivo adicionado com sucesso');
-            } else {
-                Flash::success('Reason Added Successfully.');
-                session()->flash('message', 'Reason Added Successfully');
-            }
+            toast(trans('msg.Reason created Successfully.'),'success','top-right')->showCloseButton();
             return redirect('admin/space-reasons');
         } else {
-            if (session('locale') == 'pt') {
-                Flash::error('Opps! Algo deu errado');
-            } else {
-                Flash::error('Opps! Something Went Wrong.');
-            }
+            toast(trans('msg.Opps! Something Went Wrong'),'error','top-right')->showCloseButton();
             return back()->withInput();
         }
         
@@ -151,26 +140,17 @@ class ReasonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    { 
         $set_data = [];
         $set_data['reason'] = $request->reason;
         $set_data['user_id'] = Auth::user()->id;
         $set_data['group_id'] = session('group-id');
         $set_data['updated_at'] = date('Y-m-d H:i:s');
         if (DB::table('space_reason')->where('id',$id)->update($set_data)) {
-            session()->flash('type', 'success');
-            if (session('locale') == 'pt') {
-                Flash::success('Motivo  atualizado com sucesso.');
-            } else {
-                Flash::success('Reason Updated Successfully.');
-            }
+            toast(trans('msg.Reason Updated Successfully.'),'success','top-right')->showCloseButton();
             return redirect('admin/space-reasons');
         } else {
-            if (session('locale') == 'pt') {
-                Flash::error('Opps! Algo deu errado');
-            } else {
-                Flash::error('Opps! Something Went Wrong.');
-            }
+            toast(trans('msg.Opps! Something Went Wrong'),'error','top-right')->showCloseButton();
             return back()->withInput();
         }
     }

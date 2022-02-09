@@ -8,8 +8,19 @@ class Item extends Model
 {
     public $table = 'request_items';
     public $timestamps = true;
+
     public $fillable = [
         'name', 'value', 'approved_value', 'details', 'reference_link', 'responsible_dept', 'payment_method', 'request_id','approve_observations','status','approved_by','approved_at'
     ];
+
+    /**
+     * Get all of the comments for the Item
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany(Finance::class, 'id', 'item_id');
+    }
 
 }

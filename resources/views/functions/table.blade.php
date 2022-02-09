@@ -2,12 +2,12 @@
     <table class="table" id="functions-table">
         <thead>
             <tr>
-                <th>Professional</th>
-                <th>Quantity</th>
-                <th>Allocated</th>
-                <th>Available</th>
-                <th>Group</th>
-                <th colspan="3">Action</th>
+                <th>@lang('msg.Professional')</th>
+                <th>@lang('msg.Quantity')</th>
+                <th>@lang('msg.Allocated')</th>
+                <th>@lang('msg.Available')</th>
+                <th>@lang('msg.Group')</th>
+                <th colspan="3">@lang('msg.Action')</th>
             </tr>
         </thead>
         <tbody>

@@ -15,11 +15,8 @@
 <li class="breadcrumb-item active"> {{__('msg.type of Location')}}</li>
 @endsection
 @section('content')
-<div class="container-fluid mt-3">
-    <section class="content-header">
-        <h1 class="pull-left">{{ __('msg.type of Location') }}</h1>
-
-    </section>
+<div class="container-fluid mt-3 pt-6">
+    
 
     <div class="content">
         <div class="clearfix"></div>
@@ -27,9 +24,12 @@
         @include('flash::message')
 
         <div class="clearfix"></div>
-        <div class="box box-primary">
-            <div class="box-body">
-                 <hr>
+        <div class="card">
+            <section class="card-header">
+                <h1 class="pull-left">{{ __('msg.type of Location') }}</h1>
+        
+            </section>
+            <div class="card-body">
                 <form action="{{route('types.update',['id'=>$data->id])}}" method="post">
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                     <div class="row">

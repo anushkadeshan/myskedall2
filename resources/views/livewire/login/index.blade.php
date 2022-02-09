@@ -1,4 +1,4 @@
-<div>
+<div class="grad">
      <!-- login page start-->
      <div class="container-fluid p-0">
         <div class="row m-0">

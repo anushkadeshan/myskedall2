@@ -1,12 +1,13 @@
 <div class="py-4 col-md-12">
     <div class="flex flex-row-reverse ">
-        <div class="pl-3">Sum of Max Values : <span class="p-1 bg-blue-800 text-white">{{$max_sum}}</span></div>
-        <div class="pl-3">Sum of Requests :  <span class="p-1 bg-blue-600 text-white">{{$value_sum}}</span></div>
+        {{--<div class="pl-3">Sum of Max Values : <span class="p-1 bg-blue-800 text-white">{{$max_sum}}</span></div>--}}
+        <div class="pl-3">{{__('msg.Sum of Requests')}} :  <span class="p-1 bg-blue-600 text-white">{{number_format($value_sum, 2)}}</span></div>
     </div>
+    @if(auth()->user()->approver->count() >0)
     <div class="grid grid-cols-2 justify-between">
         <div class="flex">
             <div class="flex-initial pt-2">
-                <p class="font-bold">Multiple Actions</p>
+                <p class="font-bold">{{__('msg.Multiple Actions')}}</p>
             </div>
             <div class="flex-initial ml-10">
                 <button wire:click.prevent="repproved" class="bg-white text-red-600 font-semibold hover:text-red-900 py-2 px-4 border border-red hover:border-transparent rounded">
@@ -29,6 +30,7 @@
         </div>
 
     </div>
+    @endif
     @if(session()->has('message'))
         <div x-data="{show: true}" x-show="show" x-init="setTimeout(() => show = false, 3000)" id="alert" class="flex py-10 items-center bg-green-500 text-white text-sm font-bold px-4 py-3" role="alert">
             <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

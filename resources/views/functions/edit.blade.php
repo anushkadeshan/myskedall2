@@ -1,8 +1,4 @@
-@extends('layouts.app')
 
-@section('content')
-
-@endsection
 @extends('layouts.admin.master')
 @section('title', 'PlanOz-Functions')
 
@@ -20,7 +16,7 @@
 <li class="breadcrumb-item active"> {{$function->professional}}</li>
 @endsection
 @section('content')
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3 pt-6">
 
     <div class="content">
         <div class="card">

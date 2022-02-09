@@ -12,7 +12,7 @@
 
 @section('breadcrumb-items')
 <li class="breadcrumb-item">{{__('msg.Materials')}}</li>
-<li class="breadcrumb-item active"> {{$material->material)}}</li>
+<li class="breadcrumb-item active"> {{$material->material}}</li>
 @endsection
 @section('content')
 <div class="container-fluid mt-3">
@@ -21,7 +21,7 @@
         <div class="card">
             <section class="card-header">
                 <h1>
-                    {{$material->material)}}
+                    {{$material->material}}
                 </h1>
             </section>
             <div class="card-body">

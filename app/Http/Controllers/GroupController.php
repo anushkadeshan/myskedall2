@@ -103,7 +103,7 @@ class GroupController extends AppBaseController
         $row =  DB::table('user_groups')->insert(['approved' => 1, 'approved_at' => now(), 'user_id'=> $superAdmin->id,'group_id'=> $group->id]);
                 //dd($group->id,$superAdmin->id, $row);
 
-        Flash::success('Group saved successfully.');
+        toast(trans('msg.Group saved successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('groups.index'));
     }
@@ -125,8 +125,7 @@ class GroupController extends AppBaseController
         $groupData = $HomeControllrt->GetGroupList();
 
         if (empty($group)) {
-            Flash::error('Group not found');
-
+            toast(trans('msg.Group not found'),'error','top-right')->showCloseButton();
             return redirect(route('groups.index'));
         }
 
@@ -157,7 +156,7 @@ class GroupController extends AppBaseController
         $groupData = $HomeControllrt->GetGroupList();
 
         if (empty($group)) {
-            Flash::error('Group not found');
+            toast(trans('msg.Group not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('groups.index'));
         }
@@ -184,14 +183,13 @@ class GroupController extends AppBaseController
         $group = $this->groupRepository->find($id);
 
         if (empty($group)) {
-            Flash::error('Group not found');
+            toast(trans('msg.Group not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('groups.index'));
         }
 
         $group = $this->groupRepository->update($request->all(), $id);
-
-        Flash::success('Group updated successfully.');
+        toast(trans('msg.Group updated successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('groups.index'));
     }
@@ -210,14 +208,14 @@ class GroupController extends AppBaseController
         $group = $this->groupRepository->find($id);
 
         if (empty($group)) {
-            Flash::error('Group not found');
+            toast(trans('msg.Group not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('groups.index'));
         }
 
         $this->groupRepository->delete($id);
 
-        Flash::success('Group deleted successfully.');
+        toast(trans('msg.Group deleted successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('groups.index'));
     }
@@ -242,16 +240,17 @@ class GroupController extends AppBaseController
         $group = Group::find($request->group_id);
         //dd($group);
         if (is_null($request->managers)) {
-            Flash::error('Something Error.');
+            toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
             return redirect(route('groups.index'));
         } else {
             $managers = $request->managers;
             $insert = $group->managers()->sync($managers);
             if ($insert) {
-                Flash::success('Managers assigned to Group successfully.');
+                toast(trans('msg.Managers assigned to Group successfully.'),'success','top-right')->showCloseButton();
+
                 return redirect(route('groups.index'));
             } else {
-                Flash::success('Something Error.');
+                toast(trans('msg.Something Error !'),'error','top-right')->showCloseButton();
                 return redirect(route('groups.index'));
             }
         }

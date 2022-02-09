@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Alert
+           @lang('msg.Alert')
         </h1>
     </section>
     <div class="content">

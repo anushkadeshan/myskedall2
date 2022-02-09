@@ -76,7 +76,7 @@
                     <div x-show.transition.in="step === 2">
                         <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 m-10 bg-gray-50 p-10">
                                 <div class="flex-initial">
-                                    <label class="text-gray-700 dark:text-gray-200" for="query">Approver 1</label>
+                                    <label class="text-gray-700 dark:text-gray-200" for="query">@lang('msg.Approver') 1</label>
                                     <input wire:model="querya" wire:keydown.escape="reset"
                                         placeholder="Name/User Search" wire:keydown.tab="reset"
                                         wire:keydown.ArrowUp="decrementHighlight"
@@ -85,7 +85,7 @@
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" />
                                     <div wire:loading wire:target="querya"
                                         class="absolute z-10 list-group bg-white w-full rounded-t-none shadow-lg">
-                                        <div class="">Searching...</div>
+                                        <div class="">@lang('msg.Searching')...</div>
                                     </div>
                                     @if(!empty($users))
 
@@ -104,7 +104,7 @@
                                     <label class="text-gray-700 dark:text-gray-200" for="type">{{__('msg.Level Role')}}</label>
                                     <select name="role1" wire:model="role1" id="type"
                                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                        <option value="">Select a Option</option>
+                                        <option value="">@lang('msg.Select a Option')</option>
                                         <option value="Role 1">Role 1</option>
                                         <option value="Role 2">Role 2</option>
                                     </select> @error('role1') <span class="text-danger">*{{ $message
@@ -113,7 +113,7 @@
 
 
                             <div class="z-500">
-                                <label class="text-gray-700 dark:text-gray-200" for="query">Approver 2</label>
+                                <label class="text-gray-700 dark:text-gray-200" for="query">@lang('msg.Approver') 2</label>
                                 <input wire:model="queryb" wire:keydown.escape="reset" placeholder="Name/User Search"
                                     wire:keydown.tab="reset" wire:keydown.ArrowUp="decrementHighlight"
                                     wire:keydown.ArrowDown="incrementHighlight" wire:keydown.enter="selectStudent"
@@ -121,7 +121,7 @@
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" />
                                 <div wire:loading wire:target="queryb"
                                     class="absolute z-10 list-group bg-white w-full rounded-t-none shadow-lg">
-                                    <div class="">Searching...</div>
+                                    <div class="">@lang('msg.Searching')...</div>
                                 </div>
                                 @if(!empty($users2))
 
@@ -139,13 +139,13 @@
                                 <label class="text-gray-700 dark:text-gray-200" for="type">{{__('msg.Level Role')}}</label>
                                 <select name="role2" wire:model="role2" id="type"
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                    <option value="">Select a Option</option>
+                                    <option value="">@lang('msg.Select a Option')</option>
                                     <option value="Role 1">Role 1</option>
                                     <option value="Role 2">Role 2</option>
                                 </select> @error('role2') <span class="text-danger">*{{ $message }}</span> @enderror
                             </div>
                             <div class="z-500">
-                                <label class="text-gray-700 dark:text-gray-200" for="query">Approver 3</label>
+                                <label class="text-gray-700 dark:text-gray-200" for="query">@lang('msg.Approver') 3</label>
                                 <input wire:model="queryc" wire:keydown.escape="reset" placeholder="Name/User Search"
                                     wire:keydown.tab="reset" wire:keydown.ArrowUp="decrementHighlight"
                                     wire:keydown.ArrowDown="incrementHighlight" wire:keydown.enter="selectStudent"
@@ -153,7 +153,7 @@
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" />
                                 <div wire:loading wire:target="queryc"
                                     class="absolute z-10 list-group bg-white w-full rounded-t-none shadow-lg">
-                                    <div class="">Searching...</div>
+                                    <div class="">@lang('msg.Searching')...</div>
                                 </div>
                                 @if(!empty($users3))
 
@@ -171,7 +171,7 @@
                                 <label class="text-gray-700 dark:text-gray-200" for="type">{{__('msg.Level Role')}}</label>
                                 <select name="role3" wire:model="role3" id="type"
                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                                    <option value="">Select a Option</option>
+                                    <option value="">@lang('msg.Select a Option')</option>
                                     <option value="Role 1">Role 1</option>
                                     <option value="Role 2">Role 2</option>
                                 </select> @error('role3') <span class="text-danger">*{{ $message
@@ -191,7 +191,7 @@
                         <div class="w-1/2">
                             <button x-show="step > 1" @click="step--"
                                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-gray-600"><i
-                                    class="fas fa-step-backward"></i> Previous</button>
+                                    class="fas fa-step-backward"></i> @lang('msg.Previous')</button>
                         </div>
                         <div class="w-1/2 text-right">
                             <button x-show="step < 2" @click="step++"

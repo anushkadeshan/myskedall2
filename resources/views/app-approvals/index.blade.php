@@ -145,14 +145,17 @@
 <li class="breadcrumb-item">{{__('msg.Approvals')}}</li>
 <li class="breadcrumb-item active">{{__('msg.Home')}} </li>
 
-<li class="profile-nav onhover-dropdown p-0 me-0 ">
+@endsection
+
+@section('content')
+<div class="profile-nav onhover-dropdown p-10 me-0 pull-right ">
     <div class="media profile-media">
       <div class="media-body">
         <span class="pl-10"><i class="icon-menu"></i></span>
       </div>
     </div>
-    <ul class="profile-dropdown onhover-show-div p-10 " style="width: 100px; background-color:balck">
-      <li class="my-4">
+    <ul class="profile-dropdown onhover-show-div p-10 " style="width: 150px; background-color:balck;  ">
+      <li class="my-2">
           <a href="{{route('create.support')}}"><i class="fa fa-question-circle"></i><span> {{ __('msg.Help') }}</span></a>
         </li>
         <li>
@@ -160,7 +163,7 @@
         </li>
 
     </ul>
-  </li>
+  </div>
 
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenter"  role="dialog" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -190,9 +193,6 @@
       </div>
     </div>
   </div>
-@endsection
-
-@section('content')
 <livewire:apps.approvals.home />
 @endsection
 

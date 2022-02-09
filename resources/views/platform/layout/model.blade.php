@@ -1,3 +1,6 @@
+	@php 
+		$user = Auth::user();
+	@endphp
 	<div class="modal fade" id="modalUsuarioEdit" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioEditTitulo" aria-hidden="true">
 		<div class="modal-dialog" role="document" style="width:95%; max-width:600px;">
 			<div class="modal-content">

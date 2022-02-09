@@ -30,7 +30,7 @@ class LivewireDatatable extends Component
     public $model;
     public $columns;
     public $search;
-    public $sort;
+    public $sort = 'id|asc';
     public $direction;
     public $activeDateFilters = [];
     public $activeTimeFilters = [];
@@ -56,7 +56,7 @@ class LivewireDatatable extends Component
     public $name;
 
     protected $query;
-    protected $listeners = ['refreshLivewireDatatable'];
+    protected $listeners = ['refreshLivewireDatatable','filter' => 'filterData'];
 
     public function updatedSearch()
     {
@@ -92,7 +92,8 @@ class LivewireDatatable extends Component
         $this->initialiseSort();
 
         // check if there are sorting vars in the session
-        $this->sort = session()->get('dt_'.$this->name.'_sort', $this->sort);
+        $key = Str::snake(Str::afterLast(get_called_class(), '\\'));
+        $this->sort = session()->get($key.$this->name.'_sort', $this->sort);
         $this->direction = session()->get('dt_'.$this->name.'_direction', $this->direction);
         $this->perPage = $perPage ?? config('livewire-datatables.default_per_page', 10);
     }

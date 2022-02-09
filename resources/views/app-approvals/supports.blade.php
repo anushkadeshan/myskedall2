@@ -11,8 +11,8 @@
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Approvals</li>
-<li class="breadcrumb-item active">Support</li>
+<li class="breadcrumb-item">{{__('msg.Approvals')}}</li>
+<li class="breadcrumb-item active">{{__('msg.Support')}}</li>
 @endsection
 
 @section('content')

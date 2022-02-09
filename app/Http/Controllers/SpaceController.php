@@ -13,6 +13,7 @@ use App\Mail\Space\RequestRecievied;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\Space\SubmitRequestMail;;
 use App\Http\Requests\Space\NewRequest;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SpaceController extends Controller
 {
@@ -63,6 +64,9 @@ class SpaceController extends Controller
         return Group::whereNotIn('id', $other_groups)->get();
     }
 	public function Home(){
+        toast('Post Updated','success','top-right')->showCloseButton();
+
+       // dd("sdsd");
         $groupData = $this->GetGroupList();
         $user = Auth::user();
         $data = [];
@@ -73,7 +77,7 @@ class SpaceController extends Controller
         $defaultGroup = $this->DefaultGroup();
 
 		$requestTotal = $this->CountRequestTotal();
-		return view('space/home/index',compact('requestTotal'))->withRoutename('')->withData($data)
+		return view('space/home/space-new-index',compact('requestTotal'))->withRoutename('')->withData($data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
             ->withUserGroup($userGroup);
@@ -109,7 +113,7 @@ class SpaceController extends Controller
         $defaultGroup = $this->DefaultGroup();
 
 		$requestTotal = $this->CountRequestTotal();
-		return view('space/home/index',compact('requestTotal'))->withRoutename('approved-request')->withData($data)
+		return view('space/home/space-new-index',compact('requestTotal'))->withRoutename('approved-request')->withData($data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
             ->withUserGroup($userGroup);
@@ -125,7 +129,7 @@ class SpaceController extends Controller
         $defaultGroup = $this->DefaultGroup();
 
 		$requestTotal = $this->CountRequestTotal();
-		return view('space/home/index',compact('requestTotal'))->withRoutename('rejected-request')->withData($data)
+		return view('space/home/space-new-index',compact('requestTotal'))->withRoutename('rejected-request')->withData($data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
             ->withUserGroup($userGroup);
@@ -141,7 +145,7 @@ class SpaceController extends Controller
         $defaultGroup = $this->DefaultGroup();
 
 		$requestTotal = $this->CountRequestTotal();
-		return view('space/home/index',compact('requestTotal'))->withRoutename('repproved-request')->withData($data)
+		return view('space/home/space-new-index',compact('requestTotal'))->withRoutename('repproved-request')->withData($data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
             ->withUserGroup($userGroup);
@@ -192,7 +196,7 @@ class SpaceController extends Controller
 
         $data['managers'] = User::role(['Local Admin','Module Admin'])->select('name')->get();
         //dd($data);
-		return view('space/new-request/index',$data)
+		return view('space/new-request/new-index',$data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
             ->withUserGroup($userGroup);
@@ -660,7 +664,7 @@ class SpaceController extends Controller
 		$data['data'] = SpaceRequests::find($request_id);
 		$data['eventsList']=DB::table('space_events')->select('id','title')->where(['status'=>1,'group_id'=>session('group-id')])->get();
 		$data['reasonList']=DB::table('space_reason')->select('id','reason')->where(['status'=>1, 'group_id' => session('group-id')])->get();
-		$location=DB::table('space_location')->where(['address'=>$data['data']->location])->first();
+		$location=DB::table('space_location')->find($data['data']->location);
 
 		if(!empty($location)){
 			$data['locationjson']=json_encode(['id'=>$location->id,'text'=>$location->address]);
@@ -676,11 +680,13 @@ class SpaceController extends Controller
         $data['locationList'] = DB::table('space_location')
         ->where('group_id', session('group-id'))
         ->select('space_location.id as id', 'space_location.address', 'manager', 'space_location.address as location_name')->get();
-
-        return view('space/reuse-request/index',$data)
+       // dd($location);
+       session(['location_id'=>$data['data']->location]);
+        return view('space/reuse-request/new-index',$data)
             ->withUser($user)->withGroupData($groupData)
             ->withActiveGroup($apps)->withDefaultGroup($defaultGroup)
-            ->withUserGroup($userGroup);
+            ->withUserGroup($userGroup)
+            ->withLocation($location);
 
     }
     /*

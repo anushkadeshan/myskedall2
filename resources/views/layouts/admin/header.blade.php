@@ -1,25 +1,29 @@
-<div class="page-header">
+<div class="page-header" style="background-color:#ff4040; color:white">
+    <style>
+        .breadcrumb .active {
+            color: white;
+        }
+    </style>
     <div class="header-wrapper row m-0">
 
       <div class="header-logo-wrapper col-auto p-0">
         <div class="logo-wrapper"><a href="{{route('home')}}"><img class="img-fluid" src="{{asset('assets/admin/images/logo/logo.jpg')}}" alt=""></a></div>
         <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
       </div>
-      <div class="left-header col horizontal-wrapper ps-0">
+      <div class="left-header col horizontal-wrapper ps-0 ">
         <ul class="horizontal-menu">
-            <li class="mega-menu outside p-0 m-0">
+            <li class="mega-menu outside p-0 m-0 ">
                 <div class="">
-                    <div class="page-title m-0 p-0">
-                        <div class="col-12 mt-0">
-                            <ol class="breadcrumb mb-0 pb-0">
-                                <li class="breadcrumb-item"><a href="{{ route('home') }}"> <i data-feather="home"></i></a></li>
+                    <div class="page-title m-0 p-0 ">
+                        <div class="col-12 mt-0 pt-3 pt-md-0">
+                            <ol class="breadcrumb mb-0 pb-0 text-white">
+                                <li class="breadcrumb-item text-white" style="color: white;"><a href="{{ route('home') }}"> <i data-feather="home" style="stroke:white"></i></a></li>
                                 @yield('breadcrumb-items')
                               </ol>
                         </div>
                     </div>
                   </div>
               </li>
-
         </ul>
       </div>
       <div class="nav-right col-8 pull-right right-header p-0">
@@ -65,15 +69,24 @@
 
             </ul>
           <li class="profile-nav onhover-dropdown p-0 me-0">
+            @php
+              $imageurl=asset('/_dados/plataforma/usuarios/0.jpg');
+              if(file_exists(public_path().('/_dados/plataforma/usuarios')."/".session('user_id').".jpg")){
+                $imageurl=asset('/_dados/plataforma/usuarios/'.session('user_id').'.jpg');
+              }
+            @endphp
+            <img class="b-r-10" src="{{$imageurl}}" alt="" height="10" width="35px">
+          </li>
+          <li class="profile-nav onhover-dropdown p-0 me-0">
             <div class="media profile-media">
-              <img class="b-r-10" src="{{asset('assets/images/dashboard/profile.jpg')}}" alt="">
+              
               <div class="media-body">
                 <span>{{auth()->user()->name}}</span>
-                <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+                <p class="mb-0 font-roboto text-white">Admin <i class="middle fa fa-angle-down"></i></p>
               </div>
             </div>
             <ul class="profile-dropdown onhover-show-div">
-                <li><a href="#" data-bs-original-title="" title=""><i class="fa fa-user fa-lg"></i><span> @lang('msg.profile') </span></a></li>
+                <li><a href="{{route('profile')}}" data-bs-original-title="" title=""><i class="fa fa-user fa-lg"></i><span> @lang('msg.profile') </span></a></li>
               <li>
 
                   <a href="{{ route('logout') }}" onclick="event.preventDefault();

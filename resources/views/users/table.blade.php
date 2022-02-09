@@ -148,6 +148,7 @@
 @push('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.css" integrity="sha512-J5tsMaZISEmI+Ly68nBDiQyNW6vzBoUlNHGsH8T3DzHTn2h9swZqiMeGm/4WMDxAphi5LMZMNA30LvxaEPiPkg==" crossorigin="anonymous" />
 <script>
+    var url = '{{url('/')}}'
     function role(a,id) {
         var value = (a.value || a.options[a.selectedIndex].value);  //crossbrowser solution =)
         $.ajax({
@@ -155,7 +156,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type: 'POST',
-            url: BaseUrl+'/change/role',
+            url: url+'/change/role',
             dataType: "json",
             data:{
                 'role':value,

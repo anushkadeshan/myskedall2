@@ -4,16 +4,16 @@
         <thead>
             <tr>
                 <td>#</td>
-                <th>Date</th>
-                <th>Requestor</th>
-                <th>Event Name</th>
-                <th>Group</th>
-                <th>Routine</th>
-                <th>Url</th>
-                <th>Action Taken</th>
-                <th>Updated at</th>
-                <th>Updated By</th>
-                <th>Action</th>
+                <th>@lang('msg.Date')</th>
+                <th>@lang('msg.Requestor')</th>
+                <th>@lang('msg.Event Name') </th>
+                <th>@lang('msg.Group')</th>
+                <th>@lang('msg.Routine')</th>
+                <th>@lang('msg.Url')</th>
+                <th>@lang('msg.Action Taken') </th>
+                <th>@lang('msg.Updated at') </th>
+                <th>@lang('msg.Updated By') </th>
+                <th>@lang('msg.Action')</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
                 <td></td>
                 <th>
                     <select data-column="1" name="date" id="date" class="form-control filter-select">
-                        <option value="">Date</option>
+                        <option value="">@lang('msg.Date')</option>
                         @foreach($dates as $key => $date)
                             <option value="{{date('Y-m-d', strtotime($date))}}">{{date('d/m/Y', strtotime($date))}}</option>
                         @endforeach
@@ -31,7 +31,7 @@
                 </th>
                 <th>
                     <select data-column="2" name="date" id="date" class="form-control filter-select">
-                        <option value="">Requestor</option>
+                        <option value="">@lang('msg.Requestor')</option>
                         @foreach($requesters as $requester)
                             <option value="{{$requester->id}}">{{$requester->name}}</option>
                         @endforeach
@@ -40,7 +40,7 @@
                 </th>
                 <th>
                     <select data-column="3" name="date" id="date" class="form-control filter-select">
-                        <option value="">Event Name</option>
+                        <option value="">@lang('msg.Event Name')</option>
                         @foreach($events as $key => $event)
                             <option value="{{$event}}">{{$event}}</option>
                         @endforeach
@@ -50,7 +50,7 @@
                 <th></th>
                 <th>
                     <select data-column="5" name="routine" id="routine" class="form-control filter-select">
-                        <option value="">Routine</option>
+                        <option value="">@lang('msg.Routine')</option>
                         @foreach($routines as $key => $routine)
                             <option value="{{$routine}}">{{$routine}}</option>
                         @endforeach
@@ -62,11 +62,13 @@
                 </th>
                 <th>
                     <select data-column="7" name="routine" id="routine" class="form-control filter-select">
-                        <option value="">Action Taken</option>
+                        <option value="">@lang('msg.Action Taken')</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
                     </select>
                 </th>
+                <th></th>
+                <th></th>
                 <th></th>
             </tr>
         </tfoot>
@@ -77,7 +79,7 @@
 		<div class="modal-dialog" role="document" style="width:95%; max-width:500px;">
 			<div class="modal-content">
 				<div class="modal-body" style="text-align:left">
-					<div style="font-size:20px;">Requestor Details</div>
+					<div style="font-size:20px;">@lang('msg.Requestor Details')</div>
 					<div style="margin-top:15px; width:100%;">
 						<li style="color:#999999">Name : <span id="requestorName"></span></li>
 						<li style="color:#999999">Email : <span id="requestorEmail"></span></li>
@@ -107,12 +109,13 @@
     }
 
 $(document).ready(function(){
+    var url = '{{url('/')}}'
     var table = $('#alerts-table').DataTable({
         processing: true,
         serverSide: true,
-        "ordering": false,
+        "ordering": true,
         ajax: {
-           url: BaseUrl+'/admin/alertData',
+           url: url+'/admin/alertData',
         },
         columns: [
             {data: 'id', name: 'id'},

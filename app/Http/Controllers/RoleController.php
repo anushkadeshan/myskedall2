@@ -82,8 +82,7 @@ class RoleController extends AppBaseController
 
         $role = $this->roleRepository->create($input);
 
-        Flash::success('Role saved successfully.');
-
+        toast(trans('msg.Role saved successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('roles.index'));
     }
 
@@ -105,7 +104,7 @@ class RoleController extends AppBaseController
         $role = $this->roleRepository->find($id);
 
         if (empty($role)) {
-            Flash::error('Role not found');
+            toast(trans('msg.Role not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('roles.index'));
         }
@@ -137,8 +136,7 @@ class RoleController extends AppBaseController
         $role = $this->roleRepository->find($id);
 
         if (empty($role)) {
-            Flash::error('Role not found');
-
+            toast(trans('msg.Role not found.'),'error','top-right')->showCloseButton();
             return redirect(route('roles.index'));
         }
 
@@ -164,14 +162,14 @@ class RoleController extends AppBaseController
         $role = $this->roleRepository->find($id);
 
         if (empty($role)) {
-            Flash::error('Role not found');
+            toast(trans('msg.Role not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('roles.index'));
         }
 
         $role = $this->roleRepository->update($request->all(), $id);
 
-        Flash::success('Role updated successfully.');
+        toast(trans('msg.Role updated successfully.'),'success','top-right')->showCloseButton();
 
         return redirect(route('roles.index'));
     }
@@ -190,15 +188,14 @@ class RoleController extends AppBaseController
         $role = $this->roleRepository->find($id);
 
         if (empty($role)) {
-            Flash::error('Role not found');
+            toast(trans('msg.Role not found.'),'error','top-right')->showCloseButton();
 
             return redirect(route('roles.index'));
         }
 
         $this->roleRepository->delete($id);
 
-        Flash::success('Role deleted successfully.');
-
+        toast(trans('msg.Role deleted successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('roles.index'));
     }
 
@@ -207,7 +204,7 @@ class RoleController extends AppBaseController
         
         $user = User::find($request->user);
         $user->syncRoles($request->role);
-        Flash::success('Role Assigned successfully.');
+        toast(trans('msg.Role Assigned successfully.'),'success','top-right')->showCloseButton();
         return response()->json(200);
     }
 }

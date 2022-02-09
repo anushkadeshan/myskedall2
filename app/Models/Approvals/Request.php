@@ -4,6 +4,7 @@ namespace App\Models\Approvals;
 
 use App\Models\User;
 use App\Models\Approvals\Level;
+use App\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
@@ -65,10 +66,35 @@ class Request extends Model
         return $this->hasOne(User::class, 'id','requster_id');
     }
 
+    public function approvars()
+    {
+        return $this->hasOne(User::class, 'id', 'approved_by');
+    }
+
     /**
      * Get the user associated with the Request
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
+
+     /**
+      * Get the user associated with the Request
+      *
+      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+      */
+     public function requestType()
+     {
+         return $this->hasOne(Type::class, 'id', 'type');
+     }
+
+     public function subtype()
+     {
+         return $this->hasOne(SubType::class, 'id', 'sub_type');
+     }
+
+     public function group()
+     {
+         return $this->hasOne(Group::class, 'id', 'group_id');
+     }
 
 }

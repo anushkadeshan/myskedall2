@@ -17,10 +17,41 @@
 @endsection
 
 @section('content')
-<livewire:apps.approvals.create-types />
+<div class="container mt-3">
+
+    <div class="content">
+        <div class="card">
+            <section class="card-header">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>{{__('msg.types')}}</h1>
+                    </div>
+                    <div class="col-sm-6">
+
+                        <button
+                            class="bg-blue-600 float-right  text-white p-2 w-28 rounded-10 hover:bg-blue-700 focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300 m-2"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        >
+                            @lang('msg.Add New')
+                        </button>
+
+                    </div>
+                </div>
+            </section>
+            <div class="card-body">
+                <div class="content px-3">
+                    <livewire:apps.approvals.types-table exportable/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <livewire:apps.approvals.create-types>
+    </div>
+</div>
 @endsection
 
 @section('script')
 
 @endsection
-

@@ -139,7 +139,7 @@
                 <div class="modal-body">
                     <div class="grid grid-cols-1 gap-10 mt-4 sm:grid-cols-3 bg-gray-50 p-2">
                         <div>
-                            <h5 class="my-10">Update Basic Data</h5>
+                            <h5 class="my-10">{{__('msg.Update Basic Data')}}</h5>
 
                             <div>
                                 <label class="text-gray-700 dark:text-gray-200" for="name">{{__('msg.name')}}</label>
@@ -171,7 +171,7 @@
                             </div>
                         </div>
                         <div wire:ignore.self>
-                            <h5 class="my-10">Update Approvers Role</h5>
+                            <h5 class="my-10">{{__('msg.Update Approvers Role')}}</h5>
 
                             @foreach($levelApprovers as $la)
                             <div class="row" wire:ignore.self>
@@ -197,10 +197,10 @@
                             @endforeach
                         </div>
                         <div>
-                            <h5 class="my-10">Add New Apporvers</h5>
+                            <h5 class="my-10">__('msg.Add New Apporvers')</h5>
                             <div class="grid grid-cols-1 gap-6  sm:grid-cols-2 bg-gray-50">
                                 <div class="flex-initial">
-                                    <label class="text-gray-700 dark:text-gray-200" for="query">Approver 1</label>
+                                    <label class="text-gray-700 dark:text-gray-200" for="query">{{__('msg.Approver')}} 1</label>
                                     <input wire:model="querya" wire:keydown.escape="reset"
                                         placeholder="Name/User Search" wire:keydown.tab="reset"
                                         wire:keydown.ArrowUp="decrementHighlight"
@@ -237,7 +237,7 @@
 
 
                                 <div class="z-500">
-                                    <label class="text-gray-700 dark:text-gray-200" for="query">Approver 2</label>
+                                    <label class="text-gray-700 dark:text-gray-200" for="query">{{__('msg.Approver')}} 2</label>
                                     <input wire:model="queryb" wire:keydown.escape="reset"
                                         placeholder="Name/User Search" wire:keydown.tab="reset"
                                         wire:keydown.ArrowUp="decrementHighlight"
@@ -270,7 +270,7 @@
                                     </select> @error('role2') <span class="text-danger">*{{ $message }}</span> @enderror
                                 </div>
                                 <div class="z-500">
-                                    <label class="text-gray-700 dark:text-gray-200" for="query">Approver 3</label>
+                                    <label class="text-gray-700 dark:text-gray-200" for="query">{{__('msg.Approver')}} 3</label>
                                     <input wire:model="queryc" wire:keydown.escape="reset"
                                         placeholder="Name/User Search" wire:keydown.tab="reset"
                                         wire:keydown.ArrowUp="decrementHighlight"
@@ -308,8 +308,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" wire:click="update">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('msg.close')}}</button>
+                    <button type="button" class="btn btn-primary" wire:click="update">{{__('msg.Save changes')}}</button>
                 </div>
             </div>
         </div>

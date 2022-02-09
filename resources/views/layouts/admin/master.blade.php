@@ -33,6 +33,16 @@
         [x-cloak] {
             display: none;
         }
+        body::-webkit-scrollbar {
+            width: 8px;
+            }
+        body::-webkit-scrollbar-track {
+            background: #78807A;
+            border-radius: 15px;
+            }
+            body::-webkit-scrollbar-thumb {
+            background-color: #C0CCC3;
+            border-radius: 15px; }
     </style>
     @include('layouts.admin.css')
     @yield('style')
@@ -78,6 +88,12 @@
     <!-- latest jquery-->
     @include('layouts.admin.script')
     @livewireScripts
+    @include('sweetalert::alert')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <x-livewire-alert::scripts />
+    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script> 
+    <x-livewire-alert::flash />
+
     <script>
         function app() {
             return {
@@ -99,6 +115,11 @@
             });
         }
     </script>
+    <script>
+      var BaseUrl = '{{url("/api/")}}';
+      var HomeUrl='{{url("/")}}';
+      var csrf_token = "{{ csrf_token() }}";
+  </script>
     @if(session('message') && session('type'))
         <script>
             Alert('{{session('message')}}','{{session('type')}}');
@@ -106,7 +127,9 @@
     @endif
     <!-- Plugin used-->
     @stack('js')
-
+    @include('platform/layout/model')
+    @include('space/layout/js')
+    @include('platform/layout/js')
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
     <script type="text/javascript">
       if ($(".page-wrapper").hasClass("horizontal-wrapper")) {
@@ -115,6 +138,10 @@
       }
     </script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
-
+    @if(session('message') && session('type'))
+		<script>
+			Alert('{{session('message')}}','{{session('type')}}');
+		</script>
+	@endif
   </body>
 </html>

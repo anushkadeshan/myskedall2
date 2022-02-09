@@ -198,8 +198,6 @@ class AlertController extends AppBaseController
 
         $alert = $this->alertRepository->create($input);
 
-        Flash::success('Alert saved successfully.');
-
         return redirect(route('alerts.index'));
     }
 
@@ -220,7 +218,7 @@ class AlertController extends AppBaseController
         $groupData = $HomeControllrt->GetGroupList();
 
         if (empty($alert)) {
-            Flash::error('Alert not found');
+            toast(trans('msg.Alert not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('alerts.index'));
         }
@@ -252,7 +250,7 @@ class AlertController extends AppBaseController
         $groupData = $HomeControllrt->GetGroupList();
 
         if (empty($alert)) {
-            Flash::error('Alert not found');
+            toast(trans('msg.Alert not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('alerts.index'));
         }
@@ -279,15 +277,13 @@ class AlertController extends AppBaseController
         $alert = $this->alertRepository->find($id);
 
         if (empty($alert)) {
-            Flash::error('Alert not found');
-
+            toast(trans('msg.Alert not found'),'error','top-right')->showCloseButton();
             return redirect(route('alerts.index'));
         }
 
         $alert = $this->alertRepository->update($request->all(), $id);
 
-        Flash::success('Alert updated successfully.');
-
+        toast(trans('msg.Alert updated successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('alerts.index'));
     }
 
@@ -296,7 +292,8 @@ class AlertController extends AppBaseController
         $alert->is_read = $req->value;
         $alert->updated_by = Auth::user()->name;
         $alert->save();
-        Flash::success('Alert updated successfully.');
+        toast(trans('msg.Alert updated successfully.'),'success','top-right')->showCloseButton();
+
 
         return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Alert updated Successfully']);
     }
@@ -316,19 +313,18 @@ class AlertController extends AppBaseController
         $alert = $this->alertRepository->find($id);
         //dd($alert);
         if (empty($alert)) {
-            Flash::error('Alert not found');
+            toast(trans('msg.Alert not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('alerts.index'));
         }
 
         $this->alertRepository->delete($id);
-        Flash::success('Alert Deleted Successfully');
-        return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Alert Deleted Successfully']);
+        toast(trans('msg.Alert Deleted successfully.'),'success','top-right')->showCloseButton();
+        return response()->json(['code' => 200, 'status' => 'success', 'message' => trans('msg.Alert Deleted successfully.')]);
         }
         else{
-            Flash::error('You do not have permissions to delete alert');
-            
-            return response()->json(['code' => 403, 'status' => 'error', 'message' => 'You do not have permissions to delete alert']);
+            toast(trans('msg.You do not have permissions to delete alert'),'error','top-right')->showCloseButton();
+            return response()->json(['code' => 403, 'status' => 'error', 'message' => trans('msg.You do not have permissions to delete alert')]);
         }
     }
 }

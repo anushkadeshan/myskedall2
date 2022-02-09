@@ -15,7 +15,7 @@
 					<input type="text" class="form-control" name="events" value="{{$data->events}}">
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6"> 
 				<div class="form-group">
 					<label>{{ __('msg.No of people') }} </label><strong style="color:red">{{$errors->first('total_people')}}</strong>
 					<input type="text" class="form-control" name="total_people" value="{{$data->total_people}}">

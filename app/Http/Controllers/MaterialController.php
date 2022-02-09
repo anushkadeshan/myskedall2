@@ -78,11 +78,10 @@ class MaterialController extends AppBaseController
     public function store(CreateMaterialRequest $request)
     {
         $input = $request->all();
-
+        dd($input);
         $material = $this->materialRepository->create($input);
 
-        Flash::success('Material saved successfully.');
-
+        toast(trans('msg.Material saved successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('materials.index'));
     }
 
@@ -98,8 +97,7 @@ class MaterialController extends AppBaseController
         $material = $this->materialRepository->find($id);
 
         if (empty($material)) {
-            Flash::error('Material not found');
-
+            toast(trans('msg.Material not found'),'error','top-right')->showCloseButton();
             return redirect(route('materials.index'));
         }
 
@@ -130,7 +128,7 @@ class MaterialController extends AppBaseController
         $material = $this->materialRepository->find($id);
 
         if (empty($material)) {
-            Flash::error('Material not found');
+            toast(trans('msg.Material not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('materials.index'));
         }
@@ -162,15 +160,11 @@ class MaterialController extends AppBaseController
         $material = $this->materialRepository->find($id);
 
         if (empty($material)) {
-            Flash::error('Material not found');
-
+            toast(trans('msg.Material not found'),'error','top-right')->showCloseButton();
             return redirect(route('materials.index'));
         }
-
         $material = $this->materialRepository->update($request->all(), $id);
-
-        Flash::success('Material updated successfully.');
-
+        toast(trans('msg.Material updated successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('materials.index'));
     }
 
@@ -188,15 +182,13 @@ class MaterialController extends AppBaseController
         $material = $this->materialRepository->find($id);
 
         if (empty($material)) {
-            Flash::error('Material not found');
+            toast(trans('msg.Material not found'),'error','top-right')->showCloseButton();
 
             return redirect(route('materials.index'));
         }
 
         $this->materialRepository->delete($id);
-
-        Flash::success('Material deleted successfully.');
-
+        toast(trans('msg.Material deleted successfully.'),'success','top-right')->showCloseButton();
         return redirect(route('materials.index'));
     }
 }

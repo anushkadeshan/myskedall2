@@ -27,7 +27,11 @@ class CreateTypes extends Component
             ]
         );
 
-        $refresh;
+        $this->description = '';
+        $this->type = '';
+
+        $this->emit('refreshLivewireDatatable');
+
         session()->flash('message', 'added');
     }
 

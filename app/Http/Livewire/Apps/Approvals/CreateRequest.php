@@ -2,19 +2,22 @@
 
 namespace App\Http\Livewire\Apps\Approvals;
 
-use App\Models\Approvals\Chat;
-use App\Models\Approvals\Finance;
-use App\Models\Approvals\Item;
-use App\Models\Approvals\Level;
 use DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Models\Approvals\Chat;
+use App\Models\Approvals\Item;
+use App\Models\Approvals\Level;
+use App\Models\Approvals\Finance;
 use App\Models\Approvals\Request;
 use App\Models\Approvals\SubType;
+use Illuminate\Support\Facades\Session;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class CreateRequest extends Component
 {
     use WithFileUploads;
+    use LivewireAlert;
 
     public $i = 0;
     public $inputs = [];
@@ -67,8 +70,10 @@ class CreateRequest extends Component
     public $chats = [];
     public $levels;
 
+    public $unseen_requets = false;
     public $payment_methods = [];
 
+    public $items_array = [];
     public function add($i)
     {
         $i = $i + 1;
@@ -78,11 +83,22 @@ class CreateRequest extends Component
     }
 
     public function mount(){
+        
         $this->types = collect();
         $this->subtypes = collect();
 
         $this->levels = Level::select('id','name')->where('group_id',session('group-id'))->get();
-
+        
+        $unseen_requets = Request::whereNull('ackowledgeByRequester')->where('group_id',session('group-id'))->where('requster_id',auth()->user()->id)->count();
+        
+        if(!auth()->user()->approver->count() >0){
+            if($unseen_requets>0){
+                $this->unseen_requets = true;
+                session()->flash('message', trans('msg.Your Previous requests has been not seen by aprover. Therefore You can not request further'));
+            }
+        }
+        
+        //dd(session('request_id'));
         if(session('request_id')){
             $this->chats = Chat::with(['user'])->where(['request_id' => session('request_id')])->get()->toArray();
         }
@@ -123,7 +139,6 @@ class CreateRequest extends Component
             'limit_date' => 'required',
             'priority' => 'required',
             'level' => 'required',
-            'status' => 'required',
         ]);
         $request = Request::create([
             'title' => $this->title,
@@ -146,19 +161,24 @@ class CreateRequest extends Component
         $request->url = 'edit-request/'.$request->id;
         $request->save();
         session(['request_id'=>$request->id]);
-        session()->flash('message', 'Request data saved as draft ');
+        $this->alert('success', trans('msg.Request data saved as draft.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function itemsSaveDraft(){
         if(!is_null($this->name || $this->value)){
             foreach ($this->name as $key => $value) {
                 $items = Item::create([
-                    'name' => $this->name[$key],
-                    'value' => $this->value[$key],
-                    'details' => $this->details[$key],
-                    'reference_link' => $this->reference_link[$key],
-                    'responsible_dept' => $this->responsible_dept[$key],
-                    'payment_method' => $this->payment_method[$key],
+                    'name' => isset($this->name[$key]) ? $this->name[$key] : null,
+                    'value' => isset($this->value[$key]) ? $this->value[$key] : null,
+                    'details' => isset($this->details[$key]) ? $this->details[$key] : null,
+                    'reference_link' => isset($this->reference_link[$key]) ? $this->reference_link[$key] : null,
+                    'responsible_dept' => isset($this->responsible_dept[$key]) ? $this->responsible_dept[$key] : null,
+                    'payment_method' => isset($this->payment_method[$key]) ? $this->payment_method[$key] : null ,
                     'request_id' => session('request_id')
                 ]);
             }
@@ -169,13 +189,18 @@ class CreateRequest extends Component
             $request->save();
 
         }
-        session()->flash('message', 'Items data saved as draft ');
+        $this->alert('success', trans('msg.Items data saved as draft.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
 
     }
 
     public function finacialSaveDraft(){
 
-        $name = $this->invoice->store('invoices');
+        $name = $this->invoice->storePublicly('invoices','public');
 
         Finance::create([
             'bank_id' => $this->bank_id,
@@ -210,6 +235,7 @@ class CreateRequest extends Component
 
 
     public function save(){
+
         $this->validate([
             'title' => 'required',
             'description' => 'required',
@@ -219,8 +245,8 @@ class CreateRequest extends Component
             'limit_date' => 'required',
             'priority' => 'required',
             'level' => 'required',
-            'status' => 'required',
         ]);
+        //dd("dfdf");
         $request = Request::create([
             'title' => $this->title,
             'description' => $this->description,
@@ -238,6 +264,7 @@ class CreateRequest extends Component
         ]);
 
         $this->request_id = $request->id;
+        $this->emit('refreshLivewireDatatable');
         session(['request_id'=>$request->id]);
 
         if(!is_null($this->name || $this->value)){
@@ -252,16 +279,15 @@ class CreateRequest extends Component
                     'request_id' => session('request_id')
                 ]);
 
-
-
+                array_push($this->items_array, $items->id);
             }
             if(!is_null($this->invoice)){
                 foreach ($this->invoice as $key => $file) {
-                    $name = $this->invoice[$key] = $file->store('invoices');
+                    $name = $this->invoice[$key] = $file->storePublicly('invoices','public');
                 }
             }
 
-            foreach ($this->name as $key2 => $value) {
+            foreach ($this->items_array as $key2 => $value) {
                 Finance::create([
                     'bank_id' => isset($this->bank_id[$key2]) ? $this->bank_id[$key2] : null,
                     'agency' => isset($this->agency[$key2]) ? $this->agency[$key2] : null,
@@ -272,7 +298,8 @@ class CreateRequest extends Component
                     'transaction_url' => isset($this->transaction_url[$key2]) ? $this->transaction_url[$key2] : null,
                     'invoice_file' => isset($this->invoice[$key2]) ? $this->invoice[$key2] : null,
                     'payment_type' => isset($this->payment_method[$key2]) ? $this->payment_method[$key2] : null,
-                    'request_id' => session('request_id')
+                    'request_id' => session('request_id'),
+                    'item_id' => $value
                 ]);
             }
 
@@ -283,8 +310,12 @@ class CreateRequest extends Component
             $request->save();
 
         }
-
-        session()->flash('message', 'All data saved successfully.');
+        $this->alert('success', trans('msg.All approval request data saved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
         $this->clear();
     }
 
@@ -318,6 +349,7 @@ class CreateRequest extends Component
     }
 
     public function finish(){
+        Session::forget('request_id');
         return redirect()->to('/apps/approvals/create-request');
     }
 

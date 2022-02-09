@@ -6,6 +6,15 @@
 @endsection
 
 @section('style')
+<style>
+    .modal-backdrop.in {
+        opacity: 0.9;
+    }
+    
+    .modal-backdrop {
+      z-index: 900 !important;
+    }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -28,22 +37,12 @@
             <section class="card-header">
                 <h1 class="pull-left">{{ __('msg.type of Location') }}</h1>
                 <h1 class="pull-right">
-                   <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('types.create') }}">Add New</a>
+                    <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                    data-bs-target="#exampleModalCenter" data-bs-original-title="" title="">@lang('msg.Add New')</button>
                 </h1>
             </section>
             <div class="card-body">
-                <div class="table table-responsive">
-                    <table id="showExternalLocationList" class="table">
-                        <thead>
-                            <th>{{ __('msg.Id') }}</th>
-                            <th>{{ __('msg.title') }}</th>
-                            <th>{{ __('msg.edit') }}</th>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
+                <livewire:location-types.table />
             </div>
         </div>
         <div class="text-center">
@@ -51,6 +50,7 @@
         </div>
     </div>
 </div>
+<livewire:location-types.form />
 <div class="modal fade" id="DeleteConfirmModel" role="dialog">
     <div class="modal-dialog modal-sm" style="top:30%">
         <div class="modal-content">
@@ -83,48 +83,18 @@
 @endsection
 @push('js')
 <script>
-
-    $(document).ready(function(){
-        $('#showExternalLocationList').DataTable( {
-            ajax: {
-                url:BaseUrl+'/admin/location-types',
-                type:'POST',
-                datatype:'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            "oLanguage": {
-                "sSearch": "{{ __('msg.search') }}: "
-            },
-            "language": {
-                "paginate": {
-                    "previous": "{{__('msg.previous')}}",
-                    "next": "{{__('msg.next')}}",
-
-                },
-                "info": "{{__('msg.Showing _START_ to _END_ of _TOTAL_ entries')}}",
-            },
-            "pageLength":7,
-            "pagingType": "simple",
-            "lengthChange": false,
-            "ordering": false,
-            "serverSide": true,
-            "columns": [
-                {"data":"id"},
-                {"data":"location_type"},
-                {"data":function(data){
-                    return '<a href="{{url("admin/location-types-edit")}}/'+data.id+'" type="button" class="btn btn-success btn-sm"><i class="fa fa-pencil"></i></a>'+
-                '<a style="margin-left: 10px;"  type="button" class="btn btn-danger btn-sm" onclick="DeleteConfirm(`{{url("admin/delete-external-location")}}/'+data.id+'`)"><i class="fa fa-trash"></i></a>';
-                }}
-            ]
-        });
-    });
-
 function DeleteConfirm(url){
         $('#DeleteUrlLink').attr('href',url);
         $('#DeleteConfirmModel').modal('show');
-    }
+}
+
+window.addEventListener('openEditModal', event => {
+        $("#exampleModalCenterEdit").modal('show');
+});
+
+window.addEventListener('closeEditModal', event => {
+        $("#exampleModalCenterEdit").modal('hide');
+});
 </script>
 @endpush
 

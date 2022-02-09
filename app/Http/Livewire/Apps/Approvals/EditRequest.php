@@ -9,9 +9,12 @@ use App\Models\Approvals\Level;
 use App\Models\Approvals\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Approvals\Request as ApprovalsRequest;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class EditRequest extends Component
 {
+    use LivewireAlert;
+
     public $i = 1;
     public $inputs = [];
     public $step1 = false;
@@ -19,6 +22,7 @@ class EditRequest extends Component
     public $step3 = false;
 
     public $is_draft = false;
+    public $approver = false;
 
     //request
     public $title;
@@ -85,36 +89,54 @@ class EditRequest extends Component
     public $new_responsible_dept;
     public $new_payment_method;
 
+    public $acknowledgement;
 
+    public function dehydrate(){
+        if(empty(!$this->approved_value)){
+            $this->sum_approved_value = array_sum($this->approved_value);
+        }
+    }
     public function mount($id){
-        $request = ApprovalsRequest::with('chats','finance','items','requester','levels.approvers')->find($id);
-        //dd($request);
+        $request = ApprovalsRequest::with('chats','finance','items','requester','levels.approvers','subtype','requestType','items.payments')->find($id);
+        
+        $approvers = $request->levels->approvers->pluck('id')->toArray();
+        if(in_array(auth()->user()->id,$approvers)){
+            $req_single = ApprovalsRequest::find($id);
+            $req_single->sean_by_user = true;
+            $req_single->save();
+        }
         $this->title = $request->title;
         $this->request_id = $request->id;
         $this->description = $request->description;
-        $this->type = $request->type;
-        $this->sub_type = $request->sub_type;
+        $this->type = $request->requestType->type;
+        $this->sub_type = $request->subtype->sub_type;
         $this->due_date = $request->due_date;
         $this->limit_date = $request->limit_date;
         $this->priority = $request->priority;
         $this->level = $request->level;
         $this->status = $request->status;
         $this->inputs = $request->items;
+        $this->acknowledgement = $request->acknowledgement;
         $this->requester = $request->requester->name;
         $this->approvers = $request->levels->approvers;
         $this->current_status = $request->current_status;
         $this->approved_items =$request->items->where('status','Approved');
         $this->changed_items =$request->items->where('status','Changed');
         $this->repproved_items =$request->items->where('status','Repproved');
-        $this->sum_approved_value = $request->items->sum('approved_value');
+       // $this->sum_approved_value = $request->items->sum('approved_value');
         $this->sum_requested_value = $request->items->sum('value');
 
 
         $this->levels = Level::select('id','name')->get();
 
-        if(session('request_id')){
-            $this->chats = Chat::with(['user'])->where(['request_id' => session('request_id')])->get()->toArray();
+        if($id){
+            $this->chats = Chat::with(['user'])->where(['request_id' => $id])->get()->toArray();
         }
+        if(auth()->user()->approver->count() >0){
+            $this->approver = true;
+        }
+
+
     }
 
     public function approve($id){
@@ -131,7 +153,13 @@ class EditRequest extends Component
         $this->changed_items =$request->items->where('status','Changed');
         $this->repproved_items =$request->items->where('status','Repproved');
 
-        session()->flash('message', 'Item approved successfully.');
+        $this->alert('success', trans('msg.Item approved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
+        
     }
 
     public function repprove($id){
@@ -147,8 +175,12 @@ class EditRequest extends Component
         $this->approved_items =$request->items->where('status','Approved');
         $this->changed_items =$request->items->where('status','Changed');
         $this->repproved_items =$request->items->where('status','Repproved');
-
-        session()->flash('message', 'Item Changed successfully.');
+        $this->alert('success', trans('msg.Item Changed successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function change($id){
@@ -165,8 +197,12 @@ class EditRequest extends Component
         $this->changed_items =$request->items->where('status','Changed');
         $this->repproved_items =$request->items->where('status','Repproved');
 
-
-        session()->flash('message', 'Item repproved successfully.');
+        $this->alert('success', trans('msg.Item repproved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function chat(){
@@ -176,10 +212,10 @@ class EditRequest extends Component
             'time' => date("h:i:sa"),
             'message' => $this->message,
             'is_liked' => $this->is_liked,
-            'request_id'  =>session('request_id')
+            'request_id'  =>$this->request_id
         ]);
         $this->message = '';
-        $chats = Chat::with(['user'])->where(['request_id' => session('request_id')])->get()->toArray();
+        $chats = Chat::with(['user'])->where(['request_id' => $this->request_id])->get()->toArray();
 
         $this->chats = $chats;
     }
@@ -190,8 +226,12 @@ class EditRequest extends Component
         $request->color = '#007bff';
         $request->save();
         $this->current_status = 3;
-
-        session()->flash('message', 'Saved successfully.');
+        $this->alert('success', trans('msg.Status Saved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function Return(){
@@ -200,8 +240,12 @@ class EditRequest extends Component
         $request->color = '#808080';
         $request->save();
         $this->current_status = 4;
-
-        session()->flash('message', 'Saved successfully.');
+        $this->alert('success', trans('msg.Status Saved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
 
@@ -211,8 +255,12 @@ class EditRequest extends Component
         $request->color = '#ef5350';
         $request->save();
         $this->current_status = 2;
-
-        session()->flash('message', 'Saved successfully.');
+        $this->alert('success', trans('msg.Status Saved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function Approved(){
@@ -220,11 +268,16 @@ class EditRequest extends Component
         $request->current_status = 1;
         $request->color = '#66bb6a';
         $request->approved_by = auth()->user()->id;
+        $request->approved_at = now();
         $request->save();
 
         $this->current_status = 1;
-
-        session()->flash('message', 'Saved successfully.');
+        $this->alert('success', trans('msg.Status Saved successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function AddNewItem(){
@@ -246,7 +299,36 @@ class EditRequest extends Component
         $this->new_reference_link = '';
         $this->new_responsible_dept = '';
         $this->new_payment_method = '';
-        session()->flash('message', 'Saved successfully.');
+        $this->alert('success', trans('msg.New Item Added'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
+    }
+
+    public function updatedAcknowledgement($value){
+        $request = Request::find($this->request_id);
+        $request->acknowledgement = $value;
+        $request->save();
+        $this->alert('success', trans('msg.Acknowledgement updated successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
+    }
+
+    public function AcknowledgeByRequester(){
+        $request = Request::find($this->request_id);
+        $request->ackowledgeByRequester = true;
+        $request->save();
+        $this->alert('success', trans('msg.Acknowledgement updated successfully.'), [
+            'position' => 'top-end',
+            'showConfirmButton' => false,
+            'timer' => 5000,
+            'toast' => true,
+        ]);
     }
 
     public function render()
